@@ -23,15 +23,15 @@
         <div class="container">
             
             <div class="logo">
-                <h1>Food Blog</h1>
+                <h1><a href="/Recipes" >Food Blog</a></h1>
                 <p>Exploring the Art of Food</p>
             </div>
             <nav class="navigation">
                 <ul>
-                    <li><a href="/Home">Home</a></li>
+                    <!-- <li><a href="/Home">Home</a></li>
                     <li><a href="/Recipes">Recipes</a></li>
                     <li><a href="#">About</a></li>
-                    <li><a href="/Contact">Contact</a></li>
+                    <li><a href="/Contact">Contact</a></li> -->
                 </ul>
             </nav>
 
