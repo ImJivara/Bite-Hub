@@ -1,0 +1,159 @@
+
+    
+/* Reset and Global Styles */
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: sans-serif;
+/* background-color: #f8f8f8; */
+}
+body {
+/* width:fit-content; */
+width: auto;
+overflow-y: scroll;
+overflow-x: hidden;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/*background-color: #f8f8f8;*/
+background-color: #fff;
+}
+
+.container {
+max-width: 85rem;
+margin: 0px 35px;
+padding: 10px 0px 0px 0px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background-color: #f8f8f8;
+}
+
+/* Header Styles */
+.header {
+background-color: #f8f8f8;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+padding: 0px 0;
+}
+.footer {
+background-color: #f8f8f8;
+box-shadow: 0px 5px 20px  rgba(0, 0, 0, 0.9);
+
+padding: 0;
+width: auto;
+height: 6rem;
+
+
+}
+.container2{
+align-items: center;
+}
+.logo h1 {
+font-size: 24px;
+font-weight: bold;
+color: #333;
+margin-bottom: 5px;
+}
+
+.logo p {
+font-size: 14px;
+color: #666;
+}
+
+.navigation ul {
+list-style: none;
+text-align: center;
+}
+
+.navigation ul li {
+display: inline-block;
+margin-left: 20px;
+}
+
+.navigation ul li:first-child {
+margin-left: 0;
+}
+
+.navigation ul li a {
+text-decoration: none;
+color: #333;
+font-weight: bold;
+transition: color 0.3s ease;
+}
+
+.navigation ul li a:hover {
+color: #666;
+}
+
+.meal-options {
+text-align: center;
+margin: 20px 0px;
+}
+
+.meal-options a {
+text-decoration: none;
+color: #666;
+font-size: 20px;
+font-weight: bold;
+margin: 0 15px;
+transition: color 0.3s ease;
+}
+
+.meal-options a:hover {
+color: #333;
+}
+
+.login-signup {
+color: #333;
+font-weight: bold;
+transition: color 0.3s ease;
+margin: 0 0 20px 0;
+
+
+}
+
+.login-signup a {
+text-decoration: none;
+color: #333;
+transition: color 0.3s ease;
+
+}
+
+.login-signup a:hover {
+color: #333;
+}
+                                        /* Error message */
+.error-message {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f44336; 
+    color: white;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.error-message.show {
+    display: block;
+    animation: slide-down 0.3s ease-in-out;
+}
+
+@keyframes slide-down {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+
+
+                                        /* Error message */

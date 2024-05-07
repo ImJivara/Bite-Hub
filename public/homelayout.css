@@ -1,0 +1,122 @@
+body,
+ul,
+h1,
+h2,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+header {
+    background-color: #fff;
+    text-align: center;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2em;
+    color: #333;
+}
+
+nav {
+    background-color: #333;
+}
+
+#nav {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.nav-link {
+    margin: 0 15px;
+}
+
+.nav-link a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.hero {
+    text-align: center;
+    padding: 50px;
+}
+
+.hero h2 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.about-us {
+    text-align: center;
+    padding: 50px;
+    background-color: #fff;
+}
+
+.about-us h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.about-us p {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+.follow-us {
+    text-align: center;
+    padding: 50px;
+    background-color: #f8f8f8;
+}
+
+.follow-us h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.follow-us p {
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+h1 {
+
+    text-transform: uppercase;
+    width: fit-content;
+    transition: 500ms;
+    cursor: pointer;
+  }
+
+  h1:hover
+  {
+    color: rgb(61, 12, 2);
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #333;
+    color: #fff;
+}
