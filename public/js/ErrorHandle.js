@@ -1,3 +1,5 @@
+
+//hyda l red bar error handler
 function showError(message) {
     var errorMessage = document.getElementById("error-message");
     errorMessage.innerHTML = message;
@@ -12,3 +14,18 @@ function hideError() {
         errorMessage.style.display = "none"; 
     }, 700); 
 }
+//hyda l red bar error handler
+function showToast(message, type) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.classList.remove('hidden');
+    toast.classList.add('bg-' + type + '-500');
+    setTimeout(function() {
+        toast.classList.add('hidden');
+        toast.classList.remove('bg-' + type + '-500');
+    }, 3000);
+}
+
+//Script path//Script path//Script path
+    {/* <script src="{{ asset('js\SuccessHandle.js') }}"></script> */}
+//Script path //Script path//Script path

@@ -88,7 +88,8 @@
                             @if(session('user') == null)
                                 <script>window.location = "/Login";</script>
                             @else
-                                <a href="profile/{{ session('user')->id }}" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Profile</a>
+                            
+                            <a href="/profile/{{ session('user')->id }}" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Profile</a>
                             @endif
                         </span>
                     </div>

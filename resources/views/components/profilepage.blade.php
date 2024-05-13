@@ -6,7 +6,9 @@
     <title>User Profile</title>
     <!-- Include Tailwind CSS -->
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
+    <script src="{{ asset('js\ErrorHandle.js') }}"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
     <!-- Custom Styles -->
     <style>
         /* Sidebar Styles */
@@ -33,9 +35,88 @@
             margin-left: 250px; /* Adjust according to sidebar width */
             padding: 2rem;
         }
+        .back-button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            background-color: #777;
+        }
     </style>
-    <script>
 
+    <script>
+        $(document).ready(function() {
+            $('#updateProfileForm').submit(function(e) 
+            {
+                e.preventDefault();
+                var email = $('#email').val();
+                var name = $('#name').val();
+                var location = $('#location').val();
+                var password = $('#password').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/profile/update/{{ $id }}',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'email': email,
+                        'password': password,
+                        'name': name,
+                        'location': location
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            // Update profile information displayed on the page
+                            $("#name").text(name);
+                            $("#email").text(email);
+                            $("#location").text(location);
+                            $("#password").text(password);
+                            
+                            document.getElementById('Name').innerHTML =name;
+                            document.getElementById('Email').innerHTML =email;
+                            document.getElementById('Location').innerHTML = location;
+                            showToast('Profile updated successfully', 'green');
+                        } else {
+                            showToast('Failed to update profile. Please try again', 'red');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', error);
+                        showToast('Failed to update profile. Please try again', 'red');
+                    }
+                });
+            });
+        });
+    
+        function deleteAccount() {
+            if (confirm('Are you sure you want to delete your account?'))
+             {
+                $.ajax({
+                    type: 'POST',
+                    url: '/account/delete',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'id':'{{$id}}',
+                    },
+                    success: function(response) {
+                        if (response.success) 
+                        { 
+                            showToast(response.message, 'green');
+                            // Redirect to a confirmation page or login page
+                            window.location.href = '/Login';
+                        } else {
+                            showToast(response.message, 'red');
+                        }
+                    },
+                   
+                });
+            }
+        }
+    
     // Fetch account details using AJAX
     fetch('/Account/{{ $id }}')
         .then(response => response.json())
@@ -60,7 +141,12 @@
 <body class="bg-gray-100">
     <!-- Sidebar -->
     <div class="sidebar">
-        <h1 class=""><a href="/Recipes"><--Back</h1></a>
+    <div class="p-4">
+        <a href="/Recipes" class="block py-2 px-4 bg-gray-800 text-white rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 text-center">
+            Back
+        </a>
+    </div>   
+        
         <!-- Profile Image -->
         <div class="p-4">
             <img class="w-16 h-16 rounded-full mx-auto" src="{{ asset('imgs/3.jpg') }}" alt="Profile Picture">
@@ -69,7 +155,7 @@
         <!-- Sidebar Items -->
         <div class="mt-4">
             <div class="sidebar-item">
-                <a href="#" class="text-gray-800 font-semibold">Edit Profile</a>
+                <a href="h" class="text-gray-800 font-semibold">Edit Profile</a>
             </div>
             <div class="sidebar-item">
                 <a href="#" class="text-gray-800 font-semibold">Change Password</a>
@@ -82,7 +168,8 @@
             </div>
         </div>
     </div>
-
+    
+        
     <!-- Main Content -->
     <div class="main-content">
         <!-- Profile Information -->
@@ -98,7 +185,9 @@
         <!-- Edit Profile Form -->
         <div class="bg-white shadow-md rounded-lg p-8">
             <h1 class="text-2xl font-semibold mb-4">Edit Profile</h1>
-            <form action="#" method="POST">
+<!-- form  -->
+          <form id="updateProfileForm" onsubmit="event.preventDefault(); updateProfile();" method="POST"> 
+                @csrf
                 <!-- Form Inputs -->
                 <div class="mb-4">
                     <label for="name" class="block text-gray-700 font-semibold mb-2">Name</label>
@@ -118,9 +207,18 @@
                 </div>
                 <!-- Submit Button -->
                 <div>
-                    <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600">Save Changes</button>
+                    
+                    <!-- <button type="submit" class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600">Save Changes</button> -->
+                    <button id="btnSubmit" type="submit"
+                        class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-blue-600">Save
+                        Changes</button>
+                    <!-- Button for deleting the account -->
+                    <button id="btnDeleteAccount" type="button"
+                        class="bg-red-500 text-white font-semibold py-2 px-4 rounded-md hover:bg-red-600"
+                        onclick="deleteAccount()">Delete Account</button>
                 </div>
             </form>
+  <!--Toast div here t3et l confirmation --><div id="toast" class="fixed bottom-0 right-0 m-8 p-4 bg-gray-900 text-white rounded shadow-lg hidden"> </div>
         </div>
     </div>
    

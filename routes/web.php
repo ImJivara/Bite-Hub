@@ -4,6 +4,7 @@ use App\Models\Recipes;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('test3tem');
@@ -21,8 +22,13 @@ Route::get('/l', function () {
     return view('\components\likebutton2');
 });
 ####################################Testing components################################################################3
+
+#################################### User ################################################################3
 Route::get('/profile/{id}', [AccountController::class, 'showProfile']);
 Route::get('/Account/{id}', [AccountController::class, 'fetchAccountById']);
+Route::post('/profile/update/{id}', [AccountController::class, 'updateProfile']);
+Route::post('/account/delete', [AccountController::class, 'deleteAccount']);
+#################################### User ################################################################3
 
 #################################### Home ################################################################3
 Route::get('/Services', function () {
@@ -41,9 +47,10 @@ Route::get('/Login', function () {
     return view('Login');
 });
 Route::post('/Login', [AccountController::class, 'login']);
-
-//logout//
 Route::get('/logout', [AccountController::class, 'clearSession']);
+
+
+
 
 //create account //
 Route::get('/reg', function () {
@@ -62,3 +69,7 @@ Route::get('/Like/{id}', [RecipeController::class, 'IncLikes']);
 Route::get('/Dislike/{id}', [RecipeController::class, 'DecLikes']);
 
 
+
+
+
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
