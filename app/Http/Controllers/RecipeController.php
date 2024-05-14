@@ -15,8 +15,9 @@ class RecipeController extends Controller
         {
             $recipes=Recipes::all();
             $FeaturedRecipe = $recipes->sortByDesc('NbLikes')->first();
-            
-            return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe] );
+            $MostRecentRecipe=$recipes->sortByDesc('created_at')->first();
+            dd($MostRecentRecipe);
+            // return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe] );
         }
         else{
             $recipe=Recipes::findOrFail($request->id);
@@ -70,8 +71,6 @@ class RecipeController extends Controller
         return response()->json([ 'NbLikes'=>$NbLikes ]);
 
     }
-    
-   
 
     public function like(Recipes $recipe)
     {

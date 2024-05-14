@@ -17,19 +17,10 @@
             z-index: 999;
         }
 
-        .toggle-button-left {
-            left: 0;
-        }
-
-        .toggle-button-right {
-            right: 0;
-        }
 
         /* Sidebar animation */
         .sidenav {
             transition: transform 0.7s ease;
-            z-index: 1;
-          
         }
 
         .sidebar-closed {
