@@ -14,7 +14,7 @@
     <nav>
         <ul id="nav">
             <li class="nav-link">
-                <a href="/log">
+                <a href="/Login">
                     <h1 data-name="Login">Login</h1>
                 </a>
             </li>

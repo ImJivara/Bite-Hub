@@ -1,4 +1,4 @@
-@extends('homeLayout')
+@extends('\Home\homeLayout')
 @section("content_body")
 
 <section class="hero">

@@ -8,8 +8,18 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
-    return view('test3tem');
+    return view('\Home\home');
 });
+// <a href="{{ route('contacts') }}">contacts</a>
+#################################### Home ################################################################3
+Route::get('/Services', function () {
+    return view('\Home\Services');
+})->name('Services');
+Route::get('/Contact', function () {
+    return view('\Home\Contact');
+})->name('Contact');
+
+#################################### Home ################################################################3
 
 ####################################Testing components################################################################3
 
@@ -21,6 +31,9 @@ Route::get('/p', function () {
 });
 Route::get('/l', function () {
     return view('\components\likebutton2');
+});
+Route::get('/app', function () {
+    return view('\layouts\app');
 });
 ####################################Testing components################################################################3
 
@@ -54,17 +67,7 @@ Route::get('/Like/{id}', [RecipeController::class, 'IncLikes']);
 Route::get('/Dislike/{id}', [RecipeController::class, 'DecLikes']);
 #################################### Recipes ################################################################3
 
-#################################### Home ################################################################3
-Route::get('/Services', function () {
-    return view('\Home\Services');
-});
-Route::get('/Contact', function () {
-    return view('\Home\Contact');
-});
-Route::get('/Home', [RecipeController::class, 'gethomeNavRec']);
-Route::get('/layout', [RecipeController::class, 'getNavRec']);
-Route::get('/layoutt', [RecipeController::class, 'getNavRec2']);
-#################################### Home ################################################################3
+
 
 
 Route::middleware('guest')->group(function () {

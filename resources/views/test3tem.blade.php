@@ -67,10 +67,9 @@
             <div class="footer-col">
                 <h3 class="text-xl font-semibold mb-4">Quick Links</h3>
                 <ul class="text-base">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Recipes</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{{ route('Services') }}">Services</a></li>
+                    <li><a href="{{ route('Contact') }}">Contact</a></li>
                 </ul>
             </div>
             <!-- Footer Column 3 -->
