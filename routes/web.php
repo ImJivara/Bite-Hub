@@ -3,6 +3,7 @@
 use App\Models\Recipes;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,17 +47,19 @@ Route::get('/layoutt', [RecipeController::class, 'getNavRec2']);
 Route::get('/Login', function () { 
     return view('Login');
 });
-Route::post('/Login', [AccountController::class, 'login']);
-Route::get('/logout', [AccountController::class, 'clearSession']);
+// Route::post('/Login', [AccountController::class, 'login']);
+// Route::get('/logout', [AccountController::class, 'clearSession']);
 
-
+Route::post('/Login', [UserController::class, 'login']);
+Route::get('/logout', [UserController::class, 'clearSession']);
+Route::post('/Register', [UserController::class, 'register']);
 
 
 //create account //
 Route::get('/reg', function () {
     return view('Registration');
 });
-Route::post('/Register', [AccountController::class, 'register']);
+// Route::post('/Register', [AccountController::class, 'register']);
 
 //Nav bar//
 Route::get('/Recipes', [RecipeController::class, 'getRecipes']);
