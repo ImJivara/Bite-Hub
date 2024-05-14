@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean("UserIsAdmin")->default(False);
             $table->rememberToken();
-            $table->timestamps();
+            $table->timestamp('created_at')->nullable();
         });
     }
 

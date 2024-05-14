@@ -23,7 +23,7 @@
                     <p class="text-gray-700 font-medium " >{{ \Illuminate\Support\Str::limit($featuredrec->Description, 600, $end='...') }}</p>
                     <button id="toggleBtn_{{ $featuredrec->id }}" onclick="toggleDescription('{{ $featuredrec->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
                     @else <p class="text-gray-700 font-medium ">{{ $featuredrec->Description }}</p>
-                    @endif
+            @endif
             <!-- Rating Stars -->
             <div class="flex items-center mb-2">
                 <span class="text-gray-600 mr-2">Rate this recipe:</span>
@@ -43,6 +43,7 @@
                         </svg>
                         @endif
                     </button>
+                    
                     @endfor
                 </div>
             </div>
@@ -78,7 +79,12 @@
                     <div class="flex justify-between items-center mt-4">
                         <p class="text-gray-600 font-semibold mr-4 flex-2">Number of Likes: <span id="txt_{{ $r->id }}">{{ $r->NbLikes }}</span></p>
                         <!-- <button id="{{ $r->id }}" onclick="updateLike2('{{ $r->id }}')" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 focus:outline-none">Like</button> -->
-                        <x-bookmarkcomp :recipeId="$r->id" />
+                        @if ( $r->created_at ==null) 
+                        <p>Created at../-/-/</p>
+                        @else 
+                        <time>{{ $r->created_at->diffForHumans() }}</time>
+                        @endif
+                        <x-bookmarkcomp :recipeId="$r->id" /> 
                     </div>
                 </div>
             </div>
