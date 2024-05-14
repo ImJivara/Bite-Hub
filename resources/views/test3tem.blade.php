@@ -38,7 +38,7 @@
 
         <div class="login-signup" style= "display: flex; justify-content: space-between; align-items: center; ">
             @if(session('user'))
-            <p class="mr-4">Hello, {{ session('user')->full_name }} <a href="/logout"  style="color:#DD0525; font-weight: bolder;">Logout?</a></p>
+            <p class="mr-4">Hello, {{ session('user')->name }} <a href="/logout"  style="color:#DD0525; font-weight: bolder;">Logout?</a></p>
             @else
             <p class="mr-7">Guest User <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login?</a></p>   
             @endif

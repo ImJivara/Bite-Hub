@@ -31,8 +31,6 @@
               $('#txt_cpwd').val(''); 
             }
             else {
-
-            
             var email = $('#txt_email').val();
             var password = $('#txt_pwd').val(); 
             var name = $('#txt_name').val();
@@ -56,9 +54,7 @@
                   error: function(xhr) 
                   {
                       var errors = xhr.responseJSON.errors;
-                      console.log(errors);
-                     
-                      
+                      console.log(errors);  
                   }
               });
             }

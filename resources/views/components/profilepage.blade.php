@@ -122,12 +122,12 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                document.getElementById('full_name_sidebar').innerHTML=data.account.full_name;
-                $('#name').val(data.account.full_name);
+                document.getElementById('name_sidebar').innerHTML=data.account.name;
+                $('#name').val(data.account.name);
                 $('#email').val(data.account.email);
                 $('#location').val(data.account.location);
                 $('#password').val(data.account.password);
-                document.getElementById('Name').innerHTML =data.account.full_name;
+                document.getElementById('Name').innerHTML =data.account.name;
                 document.getElementById('Email').innerHTML =data.account.email;
                 document.getElementById('Location').innerHTML =data.account.location;
                
@@ -150,7 +150,7 @@
         <!-- Profile Image -->
         <div class="p-4">
             <img class="w-16 h-16 rounded-full mx-auto" src="{{ asset('imgs/3.jpg') }}" alt="Profile Picture">
-            <p class="text-center text-gray-800 mt-2" id="full_name_sidebar" >John Doe</p>
+            <p class="text-center text-gray-800 mt-2" id="name_sidebar" >John Doe</p>
         </div>
         <!-- Sidebar Items -->
         <div class="mt-4">

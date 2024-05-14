@@ -2,8 +2,8 @@
 
 use App\Models\Recipes;
 use App\Http\Controllers\RecipeController;
-use App\Http\Controllers\AccountController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,11 +25,34 @@ Route::get('/l', function () {
 ####################################Testing components################################################################3
 
 #################################### User ################################################################3
-Route::get('/profile/{id}', [AccountController::class, 'showProfile']);
-Route::get('/Account/{id}', [AccountController::class, 'fetchAccountById']);
-Route::post('/profile/update/{id}', [AccountController::class, 'updateProfile']);
-Route::post('/account/delete', [AccountController::class, 'deleteAccount']);
+Route::get('/profile/{id}', [UserController::class, 'showProfile']);
+Route::get('/Account/{id}', [UserController::class, 'fetchAccountById']);
+Route::post('/profile/update/{id}', [UserController::class, 'updateProfile']);
+Route::post('/account/delete', [UserController::class, 'deleteAccount']);
+//Login view w button action//
+Route::get('/Login', function () { 
+    return view('Login');
+});
+Route::post('/Login', [UserController::class, 'login']);
+Route::get('/logout', [UserController::class, 'clearSession']);
+Route::post('/Register', [UserController::class, 'register']);
+//create account //
+Route::get('/reg', function () {
+    return view('Registration');
+});
 #################################### User ################################################################3
+
+#################################### Recipes ################################################################3
+//Nav bar//
+Route::get('/Recipes', [RecipeController::class, 'getRecipes']);
+Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
+
+//Recipe card functions//
+Route::get('/Step/{id}', [RecipeController::class, 'getStep']);
+Route::get('/Ing/{id}', [RecipeController::class, 'getIng']);
+Route::get('/Like/{id}', [RecipeController::class, 'IncLikes']);
+Route::get('/Dislike/{id}', [RecipeController::class, 'DecLikes']);
+#################################### Recipes ################################################################3
 
 #################################### Home ################################################################3
 Route::get('/Services', function () {
@@ -43,36 +66,25 @@ Route::get('/layout', [RecipeController::class, 'getNavRec']);
 Route::get('/layoutt', [RecipeController::class, 'getNavRec2']);
 #################################### Home ################################################################3
 
-//Login view w button action//
-Route::get('/Login', function () { 
-    return view('Login');
+// Group routes for guests
+// Route::middleware('guest')->group(function () {
+//     Route::get('/Login', function () {
+//         return view('Login');
+//     });
+//     Route::post('/Login', [UserController::class, 'login']);
+// });
+
+// Group routes for authenticated users
+Route::middleware('auth')->group(function () {
+    Route::get('/logout', [UserController::class, 'clearSession']);
 });
-// Route::post('/Login', [AccountController::class, 'login']);
-// Route::get('/logout', [AccountController::class, 'clearSession']);
-
-Route::post('/Login', [UserController::class, 'login']);
-Route::get('/logout', [UserController::class, 'clearSession']);
-Route::post('/Register', [UserController::class, 'register']);
-
-
-//create account //
-Route::get('/reg', function () {
-    return view('Registration');
-});
-// Route::post('/Register', [AccountController::class, 'register']);
-
-//Nav bar//
-Route::get('/Recipes', [RecipeController::class, 'getRecipes']);
-Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
-
-//Recipe card functions//
-Route::get('/Step/{id}', [RecipeController::class, 'getStep']);
-Route::get('/Ing/{id}', [RecipeController::class, 'getIng']);
-Route::get('/Like/{id}', [RecipeController::class, 'IncLikes']);
-Route::get('/Dislike/{id}', [RecipeController::class, 'DecLikes']);
 
 
 
 
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

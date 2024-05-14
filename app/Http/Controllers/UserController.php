@@ -5,7 +5,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use App\Models\Recipes;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth ;
 
 use function Laravel\Prompts\alert;
 
@@ -19,13 +19,9 @@ class UserController extends Controller
         // Call a custome function to validate credentials
         if ($this->validateCredentials($email, $password)) 
         {
-            // Authentication successful
-            //return view('Recipes',['account'=>$acc->full_name]); // or wherever you want to redirect after successful login
-            //  return view('Recipes');
-          // return redirect()->to('/Recipes');
-         // return  response()->json(['message' => 'correct','url'=>'/Recipes']);
          $account = User::where('email', $email)->first();
          session(['user' => $account]);
+         Auth::login($account);
          return response()->json(['success' => true]);
             
         } else {
@@ -35,13 +31,10 @@ class UserController extends Controller
         }
     }
 
-
-
     private function validateCredentials($email, $password)
     {
         $account = User::where('email', $email)->where('password', $password)->first();
-        return
-         $account !== null;
+        return $account !== null;
     }
 
     public function register(Request $r)
@@ -52,14 +45,11 @@ class UserController extends Controller
             }
     
             $account = User::create([
-                'full_name' => $r->name,
+                'name' => $r->name,
                 'email' => $r->email,
                 'password' =>($r->password),
                 // 'location' => "Lebanon"
             ]);
-    
-            
-    
             return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => true]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'An error occurred while processing your request'], 500);
@@ -110,13 +100,13 @@ public function updateProfile(Request $request, $id)
         try {
             $account = User::findOrFail($id); 
         
-            if ($account->full_name === $request->input('name') && 
+            if ($account->name === $request->input('name') && 
                 $account->email === $request->input('email') && 
                 $account->password === $request->input('password') && 
                 $account->location === $request->input('location')) 
                 return response()->json(['success' => false, 'message' => 'No changes detected']);
            else{
-            $account->full_name = $request->input('name');
+            $account->name = $request->input('name');
             $account->email = $request->input('email');
             $account->password = $request->input('password');
             $account->location = $request->input('location');

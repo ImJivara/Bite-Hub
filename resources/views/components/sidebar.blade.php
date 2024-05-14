@@ -55,7 +55,7 @@
                 <div class="mr-2 ">
                     <a href="javascript:void(0)" class="dark:hover:text-primary hover:text-primary transition-colors duration-200 ease-in-out text-[1.075rem] font-medium dark:text-neutral-400/90 text-secondary-inverse">
                     @if(session('user'))
-                        <a>Hello, <span>{{ session('user')->full_name }}<span> <a href="/logout"  style="color:#DD0525;">Logout?</a></a>
+                        <a>Hello, <span>{{ session('user')->name }}<span> <a href="/logout"  style="color:#DD0525;">Logout?</a></a>
         <!--name   -->  @else
                             <h3  class="nav-link">Guest User</h3>   
                        @endif
