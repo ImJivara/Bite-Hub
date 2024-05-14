@@ -15,7 +15,7 @@ Route::get('/', function () {
 
 Route::get('/s', function () {
     return view('\components\sidebar');
-});
+})->middleware('guest');
 Route::get('/p', function () {
     return view('\components\profilepage');
 });
@@ -66,17 +66,19 @@ Route::get('/layout', [RecipeController::class, 'getNavRec']);
 Route::get('/layoutt', [RecipeController::class, 'getNavRec2']);
 #################################### Home ################################################################3
 
-// Group routes for guests
-// Route::middleware('guest')->group(function () {
-//     Route::get('/Login', function () {
-//         return view('Login');
-//     });
-//     Route::post('/Login', [UserController::class, 'login']);
-// });
+
+Route::middleware('guest')->group(function () {
+   
+    Route::get('/Login', function () {
+        return view('Login');
+    });
+    Route::post('/Login', [UserController::class, 'login']);
+});
 
 // Group routes for authenticated users
 Route::middleware('auth')->group(function () {
-    Route::get('/logout', [UserController::class, 'clearSession']);
+
+    Route::get('/Logout', [UserController::class, 'logout']);
 });
 
 

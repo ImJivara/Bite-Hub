@@ -58,11 +58,22 @@ class UserController extends Controller
     
 
 
-    public function clearSession()
+    // public function clearSession()
+    // {
+    //     Session::flush();
+    //     $recipes=Recipes::all();
+    // //    return view('Recipes',['rec'=>$recipes]); // aw 3mel redirect aal /Recipes route directly
+    // return redirect('Recipes');
+    // }
+    public function logout(Request $request)
     {
-        Session::flush();
-        $recipes=Recipes::all();
-       return view('Recipes',['rec'=>$recipes]); // aw 3mel redirect aal /Recipes route directly
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/');
     }
     
     public function FetchAccount(Request $request)

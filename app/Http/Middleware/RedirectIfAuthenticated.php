@@ -20,9 +20,14 @@ class RedirectIfAuthenticated
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {
+            // if (Auth::guard($guard)->check()) {
+            //     return redirect(RouteServiceProvider::HOME);
+            // }
             if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+                // Customize the redirect route for authenticated users here
+                return redirect('/Recipes'); // Redirect to the desired route, e.g., '/home'
             }
+
         }
 
         return $next($request);
