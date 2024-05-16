@@ -81,14 +81,13 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('/Logout', [UserController::class, 'logout']);
+    Route::get('/Like/{RecipeId}', [RecipeController::class, 'like']);
+    Route::get('/Dislike/{RecipeId}', [RecipeController::class, 'dislike']);
 
 });
 
-// Route::get('/Like/{id}', [RecipeController::class, 'IncLike']);
-// Route::get('/Dislike/{id}', [RecipeController::class, 'DecLike']);
-Route::get('/Like/{RecipeId}', [RecipeController::class, 'like']);
-Route::get('/Dislike/{RecipeId}', [RecipeController::class, 'dislike']);
-Route::get('/authen', [RecipeController::class, 'like']);
+
+
 
 
 

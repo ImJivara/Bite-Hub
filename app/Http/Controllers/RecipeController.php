@@ -16,12 +16,12 @@ class RecipeController extends Controller
         if($request->id==null)
         {
             $recipes=Recipe::all();
-            $RecipesLikedByUser=$this->RecipesLikedByUser(1);
+           // $RecipesLikedByUser=$this->RecipesLikedByUser(Auth::user()->id);
             $FeaturedRecipe = $recipes->sortByDesc('NbLikes')->first();
             $MostRecentRecipe=$recipes->sortByDesc('created_at')->first();
             // dd($MostRecentRecipe);
             //  dd($RecipesLikedByUser);
-            return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe,'RecipesLikedByUser'=>$RecipesLikedByUser] );
+            return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe] );
         }
         else{
             $recipe=Recipe::findOrFail($request->id);
@@ -55,25 +55,6 @@ class RecipeController extends Controller
         $Ing=$recipe->ingredients_details;
         $Ing=explode("-",$Ing);
         return view('Ingredients',['Ing'=>$Ing,'rec'=>$recipe]);
-
-    }
-    public function IncLike(Request $request)
-    {   $recipe=Recipe::find($request->id);
-        $recipe->increment('NbLikes');
-        $recipe->save();
-        $recipe2=Recipe::find($request->id);
-        $NbLikes=$recipe2->NbLikes;
-
-        return response()->json([ 'NbLikes'=>$NbLikes ]);
-
-    }
-    public function DecLike(Request $request)
-    {   $recipe=Recipe::find($request->id);
-        $recipe->decrement('NbLikes');
-        $recipe->save();
-        $recipe2=Recipe::find($request->id);
-        $NbLikes=$recipe2->NbLikes;
-        return response()->json([ 'NbLikes'=>$NbLikes ]);
 
     }
 
