@@ -10,7 +10,7 @@ class Comment extends Model
     use HasFactory;
     public function post()
     {
-        return $this->belongsTo(Recipes::class);
+        return $this->belongsTo(Recipe::class);
     }
 
     public function author()

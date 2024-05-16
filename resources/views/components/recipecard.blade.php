@@ -1,7 +1,7 @@
 @props(['r'])
 
 <div class="recipe-card-wrapper flex items-stretch transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg">
-    <a href="/Recipe/{{ $r->id }}" class="recipe-card-link block flex-grow"> 
+    <!-- <a href="/Recipe/{{ $r->id }}" class="recipe-card-link block flex-grow">  -->
         <div class="max-w-sm mx-auto bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 flex flex-col">
             <img class="w-full h-56 object-cover object-center" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image">
             <div class="p-6 flex-grow">
@@ -46,12 +46,12 @@ document.querySelectorAll('.recipe-card-wrapper').forEach(item => {
 });
 
 // Prevent click event on Like button from propagating to parent
-document.querySelectorAll('.recipe-card-wrapper .like-btn').forEach(btn => {
-    btn.addEventListener('click', function(event) {
-        event.stopPropagation();
-        // Handle like action here
-        const recipeId = btn.getAttribute('data-recipe-id');
-        updateLike2(recipeId);
-    });
-});
+// document.querySelectorAll('.recipe-card-wrapper .like-btn').forEach(btn => {
+//     btn.addEventListener('click', function(event) {
+//         event.stopPropagation();
+//         // Handle like action here
+//         const recipeId = btn.getAttribute('data-recipe-id');
+//         toggleLike(recipeId);
+//     });
+// });
 </script>

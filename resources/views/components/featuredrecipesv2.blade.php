@@ -66,13 +66,17 @@
                             <img class="h-auto object-cover transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg" src="{{ asset('imgs/'.$featuredrec->id.'.jpg') }}" alt="Featured Recipe Image">
                         </div>
                         <div class="h-100 p-6 w-2/3">
-                            <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ $featuredrec->RecipeName }} 
-                        @if ($index==2)
-                        Most fucked
+                            <h1 class="text-6xl font-semibold text-gray-800 mb-4">{{ $featuredrec->RecipeName }} 
+                        @if ($index==1)
+                        <span class="text-red-800 text-4xl">This Week's Most Liked Recipe</span>
+                        @elseif($index==2)
+                        <span class="text-red-800 text-4xl">Our Most Recent Recipe</span>
+                        @else 
+                        <span class="text-red-800 text-4xl">And Don't Forget, Today's Featured Recipe</span>
                         @endif
-                        </h2>
+                        </h1>
                             @if (strlen($featuredrec->Description) > 600)
-                                <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($featuredrec->Description, 600, $end='...') }}</p>
+                                <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($featuredrec->Description, 800, $end='...') }}</p>
                                 <button id="toggleBtn_{{ $featuredrec->id }}" onclick="toggleDescription('{{ $featuredrec->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
                             @else
                                 <p class="text-gray-700 font-medium">{{ $featuredrec->Description }}</p>

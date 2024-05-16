@@ -165,10 +165,9 @@ public function updateProfile(Request $request, $id)
         $account = User::findOrFail($request->id); // Find the account by ID
         $account->delete(); // Delete the account
         return response()->json(['success' => true, 'message' => 'Account deleted successfully']);
-        
-      
-   
     }
+
+    
 
 
 }

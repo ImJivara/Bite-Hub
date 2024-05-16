@@ -44,11 +44,11 @@ class User extends Authenticatable
     ];
     public function posts()
     {
-        return $this->hasMany(Recipes::class);
+        return $this->hasMany(Recipe::class);
     }
     public function likedRecipes()
     {
-        return $this->belongsToMany(Recipes::class, 'recipe_user')->withTimestamps();
+        return $this->belongsToMany(Recipe::class, 'recipe_user')->withTimestamps();
     }
     public function comments()
     {

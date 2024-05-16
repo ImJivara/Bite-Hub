@@ -63,8 +63,7 @@ Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
 //Recipe card functions//
 Route::get('/Step/{id}', [RecipeController::class, 'getStep']);
 Route::get('/Ing/{id}', [RecipeController::class, 'getIng']);
-Route::get('/Like/{id}', [RecipeController::class, 'IncLikes']);
-Route::get('/Dislike/{id}', [RecipeController::class, 'DecLikes']);
+
 #################################### Recipes ################################################################3
 
 
@@ -82,14 +81,23 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
 
     Route::get('/Logout', [UserController::class, 'logout']);
+
 });
 
+// Route::get('/Like/{id}', [RecipeController::class, 'IncLike']);
+// Route::get('/Dislike/{id}', [RecipeController::class, 'DecLike']);
+Route::get('/Like/{id}', [RecipeController::class, 'like']);
+Route::get('/Dislike/{id}', [RecipeController::class, 'unlike']);
+Route::get('/authen', [RecipeController::class, 'like']);
 
 
 
-
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/retrieve/{RecipeId}', [RecipeController::class, 'RecipeLikedByWho']);//all users who liked the this recipe
+Route::get('/retrieve2', [RecipeController::class, 'RecipesLikedByUser']); //by authenticated user
+Route::get('/retrieve2/{RecipeId}', [RecipeController::class, 'RecipesLikedByUser']);//by specific user
+Route::get('/retrieve3/{RecipeId}', [RecipeController::class, 'IsRecipeLikedByUser']);// check eza authenticated user has liked the post
+// Account/{id}/LikesRecipe/{id}/Likes
+Auth::routes();
