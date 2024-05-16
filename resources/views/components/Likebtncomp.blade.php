@@ -77,18 +77,13 @@
         function incrementLikes(recipeId) 
         {   
             button.classList.toggle('liked');
-
             $.ajax({
                 type: 'get',
                 url: '/Like/' + recipeId,
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
+                
                 success: function(data)
                 {
-                    $('#txt_' + recipeId).html(data.NbLikes);
-                    
-                    
+                    $('#txt_' + recipeId).html(data.NbLikes);    
                 },
                 error: function() {
                      showError("An error occurred. Please try again later.");
@@ -98,7 +93,6 @@
 
         function decrementLikes(recipeId) {
             button.classList.toggle('liked');
-           
             $.ajax({
                 type: 'get',
                 url: '/Dislike/' + recipeId,

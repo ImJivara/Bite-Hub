@@ -86,8 +86,8 @@ Route::middleware('auth')->group(function () {
 
 // Route::get('/Like/{id}', [RecipeController::class, 'IncLike']);
 // Route::get('/Dislike/{id}', [RecipeController::class, 'DecLike']);
-Route::get('/Like/{id}', [RecipeController::class, 'like']);
-Route::get('/Dislike/{id}', [RecipeController::class, 'unlike']);
+Route::get('/Like/{RecipeId}', [RecipeController::class, 'like']);
+Route::get('/Dislike/{RecipeId}', [RecipeController::class, 'dislike']);
 Route::get('/authen', [RecipeController::class, 'like']);
 
 

@@ -16,10 +16,12 @@ class RecipeController extends Controller
         if($request->id==null)
         {
             $recipes=Recipe::all();
+            $RecipesLikedByUser=$this->RecipesLikedByUser(1);
             $FeaturedRecipe = $recipes->sortByDesc('NbLikes')->first();
             $MostRecentRecipe=$recipes->sortByDesc('created_at')->first();
             // dd($MostRecentRecipe);
-            return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe] );
+            //  dd($RecipesLikedByUser);
+            return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe,'RecipesLikedByUser'=>$RecipesLikedByUser] );
         }
         else{
             $recipe=Recipe::findOrFail($request->id);
@@ -77,51 +79,42 @@ class RecipeController extends Controller
 
     public function like(Request $request)
     {
-        // $user = User::findOrFail(Auth::user()->id);
-        // $recipe = Recipes::findOrFail($request->id);
-        
-
-        // if (!$user::likedRecipes()->where('recipe_id', $recipe)->exists()) {
-        //     $user->likedRecipes()->attach($recipe);
-        //     $NbLikes=$recipe->NbLikes;
-        //     return response()->json(['message' => 'Recipe liked successfully.','NbLikes'=>$NbLikes]);
-        // }
-
-        // return response()->json(['message' => 'Recipe already liked.']);
         try {
             $user = User::findOrFail(Auth::user()->id);
-            $recipe = Recipe::findOrFail($request->id);
-    
-            // Check if the user has already liked the recipe
+            $recipe = Recipe::findOrFail($request->RecipeId);
             if (!$user->likedRecipes()->where('recipe_id', $recipe->id)->exists()) 
             {
-                $user->likedRecipes()->attach($recipe);
+                $user->likedRecipes()->attach($recipe->id);
                 $recipe->increment('NbLikes');
                 $recipe->save();
-                $NbLikes = $recipe->NbLikes; // Assuming NbLikes is a column in your recipes table
-                return response()->json(['message' => 'Recipe liked successfully.', 'NbLikes' => $NbLikes]);
+                $NbLikes = $recipe->NbLikes; 
+                return response()->json([ 'NbLikes' => $NbLikes,'RecipeAlreadyLiked' => False]);
             }
-    
-            return response()->json(['message' => 'Recipe already liked.']);
+            return response()->json(['RecipeAlreadyLiked' => True]);
         } catch (\Exception $e) {
-            // Handle the exception
             return response()->json(['error' => 'An error occurred while processing your request.'], 500);
         }
     }
 
-    public function unlike(Request $request)
-    {
+    public function dislike(Request $request)
+{
+    try {
         $user = User::findOrFail(Auth::user()->id);
-        $recipe = Recipe::findOrFail($request->id);
-
-        if ($user->likedRecipes()->where('recipe_id', $recipe)->exists()) {
-            $user->likedRecipes()->detach($recipe);
-            $NbLikes=$recipe->NbLikes;
-            return response()->json(['message' => 'Recipe unliked successfully.','NbLikes'=>$NbLikes]);
+        $recipe = Recipe::findOrFail($request->RecipeId);
+        if ($user->likedRecipes()->where('recipe_id', $recipe->id)->exists()) 
+        {
+            $user->likedRecipes()->detach($recipe->id);
+            $recipe->decrement('NbLikes');
+            $recipe->save();
+            $NbLikes = $recipe->NbLikes; 
+            return response()->json([ 'NbLikes' => $NbLikes]);
         }
-
-        return response()->json(['message' => 'Recipe not liked yet.']);
+        return ;
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'An error occurred while processing your request.'], 500);
     }
+}
+
 #################################### Eeleq relationships functions  ################################################################3
     public function RecipeLikedByWho(Request $request)
     {
@@ -137,18 +130,17 @@ class RecipeController extends Controller
         dd($hasLiked);
 
     }
-    public function RecipesLikedByUser(Request $request)
-    {   if($request->UserId==null)
+    public function RecipesLikedByUser($UserId)
+    {   if($UserId==null)
         {
             $user = User::findOrFail(Auth::user()->id);
             $likedRecipes = $user->likedRecipes;
-            dd($likedRecipes);
         }
         else
-        $user = User::findOrFail($request->UserId);
-        $likedRecipes = $user->likedRecipes;
-        
-        dd($likedRecipes);
+        $user = User::findOrFail($UserId);
+        $likedRecipes = $user->likedRecipes; 
+        return $likedRecipes !== null;
+
 
     }
     public function getRecipeComments($recipeId)
