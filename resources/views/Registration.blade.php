@@ -23,7 +23,7 @@
       
           $('#btn_Register').click(function(event) 
           { 
-            event.preventDefault(); // Prevent default form submission
+            event.preventDefault(); // Prevents default submission lal form
         
             if($('#txt_pwd').val()!= $('#txt_cpwd').val() )
             {
@@ -51,17 +51,23 @@
                     }
                     else $('#result2').html("Invalid Email Address"); 
                   },
-                  error: function(xhr) 
-                  {
-                      var errors = xhr.responseJSON.errors;
-                      console.log(errors);  
-                  }
+                  error: function(xhr) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorMsg = '';
+                    for (var error in errors) {
+                        if (errors.hasOwnProperty(error)) {
+                            errorMsg += errors[error] + '<br>';
+                        }
+                    }
+                    $('#result2').html(errorMsg);
+                    alert(errorMsg);
+                }
               });
             }
           });
       });
     </script>
-         </script>
+         
 
 <style> 
 *{color:wheat;

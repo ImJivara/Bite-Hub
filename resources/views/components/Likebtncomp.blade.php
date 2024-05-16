@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Bookmark Icon</title>
+    <title>Modern like Icon</title>
     <script src="{{asset('js\ErrorHandle.js')}}"></script>
     <style>
-        .bookmark-btn {
+        .like-btn {
             background-color: transparent;
             border: none;
             cursor: pointer;
@@ -16,18 +16,18 @@
             transition: transform 0.2s ease;
         }
 
-        .bookmark-icon {
+        .like-icon {
             width: 24px;
             height: 24px;
             fill: none;
             transition: fill 0.3s ease;
         }
 
-        .bookmark-btn.liked .bookmark-icon {
-            fill: red; /* Change fill color when bookmarked */
+        .like-btn.liked .like-icon {
+            fill: red; /* Change fill color when liked */
         }
 
-        .bookmark-btn:hover {
+        .like-btn:hover {
             transform: scale(1.3); /* Scale up on hover */
         }
 
@@ -40,41 +40,11 @@
 </head>
 <body>
 @props(['recipeId'])
-<button class="bookmark-btn" onclick="toggleLike(this,'{{ $recipeId }}')">
-        <svg class="bookmark-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<button class="like-btn" onclick="toggleLike(this,'{{ $recipeId }}')">
+        <svg class="like-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-    </button>
-<script>
-    function toggleBookmarkAndLike(button, recipeId) {
-        var likeButton = $('#' + recipeId);
-        button.classList.toggle('bookmarked');
-        if (button.classList.contains('bookmarked')) {
-            button.querySelector('.bookmark-icon').style.animation = 'likeAnimation 0.5s ease';
-            setTimeout(() => {
-                button.querySelector('.bookmark-icon').style.animation = '';
-            }, 500);
-        }
-        $.ajax({
-            type: 'get',
-            url: '/likes/' + recipeId,
-            success: function(data) {
-                $('#txt_' + recipeId).html(data.NbLikes);
-            },
-            error: function() {
-                showError("An error occurred. Please try again later.");
-            }
-        });
-    }
-    function toggleBookmarkAndDisLike(button, recipeId)
-    {
-
-
-    }
-</script>
-
-
-
+</button>
 <script>
     function toggleLike(button, recipeId) 
     {
@@ -84,9 +54,9 @@
         if (!button.classList.contains('liked'))
              {
                 //la taaml l pop-up animation
-                button.querySelector('.bookmark-icon').style.animation = 'likeAnimation 0.5s ease';
+                button.querySelector('.like-icon').style.animation = 'likeAnimation 0.5s ease';
                 setTimeout(() => {
-                    button.querySelector('.bookmark-icon').style.animation = '';
+                    button.querySelector('.like-icon').style.animation = '';
                 }, 500);
             }
         
@@ -126,9 +96,6 @@
         }
     }
 
-</script>
-
-
-
+</script>   
 </body>
 </html>

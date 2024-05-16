@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Recipes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use function Laravel\Prompts\alert;
 
 class UserController extends Controller
@@ -37,24 +38,56 @@ class UserController extends Controller
         return $account !== null;
     }
 
-    public function register(Request $r)
-    {
-        try {
-            if ($account = User::where('email', $r->email)->first()) {
-                return response()->json(['message' => 'Invalid email'], 422);
-            }
+    // public function register(Request $r)
+    // {
+    //     try {
+    //         if ($account = User::where('email', $r->email)->first()) {
+    //             return response()->json(['message' => 'Invalid email'], 422);
+    //         }
     
-            $account = User::create([
-                'name' => $r->name,
-                'email' => $r->email,
-                'password' =>($r->password),
-                // 'location' => "Lebanon"
-            ]);
-            return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => true]);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'An error occurred while processing your request'], 500);
-        }
+    //         $account = User::create([
+    //             'name' => $r->name,
+    //             'email' => $r->email,
+    //             'password' =>($r->password),
+    //              'location' => "Lebanon",
+    //         ]);
+            
+    //         return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => true]);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => 'An error occurred while processing your request'], 500);
+    //     }
+    // }
+   
+
+public function register(Request $r)
+{
+    // Validate the incoming request data
+    $validator = Validator::make($r->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:8|confirmed',
+    ]);
+
+    // Check if validation fails
+    if ($validator->fails()) {
+        return response()->json(['message' => $validator->errors()], 422);
     }
+
+    try {
+        // Create the user account
+        $account = User::create([
+            'name' => $r->name,
+            'email' => $r->email,
+            'password' => $r->password,
+            'location' => "Lebanon",
+        ]);
+        
+        return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => true]);
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'An error occurred while processing your request'], 500);
+    }
+}
+
     
 
 
@@ -73,7 +106,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/Recipes');
     }
     
     public function FetchAccount(Request $request)

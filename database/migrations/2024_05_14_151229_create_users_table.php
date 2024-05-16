@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean("UserIsAdmin")->default(False);
-            $table->rememberToken();
+            $table->rememberToken()->nullable();
             $table->timestamp('created_at')->nullable();
         });
     }

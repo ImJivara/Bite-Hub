@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Recipes;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use function Laravel\Prompts\alert;
 
@@ -16,8 +17,8 @@ class RecipeController extends Controller
             $recipes=Recipes::all();
             $FeaturedRecipe = $recipes->sortByDesc('NbLikes')->first();
             $MostRecentRecipe=$recipes->sortByDesc('created_at')->first();
-            dd($MostRecentRecipe);
-            // return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe] );
+            // dd($MostRecentRecipe);
+            return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe] );
         }
         else{
             $recipe=Recipes::findOrFail($request->id);
@@ -59,6 +60,7 @@ class RecipeController extends Controller
         $recipe->save();
         $recipe2=Recipes::find($request->id);
         $NbLikes=$recipe2->NbLikes;
+
         return response()->json([ 'NbLikes'=>$NbLikes ]);
 
     }
@@ -72,10 +74,31 @@ class RecipeController extends Controller
 
     }
 
-    public function like(Recipes $recipe)
+    public function like($id)
     {
-        $recipe->increment('NbLikes');
-        return response()->json(['likes' => $recipe->NbLikes]);
+        $user = Auth::user();
+        $recipe = Recipes::findOrFail($id);
+
+        if (!$user->likedRecipes()->where('recipe_id', $id)->exists()) {
+            $user->likedRecipes()->attach($recipe);
+            return response()->json(['message' => 'Recipe liked successfully.']);
+        }
+
+        return response()->json(['message' => 'Recipe already liked.']);
     }
+
+    public function unlike($id)
+    {
+        $user = Auth::user();
+        $recipe = Recipes::findOrFail($id);
+
+        if ($user->likedRecipes()->where('recipe_id', $id)->exists()) {
+            $user->likedRecipes()->detach($recipe);
+            return response()->json(['message' => 'Recipe unliked successfully.']);
+        }
+
+        return response()->json(['message' => 'Recipe not liked yet.']);
+    }
+
 }
 

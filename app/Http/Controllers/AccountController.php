@@ -47,12 +47,12 @@ class AccountController extends Controller
     public function register(Request $r)
     {
         try {
-            if ($account = Accounts::where('email', $r->email)->first()) {
+            if ($account = User::where('email', $r->email)->first()) {
                 return response()->json(['message' => 'Invalid email'], 422);
             }
     
             $account = Accounts::create([
-                'full_name' => $r->name,
+                'name' => $r->name,
                 'email' => $r->email,
                 'password' =>($r->password),
                 'location' => "Lebanon"
