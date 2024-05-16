@@ -51,12 +51,15 @@
 <script>
    function toggleLike(button, recipeId, isLiked) {
     // Apply animation if the button is not already liked
+    var isLiked=button.classList.contains('liked')
     if (!button.classList.contains('liked')) {
         button.querySelector('.like-icon').style.animation = 'likeAnimation 0.5s ease';
         setTimeout(() => {
             button.querySelector('.like-icon').style.animation = '';
         }, 500);
     }
+
+    // Toggle like state and make AJAX request
     if (!isLiked) {
         incrementLikes(recipeId);
     } else {
@@ -64,7 +67,7 @@
     }
 
     function incrementLikes(recipeId) {
-        button.classList.add('liked');
+        button.classList.toggle('liked');
         $.ajax({
             type: 'GET',
             url: '/Like/' + recipeId,
@@ -78,7 +81,7 @@
     }
 
     function decrementLikes(recipeId) {
-        button.classList.remove('liked');
+        button.classList.toggle('liked');
         $.ajax({
             type: 'GET',
             url: '/Dislike/' + recipeId,
@@ -91,6 +94,7 @@
         });
     }
 }
+
 
 
 </script>   
