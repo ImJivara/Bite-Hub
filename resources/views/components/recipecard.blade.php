@@ -25,10 +25,13 @@
                     <time>{{ $r->created_at->diffForHumans() }}</time>
                     @endif
                     @php
+                        if(Auth::user())
                         $likedRecipes = Auth::user()->likedRecipes->pluck('id')->toArray();
+                        else $likedRecipes=[];
                     @endphp
 
                     @if (in_array($r->id, $likedRecipes))
+                    
                     <x-Likebtncomp :recipeId="$r->id" :IsLiked='True' />
                     @else
                     <x-Likebtncomp :recipeId="$r->id" :IsLiked='False'/>

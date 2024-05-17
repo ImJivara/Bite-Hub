@@ -9,7 +9,7 @@
     <script src="/resources/views/components/sidebar.blade.php" type="module"></script>
     <script src="{{asset('js\ErrorHandle.js')}}"></script>
 
-  <title>Food Blog</title>
+  <title>The Foodies Blog</title>
 </head>
 <body>
 <x-sidebar/>  
@@ -19,7 +19,7 @@
     <header class="header"> 
         <div class="container">
             <div class="logo">
-                <h1><a href="/Recipes" >Food Blog</a></h1>
+                <h1><a href="/Recipes" >The Foodies Blog</a></h1>
                 <p>Exploring the Art of Food</p>
             </div>
             <nav class="navigation">
@@ -34,7 +34,7 @@
 
         <div class="login-signup" style= "display: flex; justify-content: space-between; align-items: center; ">
             @if(session('user'))
-            <p class="mr-4">Hello, {{ session('user')->name }} <a href="/Logout"  style="color:#DD0525; font-weight: bolder;">Logout</a></p>
+            <p class="mr-4">Hello, {{Auth::user()->name}} <a href="/Logout"  style="color:#DD0525; font-weight: bolder;">Logout</a></p>
             @else
             <p class="mr-7">Guest User, <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login</a></p>   
             @endif

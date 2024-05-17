@@ -35,6 +35,10 @@ Route::get('/l', function () {
 Route::get('/app', function () {
     return view('\layouts\app');
 });
+Route::get('/form', function () {
+    return view('PostForm');
+});
+Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
 ####################################Testing components################################################################3
 
 #################################### User ################################################################3
