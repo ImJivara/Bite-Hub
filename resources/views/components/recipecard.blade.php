@@ -1,8 +1,8 @@
 @props(['r' ])
 
-<div class="recipe-card-wrapper flex items-stretch transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg">
-    <!-- <a href="/Recipe/{{ $r->id }}" class="recipe-card-link block flex-grow">  -->
-        <div class="max-w-sm mx-auto bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 flex flex-col">
+<div class="recipe-card-wrapper flex items-stretch transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg"> 
+    <!--<a href="/Recipe/{{ $r->id }}" class="recipe-card-link block flex-grow">  -->
+         <div class="max-w-sm mx-auto bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 flex flex-col">
             <img class="w-full h-56 object-cover object-center" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image">
             <div class="p-6 flex-grow">
                 <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ $r->RecipeName }}</h2>
@@ -19,26 +19,26 @@
                 </div>
                 <div class="flex justify-between items-center mt-4">
                     <p class="text-gray-600 font-semibold mr-4 flex-2">Number of Likes: <span id="txt_{{ $r->id }}">{{ $r->NbLikes }}</span></p>
+                    
                     @if ($r->created_at == null) 
                     <p>Created at../-/-/</p>
                     @else 
                     <time>{{ $r->created_at->diffForHumans() }}</time>
                     @endif
                     @php
-                        if(Auth::user())
+                        $user=Auth::user();
+                        if($user)
                         $likedRecipes = Auth::user()->likedRecipes->pluck('id')->toArray();
                         else $likedRecipes=[];
                     @endphp
-
                     @if (in_array($r->id, $likedRecipes))
-                    
-                    <x-Likebtncomp :recipeId="$r->id" :IsLiked='True' />
+                    <x-Likebtncomp :recipeId="$r->id" :User='$user' :IsLiked='True'  />
                     @else
-                    <x-Likebtncomp :recipeId="$r->id" :IsLiked='False'/>
+                    <x-Likebtncomp :recipeId="$r->id" :User='$user' :IsLiked='False'/>
                     @endif
 
                 </div>
-            </div>
+            </div>   
         </div>
     </a>
 </div>
@@ -50,7 +50,8 @@ document.querySelectorAll('.recipe-card-wrapper').forEach(item => {
     item.addEventListener('click', function(event) {
         if (event.target.tagName !== 'A' && event.target.tagName !== 'BUTTON') {
             const recipeLink = item.querySelector('.recipe-card-link');
-            if (recipeLink) {
+            if (recipeLink)
+            {
                 window.location.href = recipeLink.href;
             }
         }

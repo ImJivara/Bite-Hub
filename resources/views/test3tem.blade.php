@@ -3,59 +3,62 @@
 <head>
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="stylesheet"  href="{{ asset('/layoutcss.css') }}"> 
+    <link rel="stylesheet"  href="{{ asset('/layoutcss.css') }}"> 
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="/resources/views/components/sidebar.blade.php" type="module"></script>
     <script src="{{asset('js\ErrorHandle.js')}}"></script>
-
   <title>The Foodies Blog</title>
 </head>
 <body>
-<x-sidebar/>  
+<!-- Sidebar --><!-- Sidebar --><!-- Sidebar -->
+        <x-sidebar/>
+<!-- Sidebar --><!-- Sidebar --><!-- Sidebar -->  
+
 <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
-<div id="error-message" class="error-message"></div> 
+        <div id="error-message" class="error-message"></div> 
  <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
-    <header class="header"> 
-        <div class="container">
-            <div class="logo">
-                <h1><a href="/Recipes" >The Foodies Blog</a></h1>
-                <p>Exploring the Art of Food</p>
-            </div>
-            <nav class="navigation">
-                <ul>
-                    <!-- <li><a href="/Home">Home</a></li>
-                    <li><a href="/Recipes">Recipes</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="/Contact">Contact</a></li> -->
-                </ul>
-            </nav>
 
-
-        <div class="login-signup" style= "display: flex; justify-content: space-between; align-items: center; ">
-            @if(session('user'))
-            <p class="mr-4">Hello, {{Auth::user()->name}} <a href="/Logout"  style="color:#DD0525; font-weight: bolder;">Logout</a></p>
-            @else
-            <p class="mr-7">Guest User, <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login</a></p>   
-            @endif
-            <x-sidebarcomp />
-            <!-- photo component huta hun -->
+<header class="header"> 
+    <div class="container">
+        <div class="logo">
+            <h1><a href="/Recipes" >The Foodies Blog</a></h1>
+            <p>Exploring the Art of Food</p>
         </div>
+        <nav class="navigation">
+            <ul>
+                <!-- <li><a href="/Home">Home</a></li>
+                <li><a href="/Recipes">Recipes</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="/Contact">Contact</a></li> -->
+            </ul>
+        </nav>
+
+
+    <div class="login-signup" style= "display: flex; justify-content: space-between; align-items: center; ">
+        @if(session('user'))
+        <p class="mr-4">Hello, {{Auth::user()->name}} <a href="/Logout"  style="color:#DD0525; font-weight: bolder;">Logout</a></p>
+        @else
+        <p class="mr-7">Guest User, <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login</a></p>   
+        @endif
+        <x-sidebarcomp />
+        <!-- profile photo component huta hun -->
     </div>
-    </header>
-    
+</div>
+</header> 
     <div class="meal-options">
                 <a href="#">Breakfast</a>
                 <a href="#">Lunch</a>
                 <a href="#">Dinner</a>
                 <a href="#">Dessert</a>
     </div>
+    <!--################################Contents################################-->
     <div class="contents">
-    
-    @yield('content_body')
-
+        @yield('content_body')
     </div>
-    <footer class="text-white py-12 mt-8" style="background-color: rgb(12, 4, 4);">
+    <!--################################Contents################################-->
+
+<footer class="text-white py-12 mt-8" style="background-color: rgb(12, 4, 4);">
     <div class="max-w-screen-xl mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Footer Column 1 -->
@@ -94,7 +97,5 @@
         </div>
     </div>
 </footer>
-
-
 </body>
 </html>
