@@ -76,7 +76,7 @@
                         @endif
                         </h1>
                             @if (strlen($featuredrec->Description) > 600)
-                                <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($featuredrec->Description, 800, $end='...') }}</p>
+                                <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($featuredrec->Description, 600, $end='...') }}</p>
                                 <button id="toggleBtn_{{ $featuredrec->id }}" onclick="toggleDescription('{{ $featuredrec->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
                             @else
                                 <p class="text-gray-700 font-medium">{{ $featuredrec->Description }}</p>

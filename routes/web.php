@@ -56,7 +56,7 @@ Route::get('/Login', function () {
 });
 Route::post('/Login', [UserController::class, 'login']);
 Route::get('/logout', [UserController::class, 'clearSession']);
-Route::post('/Register', [UserController::class, 'register']);
+Route::post('/Register', [UserController::class, 'registerr']);
 //create account //
 Route::get('/Registration', function () {
     return view('Registration');
@@ -93,11 +93,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/Dislike/{RecipeId}', [RecipeController::class, 'dislike']);
 
 });
-
-
-
-
-
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

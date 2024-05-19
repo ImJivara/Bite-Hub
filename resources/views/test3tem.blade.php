@@ -36,7 +36,7 @@
 
 
     <div class="login-signup" style= "display: flex; justify-content: space-between; align-items: center; ">
-        @if(session('user'))
+        @if(Auth::user())
         <p class="mr-4">Hello, {{Auth::user()->name}} <a href="/Logout"  style="color:#DD0525; font-weight: bolder;">Logout</a></p>
         @else
         <p class="mr-7">Guest User, <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login</a></p>   

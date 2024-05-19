@@ -3,32 +3,45 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
-use App\Models\Recipes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth ;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log ;
 use Illuminate\Support\Facades\Validator;
 use function Laravel\Prompts\alert;
 
 class UserController extends Controller
 {
+    // public function login(Request $request)
+    // {
+    //     $email = $request->input('email');
+    //     $password = $request->input('password');
+
+    //     // Call a custome function to validate credentials
+    //     if ($this->validateCredentials($email, $password)) 
+    //     {
+    //      $account = User::where('email', $email)->first();
+    //      session(['user' => $account]);
+    //      Auth::login($account);
+    //      return response()->json(['success' => true]);
+            
+    //     } else {
+    //         // Authentication failed
+    //         // abort(404);
+    //         return  response()->json(['message' => 'Invalid email or password']);
+    //     }
+    // }
     public function login(Request $request)
     {
-        $email = $request->input('email');
-        $password = $request->input('password');
+        $credentials = $request->only('email', 'password');
 
-        // Call a custome function to validate credentials
-        if ($this->validateCredentials($email, $password)) 
-        {
-         $account = User::where('email', $email)->first();
-         session(['user' => $account]);
-         Auth::login($account);
-         return response()->json(['success' => true]);
-            
+        $user = User::where('email', $credentials['email'])->first();
+
+        if ($user && Hash::check($credentials['password'], $user->password)) {
+            Auth::login($user);
+            return response()->json(['message' => 'Login successful', 'success' => true]);
         } else {
-            // Authentication failed
-            // abort(404);
-            return  response()->json(['message' => 'Invalid email or password']);
+            return response()->json(['message' => 'Invalid credentials', 'success' => false]);
         }
     }
 
@@ -38,18 +51,31 @@ class UserController extends Controller
         return $account !== null;
     }
 
-    public function register(Request $r)
+    public function registerr(Request $r)
     { 
         try {
             if ($account = User::where('email', $r->email)->first()) 
             {
                 return response()->json(['message' => 'Invalid email','success' => False]);
             }
-    
+            
+            $validator = Validator::make($r->all(), [
+                    'name' => 'required|string|max:255',
+                    'email' => 'required|string|email|max:255|unique:users',
+                    'password' => 'required|string|min:6',
+                ]);
+                if ($validator->fails()) {
+                    Log::error('Validation failed', ['errors' => $validator->errors()]);
+                    return response()->json([
+                        'message' => 'Validation failed',
+                        'errors' => $validator->errors(),
+                        'success' => false
+                    ], 422);
+                }
             $account = User::create([
                 'name' => $r->name,
                 'email' => $r->email,
-                'password' =>$r->password,
+                'password' =>bcrypt($r->password),
                 'location' => "Lebanon",
                 'IsAdmin'=>False
             ]);

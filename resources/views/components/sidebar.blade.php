@@ -39,18 +39,21 @@
             <div class="flex items-center mr-5 bg-white">
                 <div class="mr-5">
                     <div class="inline-block relative shrink-0 cursor-pointer rounded-[.95rem]">
-        <!-- image            <img class="w-[40px] h-[40px] shrink-0 inline-block rounded-[.95rem]" src="https://raw.githubusercontent.com/Loopple/loopple-public-assets/main/riva-dashboard-tailwind/img/avatars/avatar1.jpg" alt="avatar image"> -->
+        <!-- image            <img class="w-[40px] h-[40px] shrink-0 inline-block rounded-[.95rem]" src="" alt="avatar image"> -->
                     <x-profileimg/>
                     </div>
                 </div>
                 <div class="mr-2 ">
                     <a href="javascript:void(0)" class="dark:hover:text-primary hover:text-primary transition-colors duration-200 ease-in-out text-[1.075rem] font-medium dark:text-neutral-400/90 text-secondary-inverse">
-                    @if(session('user'))
-                        <a>Hello, <span>{{ session('user')->name }}<span> <a href="/logout"  style="color:#DD0525;">Logout?</a></a>
-        <!--name   -->  @else
-                            <h3  class="nav-link">Guest User</h3>   
-                       @endif
-        <!--status   --> <span class="text-secondary-dark dark:text-stone-500 font-medium block text-[0.85rem]">SEO Manager</span>
+                    @if(Auth::user() && Auth::user()->UserIsAdmin==0)
+        <!--name   --><a>Hello, <span>{{Auth::user()->name}}<span></a>
+        <!--status --><span class="text-secondary-dark dark:text-stone-500 font-medium block text-[0.85rem] text-red-500">User</span>
+                    @elseif(Auth::user() && Auth::user()->UserIsAdmin==1 )
+        <!--name   --><a>Hello, <span>{{Auth::user()->name}}<span></a> 
+        <!--status --> <span class="text-secondary-dark dark:text-stone-500 font-medium block text-[0.85rem] text-red-500">Admin</span>
+                    @else
+                        <h3  class="nav-link">Guest User</h3>   
+                    @endif
                 </div>
             </div>
             <a class="inline-flex relative items-center group justify-end text-base font-medium leading-normal text-center align-middle cursor-pointer rounded-[.95rem] transition-colors duration-150 ease-in-out text-dark bg-transparent shadow-none border-0" href="javascript:void(0)">
@@ -76,11 +79,11 @@
                 <!-- menu item -->
                     <div>
                         <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
-                            @if(session('user') == null)
+                            @if(!Auth::user())
                                 <!-- <script>window.location = "/Login";</script> -->
                                 <a href="/Login" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Profile</a>
                             @else
-                            <a href="/profile/{{ session('user')->id }}" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Profile</a>
+                            <a href="/profile/{{Auth::user()->id}}" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Profile</a>
                             @endif
                         </span>
                     </div>
@@ -115,11 +118,19 @@
                     </span>
                 </div>
                 <!-- menu item -->
+                @if (!Auth::user())
                 <a href="/Login" class="block border border-red-500 rounded-[.95rem] hover:bg-red-100  ">
+                    <div class="px-4 py-[.775rem] cursor-pointer " >
+                        <span class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-red-500 hover:text-dark">Login</span>
+                    </div>
+                </a> 
+                @else <a href="/Logout" class="block border border-red-500 rounded-[.95rem] hover:bg-red-100  ">
                     <div class="px-4 py-[.775rem] cursor-pointer " >
                         <span class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-red-500 hover:text-dark">Logout</span>
                     </div>
                 </a> 
+                @endif
+                
             </div>
         </div>
     </aside>

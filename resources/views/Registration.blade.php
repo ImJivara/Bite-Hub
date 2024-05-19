@@ -85,6 +85,7 @@
                     $('#result1').html("Re-check your passwords, make sure they're identical");
                     $('#txt_cpwd').val('');
                 } else {
+                  $('#result1').html("");
                     var email = $('#txt_email').val();
                     var password = $('#txt_pwd').val();
                     var name = $('#txt_name').val();
