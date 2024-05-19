@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisterController;
 use App\Models\Recipes;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
@@ -38,6 +39,9 @@ Route::get('/app', function () {
 Route::get('/form', function () {
     return view('PostForm');
 });
+Route::get('/logreg', function () {
+    return view('login-registration form');
+});
 Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
 ####################################Testing components################################################################3
 
@@ -54,7 +58,7 @@ Route::post('/Login', [UserController::class, 'login']);
 Route::get('/logout', [UserController::class, 'clearSession']);
 Route::post('/Register', [UserController::class, 'register']);
 //create account //
-Route::get('/reg', function () {
+Route::get('/Registration', function () {
     return view('Registration');
 });
 #################################### User ################################################################3

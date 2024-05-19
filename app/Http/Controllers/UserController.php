@@ -38,55 +38,55 @@ class UserController extends Controller
         return $account !== null;
     }
 
-    // public function register(Request $r)
-    // {
-    //     try {
-    //         if ($account = User::where('email', $r->email)->first()) {
-    //             return response()->json(['message' => 'Invalid email'], 422);
-    //         }
+    public function register(Request $r)
+    { 
+        try {
+            if ($account = User::where('email', $r->email)->first()) 
+            {
+                return response()->json(['message' => 'Invalid email','success' => False]);
+            }
     
-    //         $account = User::create([
-    //             'name' => $r->name,
-    //             'email' => $r->email,
-    //             'password' =>($r->password),
-    //              'location' => "Lebanon",
-    //         ]);
+            $account = User::create([
+                'name' => $r->name,
+                'email' => $r->email,
+                'password' =>$r->password,
+                'location' => "Lebanon",
+                'IsAdmin'=>False
+            ]);
             
-    //         return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => true]);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['message' => 'An error occurred while processing your request'], 500);
-    //     }
-    // }
+             return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => True]);
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage(), 'success' => False]);        }
+    }
    
 
-public function register(Request $r)
-{
+// public function register(Request $r)
+// {
     // Validate the incoming request data
-    $validator = Validator::make($r->all(), [
-        'name' => 'required|string|max:255',
-        'email' => 'required|string|email|max:255|unique:users',
-        'password' => 'required|string|min:8|confirmed',
-    ]);
+    // $validator = Validator::make($r->all(), [
+    //     'name' => 'required|string|max:255',
+    //     'email' => 'required|string|email|max:255|unique:user',
+    //     'password' => 'required|string|min:3|confirmed',
+    // ]);
 
     // Check if validation fails
-    if ($validator->fails()) {
-        return response()->json(['message' => $validator->errors()], 422);
-    }
-
-    try {
-        // Create the user account
-        $account = User::create([
-            'name' => $r->name,
-            'email' => $r->email,
-            'password' => $r->password,
-            'location' => "Lebanon",
-        ]);
+    // if ($validator->fails()) {
+    //     return response()->json(['message' => $validator->errors()], 422);
+    // }
+    // try {
+    //     // Create the user account
+    //     $account = User::create([
+    //         'name' => $r->name,
+    //         'email' => $r->email,
+    //         'password' => $r->password,
+    //         'location' => "Lebanon",
+    //     ]);
         
-        return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => true]);
-    } catch (\Exception $e) {
-        return response()->json(['message' => 'An error occurred while processing your request'], 500);
-    }
-}
+    //     return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => true]);
+    // } catch (\Exception $e) {
+    //     return response()->json(['message' => 'An error occurred while processing your request'], 500);
+    // }
+// }
 
     
 

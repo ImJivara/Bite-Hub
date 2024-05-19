@@ -46,10 +46,15 @@
 
      </script>
 <style> 
-*{color:wheat;}
+*{color:white;}
 </style>
 </head>
-<body style="background-color: #100C08;">
+<!-- <body style="background-color: #100C08;" class=" "> -->
+<!-- <body class="bg-cover bg-center bg-no-repeat overflow-y-hidden" style="background-image: url({{asset('imgs/bg1.jpg')}});"> -->
+
+<body class=" bg-cover "style="background-image: url({{asset('imgs/backgroundimgs/black.jpg')}}); background-size: contain; overflow-y-hidden background-position: center;">
+  
+
     
 <section class="vh-100">
   <div class="container-fluid">
@@ -60,7 +65,6 @@
           <!-- <span class="h1 fw-bold mb-0"><img src="{{asset('imgs/logo.png')}}"></span> -->
           <h1>Food Blog</h1>
         </div>
-
         <div  class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
 
             <form style="width: 23rem;">
@@ -83,15 +87,15 @@
               <div class="pt-1 mb-4">
                   <input class="btn btn-primary" type="submit" id="btn_login" value="Login">
               </div>
-            <p>Don't have an account? <a href="/reg" class="link">Register here</a></p>
+            <p>Don't have an account? <a href="/Registration" class="link">Register here</a></p>
             </form>
           </div>
 
       </div>
       <div class="col-sm-6 px-0 d-none d-sm-block">
-        <img src="{{asset('imgs/background5.jpg')}}"
+        <!-- <img src="{{asset('imgs/bg1.jpg')}}"
           alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
-      </div>
+      </div> -->
       
     </div>
   </div>

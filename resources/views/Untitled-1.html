@@ -1,0 +1,84 @@
+<div class="bg-gray-900 p-8 rounded-lg shadow-lg">
+                    <div class="mb-4 text-center">
+                        <h1 class="text-4xl font-bold text-blue-500">Food Blog</h1>
+                    </div>
+                    <form id="registrationForm" class="space-y-4">
+                        <h3 class="text-2xl font-medium text-blue-500 mb-6">Registration</h3>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-2" for="txt_name">Name</label>
+                            <input type="text" id="txt_name" class="w-full px-4 py-2 text-black rounded-lg" required>
+                        </div>
+                        <div class="mb-4">
+                            <div id="result2" class="text-red-500 mb-2"></div>
+                            <label class="block text-sm font-medium mb-2" for="txt_email">Email address</label>
+                            <input type="email" id="txt_email" class="w-full px-4 py-2 text-black rounded-lg" required>
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium mb-2" for="txt_pwd">Password</label>
+                            <input type="password" id="txt_pwd" class="w-full px-4 py-2 text-black rounded-lg" required>
+                        </div>
+                        <div class="mb-4">
+                            <div id="result1" class="text-red-500 mb-2"></div>
+                            <label class="block text-sm font-medium mb-2" for="txt_cpwd">Confirm Password</label>
+                            <input type="password" id="txt_cpwd" class="w-full px-4 py-2 text-black rounded-lg" disabled>
+                        </div>
+                        <div class="mb-4 text-center">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg" type="submit" id="btn_Register">Register</button>
+                        </div>
+                    </form>
+                </div>
+
+
+                <script>
+                    $(document).ready(function() {
+                        $('#txt_pwd').on('input', function() {
+                            var pwdValue = $(this).val();
+                            if (pwdValue.length > 0) {
+                                $('#txt_cpwd').prop('disabled', false);
+                            } else {
+                                $('#txt_cpwd').prop('disabled', true);
+                            }
+                        });
+            
+                        $('#registrationForm').on('submit', function(event) {
+                            event.preventDefault(); // Prevents default submission
+            
+                            if ($('#txt_pwd').val() != $('#txt_cpwd').val()) {
+                                $('#result1').html("Re-check your passwords, make sure they're identical");
+                                $('#txt_cpwd').val('');
+                            } else {
+                                var email = $('#txt_email').val();
+                                var password = $('#txt_pwd').val();
+                                var name = $('#txt_name').val();
+            
+                                $.ajax({
+                                    url: '/Register',
+                                    type: 'POST',
+                                    data: {
+                                        '_token': '{{ csrf_token() }}',
+                                        'email': email,
+                                        'password': password,
+                                        'name': name,
+                                    },
+                                    success: function(response) {
+                                        if (response.success) {
+                                            window.location.href = '/Login';
+                                        } else {
+                                            $('#result2').html("Invalid Email Address");
+                                        }
+                                    },
+                                    error: function(xhr) {
+                                        var errors = xhr.responseJSON.errors;
+                                        var errorMsg = '';
+                                        for (var error in errors) {
+                                            if (errors.hasOwnProperty(error)) {
+                                                errorMsg += errors[error] + '<br>';
+                                            }
+                                        }
+                                        $('#result2').html(errorMsg);
+                                    }
+                                });
+                            }
+                        });
+                    });
+                </script>

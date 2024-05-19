@@ -16,11 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('location')->default("Lebanon");
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean("UserIsAdmin")->default(False);
             $table->rememberToken()->nullable();
-            $table->timestamp('created_at')->nullable();
+            
         });
     }
 
