@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterController;
-use App\Models\Recipes;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SessionController;
@@ -46,10 +45,10 @@ Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store
 ####################################Testing components################################################################3
 
 #################################### User ################################################################3
-Route::get('/profile/{id}', [UserController::class, 'showProfile']);
-Route::get('/Account/{id}', [UserController::class, 'fetchAccountById']);
-Route::post('/profile/update/{id}', [UserController::class, 'updateProfile']);
-Route::post('/account/delete', [UserController::class, 'deleteAccount']);
+Route::get('/profile/{id}', [UserController::class, 'showProfile'])->middleware("auth");
+Route::get('/Account/{id}', [UserController::class, 'fetchAccountById'])->middleware("auth");
+Route::post('/profile/update/{id}', [UserController::class, 'updateProfile'])->middleware("auth");
+Route::post('/account/delete', [UserController::class, 'deleteAccount'])->middleware("auth");
 //Login view w button action//
 Route::get('/Login', function () { 
     return view('Login');
@@ -73,8 +72,6 @@ Route::get('/Step/{id}', [RecipeController::class, 'getStep']);
 Route::get('/Ing/{id}', [RecipeController::class, 'getIng']);
 
 #################################### Recipes ################################################################3
-
-
 
 
 Route::middleware('guest')->group(function () {

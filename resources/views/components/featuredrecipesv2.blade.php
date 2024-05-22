@@ -99,18 +99,16 @@
                                     @endfor
                                 </div>
                             </div>
-                            <a href="/Recipe/{{ $featuredrec->id }}" class="text-blue-500 font-semibold block">View Recipe</a>
+                            <a href="/Recipe/{{ $featuredrec->id }}" class="text-blue-500 font-semibold block ">View Recipe</a>
                         </div>
                     </div>
                 </div>
                 @endforeach
                 <!-- End of Recipe Slide -->
             </div>
-            <!-- Add Pagination -->
-            <div class="swiper-pagination"></div>
-            <!-- Add Navigation -->
-            <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination "  style="position: static; bottom: auto; top: 0; margin-top:12px"></div>
+            <!-- <div class="swiper-button-next"></div> 
+            <div class="swiper-button-prev"></div> -->
         </div>
     </div>
 
