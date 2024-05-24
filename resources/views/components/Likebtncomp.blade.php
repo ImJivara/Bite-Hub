@@ -77,9 +77,10 @@ id="like-btn"
             url: '/Like/' + recipeId,
             success: function(data) {
                 $('#txt_' + recipeId).html(data.NbLikes);
+                if(data.success==false) showError(data.error);
             },
             error: function() {
-                showError("An error occurred. Please try again later.");
+                // showError("An error occurred. Please try again later.");
             }
         });
     }

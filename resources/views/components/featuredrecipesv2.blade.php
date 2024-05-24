@@ -1,4 +1,4 @@
-@props(['featuredrec'])
+@props(['featuredrec','MostRecentRecipe'])
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,34 +59,34 @@
         <div class="swiper-container">
             <div class="swiper-wrapper">
                 <!-- Repeat this block for each recipe -->
-                @foreach([1, 2, 3] as $index) <!-- Dummy loop for 3 slides -->
+                @foreach([$featuredrec, $MostRecentRecipe, $featuredrec] as $index) <!-- Dummy loop for 3 slides -->
                 <div class="swiper-slide">
                     <div class="recipe-card-wrapper max-h-80 rounded-lg overflow-hidden shadow-xl flex items-center">
                         <div class="w-1/3">
-                            <img class="h-auto object-cover transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg" src="{{ asset('imgs/'.$featuredrec->id.'.jpg') }}" alt="Featured Recipe Image">
+                            <img class="h-auto object-cover transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg" src="{{ asset('imgs/'.$index->id.'.jpg') }}" alt="Featured Recipe Image">
                         </div>
                         <div class="h-100 p-6 w-2/3">
-                            <h1 class="text-6xl font-semibold text-gray-800 mb-4">{{ $featuredrec->RecipeName }} 
-                        @if ($index==1)
+                            <h1 class="text-6xl font-semibold text-gray-800 mb-4">{{ $index->RecipeName }} 
+                        @if ($index==$featuredrec)
                         <span class="text-red-800 text-4xl">This Week's Most Liked Recipe</span>
-                        @elseif($index==2)
+                        @elseif($index==$MostRecentRecipe)
                         <span class="text-red-800 text-4xl">Our Most Recent Recipe</span>
                         @else 
                         <span class="text-red-800 text-4xl">And Don't Forget, Today's Featured Recipe</span>
                         @endif
                         </h1>
-                            @if (strlen($featuredrec->Description) > 600)
-                                <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($featuredrec->Description, 600, $end='...') }}</p>
-                                <button id="toggleBtn_{{ $featuredrec->id }}" onclick="toggleDescription('{{ $featuredrec->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
+                            @if (strlen($index->Description) > 600)
+                                <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($index->Description, 600, $end='...') }}</p>
+                                <button id="toggleBtn_{{ $index->id }}" onclick="toggleDescription('{{ $index->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
                             @else
-                                <p class="text-gray-700 font-medium">{{ $featuredrec->Description }}</p>
+                                <p class="text-gray-700 font-medium">{{ $index->Description }}</p>
                             @endif
                             <div class="flex items-center mb-2">
                                 <span class="text-gray-600 mr-2">Rate this recipe:</span>
                                 <div class="flex">
                                     @for ($i = 1; $i <= 5; $i++)
                                         <button class="text-yellow-400 focus:outline-none" onclick="rateRecipe({{ $i }})">
-                                            @if ($i <= $featuredrec->rating)
+                                            @if ($i <= $index->rating)
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 filled-star" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l4 4m0 0l4-4m-4 4V4"></path>
                                                 </svg>
@@ -99,7 +99,7 @@
                                     @endfor
                                 </div>
                             </div>
-                            <a href="/Recipe/{{ $featuredrec->id }}" class="text-blue-500 font-semibold block ">View Recipe</a>
+                            <a href="/Recipe/{{ $index->id }}" class="text-blue-500 font-semibold block ">View Recipe</a>
                         </div>
                     </div>
                 </div>

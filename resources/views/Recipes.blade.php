@@ -1,10 +1,10 @@
 @extends('test3tem')
 @section('content_body')
 <div class="mb-12 mt-12"> 
-    @if ($featuredrec==null)
-        <h1>Oops Looks Empty</h1>
+    @if ($featuredrec==null && $MostRecentRecipe==null)
+    <h2 class="text-3xl font-semibold text-center ">Oops Looks Empty</h1>
     @else
-        <x-featuredrecipesv2 :featuredrec="$featuredrec"/>
+        <x-featuredrecipesv2 :featuredrec="$featuredrec" :MostRecentRecipe="$MostRecentRecipe"/>
      @endif
 </div>
     

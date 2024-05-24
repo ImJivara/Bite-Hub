@@ -68,10 +68,8 @@
             </ol>
         </div>
 
-
-        
         <!-- nutritional info -->
-        <div class="bg-white rounded-lg shadow-xl p-6 flex flex-col justify-between">
+        <div class="bg-white rounded-lg shadow-xl p-6 flex flex-col justify-between ">
             <div>
                 <h3 class="text-xl font-semibold mb-4">Nutritional Information</h3>
                 <ul class="list-disc list-inside">
@@ -82,28 +80,52 @@
                     <li class="text-lg text-gray-700">Fiber: 5g</li>
                 </ul>
             </div>
-            <!-- comment section -->
+        <!-- comment section -->
             <div class="mt-8">
                 <h3 class="text-xl font-semibold mb-4">Comments</h3>
                 <div class="mb-4">
                     <!-- hun mnhut l comments -->
                     <div id="comment-placer"></div>
-                            <x-comment/>
-                            <x-comment/>
-                            <x-comment/>
-                            <x-comment/>
-                            <x-comment/>
-                            <x-comment/>
-                            <x-comment/>
+                    @if(!$comments)
+                   <h2 class="text-3xl font-semibold  ">Oops Looks Empty</h1>
+                   @else
+                        @foreach ($comments as $comment)
+                            <x-comment :comment="$comment"/>
+                        @endforeach  
+                    @endif      
                     </div>
+            <!--comment form -->          
+            @if (!Auth::user())
+            <div class="flex items-center justify-between">
+                <h1 class="text-l font-semibold text-red-500">You should be signed in as a user to comment</h1>
+                <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login</a>
             </div>
-            <div>
-                <form id="commentForm">
+            @else
+                <h5>Add a Comment</h5>
+                <!-- In your Blade view -->
+                <form action="{{ route('comments.store') }}" method="POST" id="commentForm">
                     @csrf
-                    <input type="text" name="txt_comment" placeholder="Write your comment..." class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500">
-                    <button type="button" id="submitcomment" class="bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-blue-600 focus:outline-none">Publish</button>
+                    <input type="hidden" name="recipe_id" value="{{ $r->id }}">
+                    <div class="form-group">
+                        <input type="text" id="commentInput"  placeholder="Your comment" 
+                            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none 
+                            focus:border-red-500" value="{{ old('body') }}" maxlength="150" >
+                        <p id="charCount" class="text-xs text-gray-500 mt-1">0 / 150 characters</p>
+                    </div>
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-red-600 focus:outline-none">Publish</button>
                 </form>
+
+                <script>
+                    const commentInput = document.getElementById('commentInput');
+                    const charCount = document.getElementById('charCount');
+                    commentInput.addEventListener('input', function() {
+                        const length = commentInput.value.length;
+                        charCount.textContent = length + ' / 300 characters';
+                    });
+                </script>
+            @endif
             </div>
+            
         </div>
         <div>
             <img class="w-full h-auto rounded-lg shadow-xl" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image">
@@ -111,30 +133,6 @@
     </div>
 </section>
 <!-- End of Ingredients and Steps Section -->
-<script>
-        $(document).ready(function()
-         {
-            $("#submitcomment").click(function()
-             {
-                
-               
-                $.ajax
-                ({  
-                    success: function(output) 
-                    {
-                        // URL of the external HTML component
-                        var externalComponentURL = "{{asset('\components\sidebar')}}";
 
-                        // Element to which the external component will be appended
-                        var targetElement = $('#comment-placer');
-
-                        // Load the external HTML component and append it to the target element
-                        targetElement.load(externalComponentURL);
-                        
-                    }
-                })
-            });
-        });
-    </script>
 
 @endsection

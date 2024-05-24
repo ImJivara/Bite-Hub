@@ -30,7 +30,7 @@
     </style>
 </head>
 <body >    
-<div class="container flex flex-col mx-250 relative " id="main">
+
     <aside class="group/sidebar flex flex-col  shrink-0 lg:w-[300px] w-[250px] transition-all duration-400 ease-in-out m-0 fixed z-40 inset-y-0 left-0 bg-white border-r border-r-dashed border-r-neutral-200 sidenav fixed-start loopple-fixed-start " id="sidenav-main">
         
         <div class="border-b border-dashed lg:block dark:border-neutral-700/70 border-neutral-200 bg-white"><br></div>
@@ -134,7 +134,6 @@
             </div>
         </div>
     </aside>
-</div>
 
 <!-- Toggle Sidebar Button -->
 <script>

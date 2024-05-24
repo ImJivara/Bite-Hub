@@ -1,11 +1,14 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\RecipeController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\SessionController;
-use Illuminate\Support\Facades\Route;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
     return view('\Home\home');
@@ -27,7 +30,22 @@ Route::get('/s', function () {
     return view('\components\sidebar');
 })->middleware('guest');
 Route::get('/p', function () {
-    return view('\components\profilepage');
+    return view('\components\piechart');
+});
+Route::get('/p1', function () {
+    return view('\components\doughnutchart');
+});
+Route::get('/p2', function () {
+    return view('\components\radialchart');
+});
+Route::get('/p3', function () {
+    return view('\components\polarareachart');
+});
+Route::get('/p4', function () {
+    return view('\components\gradientpiechart');
+});
+Route::get('/lay', function () {
+    return view('\Profile Folder\ProfileLayout');
 });
 Route::get('/l', function () {
     return view('\components\likebutton2');
@@ -45,10 +63,18 @@ Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store
 ####################################Testing components################################################################3
 
 #################################### User ################################################################3
-Route::get('/profile/{id}', [UserController::class, 'showProfile'])->middleware("auth");
-Route::get('/Account/{id}', [UserController::class, 'fetchAccountById'])->middleware("auth");
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
+Route::get('/profile/recent-activities/{type?}', [ActivityController::class, 'recentActivities'])->name('recent-activities')->middleware("auth");
+Route::get('/profile/{id}', [RecipeController::class, 'GetProfileInfo'])->middleware("auth");
+
+Route::get('/profile/Edit Profile/{id}', function ($id) {
+    $user = User::findOrFail($id);
+    return view('Profile Folder.EditProfile', ["user" => $user]);
+})->middleware("auth");
+
 Route::post('/profile/update/{id}', [UserController::class, 'updateProfile'])->middleware("auth");
-Route::post('/account/delete', [UserController::class, 'deleteAccount'])->middleware("auth");
+Route::post('/account/delete/{id}', [UserController::class, 'deleteAccount'])->middleware("auth");
 //Login view w button action//
 Route::get('/Login', function () { 
     return view('Login');

@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 use App\Models\User;
-use Illuminate\Support\Facades\Session;
+// use Laravel\Prompts\alert;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth ;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log ;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash ;
+// use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use function Laravel\Prompts\alert;
 
 class UserController extends Controller
 {
@@ -134,36 +134,7 @@ class UserController extends Controller
 
         return redirect('/Recipes');
     }
-    
-    public function FetchAccount(Request $request)
-    {
-        // $account = User::where('email', $request)->first();
-        $acc = User::where('id', $request);
-        return  response()->json(['response' => $acc]);
 
-    }
-
-    public function showProfile($id)
-{
-    return view('\components\profilepage', ['id' => $id]);
-    
-}
-
-    public function fetchAccountById($id)
-    {
-        try {
-            $account = User::findOrFail($id);
-            return response()->json(['success' => true, 'account' => $account], 200);
-        } catch (\Exception $e) {return response()->json(['success' => false, 'message' => 'Account not found.'], 404);}
-        
-    }
-
-
-// public function showProfile($id)
-// {
-//     $account = Accounts::findOrFail($id); // Fetch the account based on the ID
-//     return view('\components\profilepage', ['account' => $account]); // Pass the account data to the view
-// }
     
 public function updateProfile(Request $request, $id)
     {
@@ -185,7 +156,7 @@ public function updateProfile(Request $request, $id)
            } 
         } catch (\Exception $e) {return response()->json(['success' => false, 'message' => 'Failed to update profile']);}
     }
-    public function deleteAccount(Request $request)
+    public function rdeleteAccount(Request $request)
     {
  
         $account = User::findOrFail($request->id); // Find the account by ID
