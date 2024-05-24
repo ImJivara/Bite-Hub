@@ -107,7 +107,7 @@
                             @csrf
                             <input type="hidden" name="recipe_id" value="{{ $r->id }}"  >
                         <div class="form-group">
-                                <input type="text" name="body" placeholder="Your comment" id="commentInput"
+                                <input type="text" name="body" placeholder="Your comment" id="commentInput" maxlength="300"
                                 class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none 
                                 focus:border-red-500" value="{{ $body->value ?? '' }}">
                                 <p id="charCount" class="text-xs text-gray-500 mt-1">0 / 150 characters</p>
