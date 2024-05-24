@@ -93,37 +93,38 @@
                             <x-comment :comment="$comment"/>
                         @endforeach  
                     @endif      
-                    </div>
-            <!--comment form -->          
-            @if (!Auth::user())
-            <div class="flex items-center justify-between">
-                <h1 class="text-l font-semibold text-red-500">You should be signed in as a user to comment</h1>
-                <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login</a>
-            </div>
-            @else
-                <h5>Add a Comment</h5>
-                <!-- In your Blade view -->
-                <form action="{{ route('comments.store') }}" method="POST" id="commentForm">
-                    @csrf
-                    <input type="hidden" name="recipe_id" value="{{ $r->id }}">
-                    <div class="form-group">
-                        <input type="text" id="commentInput"  placeholder="Your comment" 
-                            class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none 
-                            focus:border-red-500" value="{{ old('body') }}" maxlength="150" >
-                        <p id="charCount" class="text-xs text-gray-500 mt-1">0 / 150 characters</p>
-                    </div>
-                    <button type="submit" class="bg-red-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-red-600 focus:outline-none">Publish</button>
-                </form>
+                </div>
 
-                <script>
-                    const commentInput = document.getElementById('commentInput');
-                    const charCount = document.getElementById('charCount');
-                    commentInput.addEventListener('input', function() {
-                        const length = commentInput.value.length;
-                        charCount.textContent = length + ' / 300 characters';
-                    });
-                </script>
-            @endif
+                <!--comment form -->          
+                @if (!Auth::user())
+                <div class="flex items-center justify-between">
+                    <h1 class="text-l font-semibold text-red-500">You should be signed in as a user to comment</h1>
+                    <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login</a>
+                </div>
+                @else
+                    <h5>Add a Comment</h5>
+                    <form action="{{ route('comments.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="recipe_id" value="{{ $r->id }}"  >
+                        <div class="form-group">
+                                <input type="text" name="body" placeholder="Your comment" id="commentInput"
+                                class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none 
+                                focus:border-red-500" value="{{ $body->value ?? '' }}">
+                                <p id="charCount" class="text-xs text-gray-500 mt-1">0 / 150 characters</p>
+                        </div>
+                        <button type="submit" 
+                            class="bg-red-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-red-600 focus:outline-none">Submit
+                        </button>
+                    </form>
+                    <script>
+                        const commentInput = document.getElementById('commentInput');
+                        const charCount = document.getElementById('charCount');
+                        commentInput.addEventListener('input', function() {
+                            const length = commentInput.value.length;
+                            charCount.textContent = length + ' / 300 characters';
+                        });
+                    </script> 
+                @endif
             </div>
             
         </div>
@@ -136,3 +137,13 @@
 
 
 @endsection
+<!-- <form action="{{ route('comments.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="recipe_id" value="{{ $r->id }}" >
+                        <div class="form-group">
+                        <input type="text" name="body" placeholder="Your comment" class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-blue-500" value="{{ $body->value ?? '' }}">
+                    </div>
+                    <button type="submit" 
+                        class="bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-blue-600 focus:outline-none">Submit
+                    </button>
+                </form> -->
