@@ -32,9 +32,9 @@
                         else $likedRecipes=[];
                     @endphp
                     @if (in_array($r->id, $likedRecipes))
-                        <x-Likebtncomp :recipeId="$r->id" :User='$user' :IsLiked='True' data-likebtn />
+                        <x-extracomponents.modernlikebutton :recipeId="$r->id" :User='$user' :IsLiked='True' data-likebtn />
                     @else
-                        <x-Likebtncomp :recipeId="$r->id" :User='$user' :IsLiked='False' data-likebtn />
+                        <x-extracomponents.modernlikebutton :recipeId="$r->id" :User='$user' :IsLiked='False' data-likebtn />
                     @endif
 
                 </div>

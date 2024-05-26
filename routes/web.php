@@ -47,8 +47,8 @@ Route::get('/p4', function () {
 Route::get('/lay', function () {
     return view('\Profile Folder\ProfileLayout');
 });
-Route::get('/l', function () {
-    return view('\components\likebutton2');
+Route::get('/log', function () {
+    return view('\components\extra components.LogReg');
 });
 Route::get('/app', function () {
     return view('\layouts\app');

@@ -44,8 +44,8 @@
 <!-- add the liked class based on the value of the IsLiked prop.
  If IsLiked is true, the 'liked' class is added, making the button k2na liked. -->
 <button 
-id="like-btn"
- class="like-btn {{ $IsLiked ? 'liked' : '' }}"
+id="like-btn" 
+class="like-btn {{ $IsLiked ? 'liked' : '' }}"
  onclick="toggleLike(this,'{{ $recipeId }}','{{$IsLiked}}')"
  @if (!$user) disabled
  @else enabled
