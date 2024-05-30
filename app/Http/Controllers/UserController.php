@@ -156,12 +156,53 @@ public function updateProfile(Request $request, $id)
            } 
         } catch (\Exception $e) {return response()->json(['success' => false, 'message' => 'Failed to update profile']);}
     }
-    public function rdeleteAccount(Request $request)
+    public function deleteAccount(Request $request)
     {
  
         $account = User::findOrFail($request->id); // Find the account by ID
         $account->delete(); // Delete the account
         return response()->json(['success' => true, 'message' => 'Account deleted successfully']);
+    }
+
+
+    public function followUser(Request $request, $userIdToFollow)
+    {
+        // Retrieve the authenticated user
+        $user = $request->user();
+
+        // Check if the user to follow exists
+        $userToFollow = User::findOrFail($userIdToFollow);
+
+        // Follow the user
+        $user->follow($userToFollow->id);
+
+        // You might return a success response here
+    }
+
+    public function unfollowUser(Request $request, $userIdToUnfollow)
+    {
+        // Retrieve the authenticated user
+        $user = $request->user();
+
+        // Check if the user to unfollow exists
+        $userToUnfollow = User::findOrFail($userIdToUnfollow);
+
+        // Unfollow the user
+        $user->unfollow($userToUnfollow->id);
+
+        // You might return a success response here
+    }
+
+    public function checkIfFollowing(Request $request, $userId)
+    {
+        // Retrieve the authenticated user
+        $user = $request->user();
+
+        // Check if the user is following the specified user
+        $isFollowing = $user->isFollowing($userId);
+
+        // You might return a JSON response indicating whether the user is following the specified user
+        return response()->json(['is_following' => $isFollowing]);
     }
 
     

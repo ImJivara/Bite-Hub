@@ -1,7 +1,7 @@
 @props(['r' ])
 
 <div class="recipe-card-wrapper flex items-stretch transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg"> 
-    <a href="/Recipe/{{ $r->id }}" class="recipe-card-link block flex-grow"> 
+    <a href="/Recipe/{{ $r->id }}" class="recipe-card-link block "> 
          <div class="max-w-sm mx-auto bg-white rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition duration-300 flex flex-col">
             <img class="w-full h-56 object-cover object-center" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image">
             <div class="p-6 flex-grow">
@@ -17,26 +17,29 @@
                     <a href="/Ing/{{ $r->id }}" class="text-blue-500 font-semibold block">Number of Ingredients: {{ $r->NbIngredients }}</a>
                     <a href="/Step/{{ $r->id }}" class="text-blue-500 font-semibold block">Steps: {{ $r->Steps }}</a>
                 </div>
-                <div class="flex justify-between items-center mt-4">
-                    <p class="text-gray-600 font-semibold mr-4 flex-2">Number of Likes: <span id="txt_{{ $r->id }}">{{ $r->NbLikes }}</span></p>
+                <div class="flex justify-between items-center mt-2 relative space-x-4 ">
+                    <p class="text-gray-600 font-semibold mr-4 flex-2">Number of Likes: <span id="txt_{{ $r->id }}" class="text-red-500 text-semibold">{{ $r->NbLikes }}</span></p>
                     
-                    @if ($r->created_at == null) 
-                    <p>Created at../-/-/</p>
-                    @else 
-                    <time>{{ $r->created_at->diffForHumans() }}</time>
-                    @endif
-                    @php
-                        $user=Auth::user();
-                        if($user)
-                        $likedRecipes = Auth::user()->likedRecipes->pluck('id')->toArray();
-                        else $likedRecipes=[];
-                    @endphp
-                    @if (in_array($r->id, $likedRecipes))
-                        <x-extracomponents.modernlikebutton :recipeId="$r->id" :User='$user' :IsLiked='True' data-likebtn />
-                    @else
-                        <x-extracomponents.modernlikebutton :recipeId="$r->id" :User='$user' :IsLiked='False' data-likebtn />
-                    @endif
-
+                    <div class="flex justify-between">
+                        @php
+                            
+                            if(Auth::user())
+                            $likedRecipes = Auth::user()->likedRecipes->pluck('id')->toArray();
+                            else $likedRecipes=[];
+                        @endphp
+                        @if (in_array($r->id, $likedRecipes))
+                            <x-extracomponents.modernlikebutton :recipeId="$r->id" :IsLiked='True' data-likebtn />
+                        @else
+                            <x-extracomponents.modernlikebutton :recipeId="$r->id"  :IsLiked='False' data-likebtn />
+                        @endif
+                        <div class="absolute top-9 left-10  bg-gray-200 text-xs px-2 py-1 rounded-lg">
+                        @if ($r->created_at == null) 
+                            <p class="text-gray-600">Created at../-/-/</p>
+                        @else 
+                            <time class="text-gray-600">{{ $r->created_at->diffForHumans() }}</time>
+                        @endif
+                    </div>
+                    </div>
                 </div>
             </div>   
         </div>

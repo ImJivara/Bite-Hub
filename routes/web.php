@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Recipe;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -59,7 +60,13 @@ Route::get('/form', function () {
 Route::get('/logreg', function () {
     return view('login-registration form');
 });
-Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
+Route::get('/profile/instagramreplica', function () {
+    $user =Auth::user();
+    $recipes=Recipe::all();
+    return view('Profile Folder.instagramreplica', ["user" => $user ,"rec"=>$recipes]);
+});
+// Route::get('/profile/instagramreplica', [RecipeController::class, 'getRecipes']);
+// Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
 ####################################Testing components################################################################3
 
 #################################### User ################################################################3

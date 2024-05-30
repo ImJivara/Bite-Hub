@@ -1,4 +1,4 @@
-@props(['recipeId','IsLiked','User'])
+@props(['recipeId','IsLiked'])
 <style>
     label.container {
         background-color: white;
@@ -77,7 +77,7 @@
 </style>
 
 <input type="checkbox" id="like-btn-{{ $recipeId }}" class="{{ $IsLiked ? 'checked' : '' }}">
-<label for="like-btn-{{ $recipeId }}" class="container like-btn {{ $IsLiked ? 'liked' : '' }}"  onclick="toggleLike(this,{{$recipeId}},'{{$IsLiked}}')">
+<label for="like-btn-{{ $recipeId }}" class="container m-0 like-btn {{ $IsLiked ? 'liked' : '' }}"  onclick="toggleLike(this,{{$recipeId}},'{{$IsLiked}}')">
 
 
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
