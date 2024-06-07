@@ -9,6 +9,8 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\AdminPostController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
@@ -131,5 +133,7 @@ Route::get('/retrieve/{RecipeId}', [RecipeController::class, 'RecipeLikedByWho']
 Route::get('/retrieve2', [RecipeController::class, 'RecipesLikedByUser']); //by authenticated user
 Route::get('/retrieve2/{RecipeId}', [RecipeController::class, 'RecipesLikedByUser']);//by specific user
 Route::get('/retrieve3/{RecipeId}', [RecipeController::class, 'IsRecipeLikedByUser']);// check eza authenticated user has liked the post
+Route::resource('admin/posts', AdminPostController::class);
+Route::resource('admin/users',AdminUserController::class);
 // Account/{id}/LikesRecipe/{id}/Likes
 Auth::routes();

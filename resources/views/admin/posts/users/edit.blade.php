@@ -1,18 +1,10 @@
-@extends('Profile Folder.ProfileLayout')
-@section('content')
-    <!-- Include Tailwind CSS -->
-    <script src="{{asset('jquery-3.7.1.js')}}"></script>
-    <script src="{{ asset('js\ErrorHandle.js') }}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    
-    <!-- Custom Styles -->
-    <style>
-        /* Sidebar Styles */
-        
-        /* Main Content Styles */
-       
-    </style>
-    <script>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="{{asset('jquery-3.7.1.js')}}"></script>
+<script src="{{ asset('js\ErrorHandle.js') }}"></script>
+
+<x-setting :heading="'Edit User: ' . $user->name">
+<script>
+   
         $(document).ready(function() {
             $('#updateProfileForm').submit(function(e) 
             {
@@ -38,10 +30,13 @@
                             $("#email").text(email);
                             $("#location").text(location);
                             $("#password").text(password);
+
+                            $("#Name").text(response.name);
+                            $("#Email").text(reponse.email);
+                            $("#Location").text(response.location);
+                            $("#Password").text(response.password);
                             
-                            document.getElementById('Name').innerHTML =name;
-                            document.getElementById('Email').innerHTML =email;
-                            document.getElementById('Location').innerHTML = location;
+                           
                             showToast('Profile updated successfully', 'green');
                         } else {
                             showToast('Failed to update profile. Please try again', 'red');
@@ -80,18 +75,16 @@
             }
         }
 </script>
-
-</head>
 <body class="bg-gray-100">    
     <!-- Main Content -->
-    <div class="main-content ml-64 px-8 py-8">
+    <div class="main-content ">
         <!-- Profile Information -->
         <div class="bg-white shadow-md rounded-lg p-8 mb-8">
             <h1 class="text-2xl font-semibold mb-4">Profile Information</h1>
             <div>
-                <p class="text-gray-700"><span class="font-semibold">Name:</span> {{$user->name}}<span id="Name"></span></p>
-                <p class="text-gray-700"><span class="font-semibold">Email:</span> {{$user->email}} <span id="Email"></span></p>
-                <p class="text-gray-700"><span class="font-semibold">Location:</span> {{$user->location}}<span id="Location"></span></p>
+                <p class="text-gray-700"><span class="font-semibold">Name:</span> {{ $user->name }}<span id="Name"></span></p>
+                <p class="text-gray-700"><span class="font-semibold">Email:</span> {{ $user->email }} <span id="Email"></span></p>
+                <p class="text-gray-700"><span class="font-semibold">Location:</span> {{ $user->location }}<span id="Location"></span></p>
             </div>
         </div>
         <!-- Edit Profile Form -->
@@ -133,7 +126,7 @@
                 <!--Toast div here t3et l confirmation --><div id="toast" class="fixed bottom-0 right-0 m-8 p-4 bg-gray-900 text-white rounded shadow-lg hidden"> </div>
         </div>
     </div>
-   
 </body>
-</html>
-@endsection
+</x-setting>
+    
+

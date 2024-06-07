@@ -152,7 +152,13 @@ public function updateProfile(Request $request, $id)
             $account->password = $request->input('password');
             $account->location = $request->input('location');
             $account->save(); //Update it
-            return response()->json(['success' => true, 'message' => 'Profile updated successfully']);
+            return response()->json([
+                'success' => true,
+                'message' => 'Profile updated successfully',
+                'name' => $request->name,
+                'email' => $request->email,
+                'location' => $request->location,
+            ]);
            } 
         } catch (\Exception $e) {return response()->json(['success' => false, 'message' => 'Failed to update profile']);}
     }
