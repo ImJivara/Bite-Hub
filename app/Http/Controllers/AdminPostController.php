@@ -40,15 +40,13 @@ class AdminPostController extends Controller
     public function update(Request $request, Recipe $post)
     {
         $validatedData = $this->validateRecipe($request, $post);
-
+    
         if ($request->hasFile('thumbnail')) {
             $validatedData['thumbnail'] = $request->file('thumbnail')->store('thumbnails');
         }
-
-        $validatedData['user_id'] = $request->user()->id;
-
+    
         $post->update($validatedData);
-
+    
         return back()->with('success', 'Recipe Updated!');
     }
 
