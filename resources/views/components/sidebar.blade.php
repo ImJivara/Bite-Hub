@@ -73,7 +73,7 @@
                 <!-- menu item -->
                 <div class="bg-white">
                     <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]  bg-white">
-                        <a href="javascript:;" class="  bg-white flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Sales</a>
+                        <a href="/admin/posts" class="  bg-white flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Admin Control</a>
                     </span>
                 </div  class="bg-white">
                 <!-- menu item -->

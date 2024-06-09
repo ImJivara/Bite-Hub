@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,7 +8,7 @@ use Illuminate\Validation\Rule;
 class AdminUserController extends Controller
 {
     public function index()
-    { 
+    {
         return view('admin.posts.users.index', [
             'users' => User::paginate(8)
         ]);
@@ -17,43 +16,56 @@ class AdminUserController extends Controller
 
     public function create()
     {
-        return view('admin.posts.users.create'); //////////////////////////////////Create
+        return view('admin.posts.users.create');
     }
+
+    public function store()
+    {
+        User::create(array_merge($this->validateUser(), [
+            'password' => bcrypt(request('password'))
+        ]));
+
+        return redirect('/admin/users');
+    }
+
     public function edit(User $user)
     {
-        return view('admin.posts.users.edit', ['user' => $user]); //////////////////////////////////Edit
+        return view('admin.posts.users.edit', ['user' => $user]);
     }
+
     public function update(User $user)
     {
-        $attributes = $this->validatePost($user);
+        $attributes = $this->validateUser($user);
 
-        if ($attributes['thumbnail'] ?? false) {
-            $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+        if ($attributes['password']) {
+            $attributes['password'] = bcrypt($attributes['password']);
+        } else {
+            unset($attributes['password']);
         }
 
         $user->update($attributes);
 
-        return back()->with('success', 'Post Updated!');
+        return back()->with('success', 'User Updated!');
     }
 
-    public function destroy(User $post)
+    public function destroy(User $user)
     {
         $user->delete();
 
-        return back()->with('success', 'Post Deleted!');
+        return back()->with('success', 'User Deleted!');
     }
 
-    protected function validatePost(?User $post = null): array
+    protected function validateUser(?User $user = null): array
     {
         $user ??= new User();
 
         return request()->validate([
-            'title' => 'required',
-            'thumbnail' => $post->exists ? ['image'] : ['required', 'image'],
-            'slug' => ['required', Rule::unique('posts', 'slug')->ignore($post)],
-            'excerpt' => 'required',
-            'body' => 'required',
-            'category_id' => ['required', Rule::exists('categories', 'id')]
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user)],
+            'location' => 'nullable|string|max:255',
+            'password' => $user->exists ? ['nullable', 'string', 'min:8'] : ['required', 'string', 'min:8'],
+            'UserIsAdmin' => 'required|boolean'
+            
         ]);
     }
 }

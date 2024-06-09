@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Recipe extends Model
 {
-    protected $fillable = ['NbLikes',];
+    
     use HasFactory;
+    protected $fillable = [
+        'RecipeName', 'Description', 'steps', 'steps_details', 'NbIng',
+        'ingredient_details', 'NbLikes', 'IsApproved', 'Difficulty_level', 'user_id'
+    ];
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');

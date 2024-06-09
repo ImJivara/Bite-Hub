@@ -1,26 +1,25 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
-    <x-setting heading="Publish New Post">
-        <form method="POST" action="/admin/posts" enctype="multipart/form-data">
-            @csrf
+<x-setting heading="Create New User">
+    <form method="POST" action="/admin/users" enctype="multipart/form-data">
+        @csrf
 
-            <x-form.input name="title" required />
-            <x-form.input name="slug" required />
-            <x-form.input name="thumbnail" type="file" required />
-            <x-form.textarea name="excerpt" required />
-            <x-form.textarea name="body" required />
+        <x-form.input name="name" label="Name" required />
+        <x-form.input name="email" label="Email" type="email" required />
+        <x-form.input name="location" label="Location" />
+        <x-form.input name="password" label="Password" type="password" required />
+        <x-form.input name="UserIsAdmin" label="Is Admin" required />
 
-            <x-form.field>
-                <x-form.label name="category"/>
+        <x-form.button>Create</x-form.button>
+    </form>
 
-                <select name="category_id" id="category_id" required>
-                    
-                </select>
-
-                <x-form.error name="category"/>
-            </x-form.field>
-
-            <x-form.button>Publish</x-form.button>
-        </form>
-    </x-setting>
-
+    @if ($errors->any())
+        <div class="mt-6">
+            <ul class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+</x-setting>

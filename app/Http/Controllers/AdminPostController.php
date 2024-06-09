@@ -1,70 +1,78 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AdminPostController extends Controller
 {
     public function index()
-    { // Eager load the 'author' relationship
+    {
         return view('admin.posts.index', [
             'posts' => Recipe::with('author')->paginate(8)
         ]);
     }
-    
 
     public function create()
     {
-        return view('admin.posts.create'); //////////////////////////////////Create
+        return view('admin.posts.create');
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        Recipe::create(array_merge($this->validatePost(), [
-            'user_id' => request()->user()->id,
-            'thumbnail' => request()->file('thumbnail')->store('thumbnails')
+        $validatedData = $this->validateRecipe($request);
+
+        Recipe::create(array_merge($validatedData, [
+            'user_id' => $request->user()->id,
+            // 'thumbnail' => $request->file('thumbnail')->store('thumbnails')
         ]));
 
-        return redirect('/');
+        return redirect('/admin/posts')->with('success', 'Recipe Published!');
     }
 
     public function edit(Recipe $post)
     {
-        return view('admin.posts.edit', ['post' => $post]); //////////////////////////////////Edit
+        return view('admin.posts.edit', ['post' => $post]);
     }
 
-    public function update(Recipe $post)
+    public function update(Request $request, Recipe $post)
     {
-        $attributes = $this->validatePost($post);
+        $validatedData = $this->validateRecipe($request, $post);
 
-        if ($attributes['thumbnail'] ?? false) {
-            $attributes['thumbnail'] = request()->file('thumbnail')->store('thumbnails');
+        if ($request->hasFile('thumbnail')) {
+            $validatedData['thumbnail'] = $request->file('thumbnail')->store('thumbnails');
         }
 
-        $post->update($attributes);
+        $validatedData['user_id'] = $request->user()->id;
 
-        return back()->with('success', 'Post Updated!');
+        $post->update($validatedData);
+
+        return back()->with('success', 'Recipe Updated!');
     }
 
     public function destroy(Recipe $post)
     {
         $post->delete();
 
-        return back()->with('success', 'Post Deleted!');
+        return back()->with('success', 'Recipe Deleted!');
     }
 
-    protected function validatePost(?Recipe $post = null): array
+    protected function validateRecipe(Request $request, ?Recipe $recipe = null): array
     {
-        $post ??= new Recipe();
+        $recipe ??= new Recipe();
 
-        return request()->validate([
-            'title' => 'required',
-            'thumbnail' => $post->exists ? ['image'] : ['required', 'image'],
-            'slug' => ['required', Rule::unique('posts', 'slug')->ignore($post)],
-            'excerpt' => 'required',
-            'body' => 'required',
-            'category_id' => ['required', Rule::exists('categories', 'id')]
+        return $request->validate([
+            'RecipeName' => 'required|string|max:255',
+            'Description' => 'required|string',
+            'steps' => 'required|integer',
+            'steps_details' => 'required|string',
+            'NbIng' => 'required|integer|min:1',
+            'ingredient_details' => 'required|string',
+            'NbLikes' => 'nullable|integer|min:1',
+            'UserIsApproved' => 'required|boolean',
+            'Difficulty_level' => 'required|string|in:easy,medium,hard'
         ]);
     }
 }
