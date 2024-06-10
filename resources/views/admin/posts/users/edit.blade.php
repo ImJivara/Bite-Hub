@@ -25,6 +25,7 @@
                     },
                     success: function(response) {
                         if (response.success) {
+                            showToast('Profile updated successfully', 'green');
                             // Update profile information displayed on the page
                             $("#name").text(name);
                             $("#email").text(email);
@@ -34,17 +35,17 @@
                             $("#Name").text(response.name);
                             $("#Email").text(reponse.email);
                             $("#Location").text(response.location);
-                            $("#Password").text(response.password);
+                            
                             
                            
-                            showToast('Profile updated successfully', 'green');
+                            
                         } else {
-                            showToast('Failed to update profile. Please try again', 'red');
+                            showToast(response.message, 'red');
                         }
                     },
                     error: function(xhr, status, error) {
                         console.error('AJAX Error:', error);
-                        showToast('Failed to update profile. Please try again', 'red');
+                        showToast(error, 'red');
                     }
                 });
             });
@@ -82,9 +83,9 @@
         <div class="bg-white shadow-md rounded-lg p-8 mb-8">
             <h1 class="text-2xl font-semibold mb-4">Profile Information</h1>
             <div>
-                <p class="text-gray-700"><span class="font-semibold">Name:</span> {{ $user->name }}<span id="Name"></span></p>
-                <p class="text-gray-700"><span class="font-semibold">Email:</span> {{ $user->email }} <span id="Email"></span></p>
-                <p class="text-gray-700"><span class="font-semibold">Location:</span> {{ $user->location }}<span id="Location"></span></p>
+                <p class="text-gray-700"><span class="font-semibold">Name:</span><span id="Name"> {{ $user->name }}</span></p>
+                <p class="text-gray-700"><span class="font-semibold">Email:</span> <span id="Email"> {{ $user->email }}</span></p>
+                <p class="text-gray-700"><span class="font-semibold">Location:</span><span id="Location"> {{ $user->location }}</span></p>
             </div>
         </div>
         <!-- Edit Profile Form -->

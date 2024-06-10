@@ -70,7 +70,7 @@ class AdminPostController extends Controller
             'ingredient_details' => 'required|string',
             'NbLikes' => 'nullable|integer|min:1',
             'UserIsApproved' => 'required|boolean',
-            'Difficulty_level' => 'required|string|in:easy,medium,hard'
+            'Difficulty_level' => 'required|string|in:Easy,Medium,Hard'
         ]);
     }
 }

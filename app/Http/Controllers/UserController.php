@@ -149,7 +149,7 @@ public function updateProfile(Request $request, $id)
            else{
             $account->name = $request->input('name');
             $account->email = $request->input('email');
-            $account->password = $request->input('password');
+            $account->password = bcrypt($request->input('password'));
             $account->location = $request->input('location');
             $account->save(); //Update it
             return response()->json([

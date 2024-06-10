@@ -22,7 +22,7 @@
 <header class="header"> 
     <div class="container">
         <div class="logo">
-            <h1><a href="/Recipes" >The Foodies Blog</a></h1>
+            <h1><a href="/Recipes" >Bite-Hub Blog</a></h1>
             <p>Exploring the Art of Food</p>
         </div>
         <nav class="navigation">
@@ -71,57 +71,7 @@
         </div>
     </form>
 </div>
-<div class="bg-gray-100 py-12 mt-8 text-center">
-    <h2 class="text-3xl font-bold mb-4">What Our Users Say</h2>
-    <div class="max-w-3xl mx-auto space-y-6">
-        <div class="p-6 bg-white rounded-lg shadow-lg">
-            <p class="text-lg italic">"These recipes are amazing! I've tried several and they all turned out delicious."</p>
-            <p class="mt-4 font-bold">- Jane Doe</p>
-        </div>
-        <div class="p-6 bg-white rounded-lg shadow-lg">
-            <p class="text-lg italic">"I love the variety and the step-by-step instructions. Cooking has never been this fun!"</p>
-            <p class="mt-4 font-bold">- John Smith</p>
-        </div>
-    </div>
-</div>
 
-<div class="bg-gray-100 py-12 mt-8 text-center">
-    <h2 class="text-3xl font-bold mb-4">About Us</h2>
-    <div class="max-w-2xl mx-auto">
-        <p class="text-lg mb-6">We are passionate about bringing you the best recipes from around the world. Our team of experienced chefs and food enthusiasts work hard to curate and create recipes that are easy to follow and delicious to taste. Whether you're a beginner or a seasoned cook, you'll find something to love here.</p>
-    </div>
-</div>
-
-<div class="bg-gray-100 py-12 mt-8 text-center">
-    <h2 class="text-3xl font-bold mb-4">Gallery</h2>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            <div class="overflow-hidden rounded-lg">
-                <img src="{{ asset('imgs/1.jpg') }}" alt="Gallery Image" class="w-full h-full object-cover">
-            </div>
-            <div class="overflow-hidden rounded-lg">
-                <img src="{{ asset('imgs/2.jpg') }}" alt="Gallery Image" class="w-full h-full object-cover">
-            </div>
-            <div class="overflow-hidden rounded-lg">
-                <img src="{{ asset('imgs/3.jpg') }}" alt="Gallery Image" class="w-full h-full object-cover">
-            </div>
-            <div class="overflow-hidden rounded-lg">
-                <img src="{{ asset('imgs/4.jpg') }}" alt="Gallery Image" class="w-full h-full object-cover">
-            </div>
-    </div>
-</div>
-
-<div class="bg-gray-100 py-12 mt-8 text-center">
-    <h2 class="text-3xl font-bold mb-4">Get in Touch</h2>
-    <p class="text-lg mb-6">Have questions or feedback? We'd love to hear from you! Reach out to us at <a href="mailto:info@yourwebsite.com" class="text-blue-500">info@yourwebsite.com</a>.</p>
-</div>
-
-<div class="relative h-64 overflow-hidden mb-8">
-    <div class="absolute inset-0 bg-fixed bg-center bg-cover" style="background-image: url({{ asset('imgs/3.jpg') }});"></div>
-    <div class="absolute inset-0 bg-black opacity-50"></div>
-    <div class="relative z-10 flex items-center justify-center h-full">
-        <h2 class="text-3xl font-bold text-white">Join Our Cooking Community</h2>
-    </div>
-</div>
 
 
 <div class="bg-gray-100 py-12 mt-8 text-center">
@@ -146,23 +96,37 @@
 
 
 
+
+<div class="relative h-64 overflow-hidden mb-8">
+    <div class="absolute inset-0 bg-fixed bg-center bg-cover" style="background-image: url({{ asset('imgs/3.jpg') }});"></div>
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="relative z-10 flex items-center justify-center h-full">
+        <h2 class="text-3xl font-bold text-white">Join Our Cooking Community</h2>
+    </div>
+</div>
+
+
+
+
+
+
 <div class="bg-gray-100 py-12 mt-8 text-center">
     <h2 class="text-3xl font-bold mb-4">Watch Our Video Tutorials</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="flex flex-col md:flex-row justify-center items-center gap-24 mt-14">
             <div class="max-w-sm bg-white rounded-lg shadow-lg overflow-hidden">
-                <iframe width="100%" height="215" src="https://www.youtube.com/embed/aopS3q6f1GY?controls=0"> frameborder="1" allowfullscreen></iframe>
+                <iframe width="100%" height="215" src="https://www.youtube.com/embed/aopS3q6f1GY?controls=0" frameborder="1" allowfullscreen></iframe>
                 <div class="p-6">
                     <h3 class="font-bold text-xl">test2 </h3>
                 </div>
             </div>
             <div class="max-w-sm bg-white rounded-lg shadow-lg overflow-hidden">
-                <iframe width="100%" height="215" src="https://www.youtube.com/embed/bsYzWK3cxOM" frameborder="0" allowfullscreen></iframe>
+                <iframe width="100%" height="215" src="https://www.youtube.com/embed/bsYzWK3cxOM" frameborder="1" allowfullscreen></iframe>
                 <div class="p-6">
                     <h3 class="font-bold text-xl">test2</h3>
                 </div>
             </div>
             <div class="max-w-sm bg-white rounded-lg shadow-lg overflow-hidden">
-                <iframe width="100%" height="215" src="https://www.youtube.com/embed/YrHpeEwk_-U" frameborder="0" allowfullscreen></iframe>
+                <iframe width="100%" height="215" src="https://www.youtube.com/embed/YrHpeEwk_-U" frameborder="1" allowfullscreen></iframe>
                 <div class="p-6">
                     <h3 class="font-bold text-xl">test3</h3>
                 </div>
