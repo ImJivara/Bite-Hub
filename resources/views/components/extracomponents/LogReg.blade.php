@@ -171,7 +171,7 @@
         cursor: pointer;
     } 
 </style>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body class="bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center min-h-screen">
     <div class="flex flex-col items-center">
         <div class="wrapper">
             <div class="card-switch">
@@ -194,10 +194,10 @@
                             <div class="title">Sign up</div>
                             <form class="flip-card__form" id="registrationForm">
                                 <input class="flip-card__input" id="register_name" name="name" placeholder="Name" type="text" required>
-                                <div id="result2" style="color: red;"></div>
+                                <div id="resgisterresult1" style="color: red;"></div>
                                 <input class="flip-card__input mt-2" id="register_email" name="email" placeholder="Email" type="email" required>
                                 <input class="flip-card__input mt-4" id="register_password" name="password" placeholder="Password" type="password" required>
-                                <div id="result1" class="mt-2" style="color: red;"></div>
+                                <div id="resultpass" class="mt-2" style="color: red;"></div>
                                 <input class="flip-card__input " id="register_confirm_password" name="confirm_password" placeholder="Confirm Password" type="password" disabled>
                                 <button class="flip-card__btn" id="btn_register">Confirm!</button>
                             </form>
@@ -248,10 +248,10 @@
                 event.preventDefault(); // Prevents default submission
 
                 if ($('#register_password').val() != $('#register_confirm_password').val()) {
-                    $('#result1').html("Re-check your passwords, make sure they're identical");
+                    $('#resultpass').html("Re-check your passwords, make sure they're identical");
                     $('#register_confirm_password').val('');
                 } else {
-                    $('#result1').html("");
+                    $('#resultpass').html("");
                     var email = $('#register_email').val();
                     var password = $('#register_password').val();
                     var name = $('#register_name').val();
@@ -269,7 +269,7 @@
                             if (response.success) {
                                 window.location.href = '/Login';
                             } else {
-                                $('#result2').html(response.message);
+                                $('#resgisterresult1').html(response.message);
                             }
                         },
                         error: function(xhr) {
@@ -280,7 +280,7 @@
                                     errorMsg += errors[error] + '<br>';
                                 }
                             }
-                            $('#result2').html(errorMsg);
+                            $('#resgisterresult1').html(errorMsg);
                         }
                     });
                 }

@@ -48,6 +48,10 @@
 
 </style>
 </head>
+<body class="bg-gradient-to-r from-green-400 to-blue-50 flex items-center justify-center min-h-screen">
+         <x-extracomponents.LogReg/>   
+
+</body>
 <!-- <body class="bg-cover bg-center bg-no-repeat overflow-y-hidden" style="background-image: url({{asset('imgs/bg1.jpg')}});"> -->
 
 <!-- <body class=" bg-cover "style="background-image: url({{asset('imgs/backgroundimgs/black.jpg')}}); background-size: contain; overflow-y-hidden background-position: center;"> -->
@@ -81,8 +85,5 @@
          </div>
     </div>
   </section> -->
-  <body class="bg-gray-200 flex items-center justify-center min-h-screen">
-         <x-extracomponents.LogReg/>   
-  <!-- <x-extracomponents.socialbanner/> -->
-</body>
+
 </html>

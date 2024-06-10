@@ -82,7 +82,8 @@ class UserController extends Controller
             
              return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => True]);
         } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage(), 'success' => False]);        }
+                                    return response()->json(['message' => $e->getMessage(), 'success' => False]);       
+                                }
     }
    
 

@@ -59,6 +59,9 @@ Route::get('/app', function () {
 Route::get('/form', function () {
     return view('PostForm');
 });
+Route::get('/HealthTools', function () {
+    return view('Health');
+});
 Route::get('/logreg', function () {
     return view('login-registration form');
 });
