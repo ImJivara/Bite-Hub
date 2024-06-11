@@ -47,27 +47,26 @@
     
     </html>
 
-   <script>
+    <script>
     var totalCal = 0;
     var totalCarbs = 0;
     var totalProtein = 0;
     var totalFat = 0;
-        function updateNutritionalIntake(calories2, carbs, protein, fat)
-        {
-            totalCal += calories2;
-            totalCarbs += carbs;
-            totalProtein += protein;
-            totalFat += fat;
+    
+    function updateNutritionalIntake(calories2, carbs, protein, fat) {
+        totalCal += calories2;
+        totalCarbs += carbs;
+        totalProtein += protein;
+        totalFat += fat;
 
-            $('#nutrition-result').text(`Total Intake - Calories: ${totalCal} cal, Carbs: ${totalCarbs} g, Protein: ${totalProtein} g, Fat: ${totalFat} g`);
-            
-            // Call sendNutritionalValues after updating the values
-            sendNutritionalValues( totalCarbs,totalProtein, totalFat);
-        }
+        $('#nutrition-result').text(`Total Intake - Calories: ${totalCal} cal, Carbs: ${totalCarbs} g, Protein: ${totalProtein} g, Fat: ${totalFat} g`);
+        
+        // Call sendNutritionalValues after updating the values
+        sendNutritionalValues(totalCarbs, totalProtein, totalFat);
+    }
 
     $(document).ready(function() {
-        $('#nutrition-form').on('submit', function(event)
-        {
+        $('#nutrition-form').on('submit', function(event) {
             event.preventDefault();
 
             const food = $('#food').val();
@@ -83,7 +82,6 @@
                         <span class="text-sm carbs">Carbs: ${carbs} g</span>
                         <span class="text-sm protein">Protein: ${protein} g</span>
                         <span class="text-sm fat">Fat: ${fat} g</span>
-
                     </div>
                     <button class="remove-food bg-red-500 text-white px-2 py-1 rounded">Remove</button>
                 </li>
@@ -92,13 +90,11 @@
             $('#food-list2').append(listItem); // Append the list item to the food list
 
             updateNutritionalIntake(calories2, carbs, protein, fat); // Update nutritional intake
-           
 
             $('#nutrition-form')[0].reset(); // Reset the form
         });
 
-        $(document).on('click', '.remove-food', function(event)
-        {
+        $(document).on('click', '.remove-food', function(event) {
             const foodItem = $(this).closest('li'); // Find the parent <li> element
 
             // Extract numeric values using specific classes
@@ -115,24 +111,25 @@
 
             // Update the total intake display
             $('#nutrition-result').text(`Total Intake - Calories: ${totalCal} cal, Carbs: ${totalCarbs} g, Protein: ${totalProtein} g, Fat: ${totalFat} g`);
-            sendNutritionalValues(totalCarbs,totalProtein,totalFat);
+
+            // Trigger event to update the chart with the latest total values
+            const updateEvent = new CustomEvent('nutritionalValuesUpdated', { 
+                detail: { carbs: totalCarbs, proteins: totalProtein,  fats: totalFat } 
+            });
+            document.dispatchEvent(updateEvent);
 
             foodItem.remove(); // Remove the food item from the list
         });
 
-       
-        
-        function sendNutritionalValues( carbs, protein, fat) {
-    const event = new CustomEvent('nutritionalValuesUpdated', { 
-        detail: { carbs: carbs, proteins: protein,  fats: fat } 
+        function sendNutritionalValues(carbs, protein, fat) {
+            const event = new CustomEvent('nutritionalValuesUpdated', { 
+                detail: { carbs: carbs, proteins: protein,  fats: fat } 
+            });
+            document.dispatchEvent(event);
+        }
     });
-    document.dispatchEvent(event);
-}
-
-});
-
-   
 </script>
+
 
 
    

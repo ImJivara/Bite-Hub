@@ -11,6 +11,14 @@
 
 
 <script>
+    // Define the sendNutritionalValues function
+function sendNutritionalValues(carbs, proteins, fats) {
+    const event = new CustomEvent('nutritionalValuesUpdated', { 
+        detail: { carbs: carbs, proteins: proteins, fats: fats } 
+    });
+    document.dispatchEvent(event);
+}
+
     // Function to initialize the nutritional tracker
 function initializeNutritionalTracker(data) {
     // Calculate the total intake
@@ -20,6 +28,12 @@ function initializeNutritionalTracker(data) {
     const percentages = data.map(value => (value / totalIntake) * 100);
 
     const ctx = document.getElementById('nutritionPieChart').getContext('2d');
+
+    // Destroy existing chart instance if it exists
+    if (Chart.getChart(ctx)) {
+        Chart.getChart(ctx).destroy();
+    }
+
     const nutritionData = {
         labels: ['Proteins', 'Carbs', 'Fats'],
         datasets: [{
@@ -81,14 +95,21 @@ document.getElementById('showNutritionTracker').addEventListener('click', functi
     const nutritionTrackerContent = document.getElementById('nutritionTrackerContent');
     if (nutritionTrackerContent.style.display === 'none') {
         nutritionTrackerContent.style.display = 'block'; // Show the nutritional tracker content
-
+        
         // Initialize the nutritional tracker with the updated total values
-        initializeNutritionalTracker([totalCarbs, totalProtein, totalFat]);
+        document.addEventListener('nutritionalValuesUpdated', function (event) {
+            const { carbs, proteins, fats } = event.detail;
+            initializeNutritionalTracker([carbs, proteins, fats]);
+        });
 
         // Trigger event to update the chart with the latest total values
-        const event = new CustomEvent('nutritionalValuesUpdated', { detail: { proteins: totalProtein, carbs: totalCarbs, fats: totalFat } });
+        const event = new CustomEvent('nutritionalValuesUpdated', { 
+            detail: { proteins: totalProtein, carbs: totalCarbs, fats: totalFat } 
+        });
         document.dispatchEvent(event);
     }
+    
 });
+
 
 </script>
