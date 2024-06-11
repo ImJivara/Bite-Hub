@@ -62,11 +62,31 @@
 .cardcreator:hover::before {
   transform: rotate(-90deg) scaleX(1.34) scaleY(0.77);
 }
+.profile-container {
+    position: relative;
+    width: 125px;
+    height: 135px;
+    border-radius: 50%;
+    overflow: hidden;
+    
+    
+    
+    
+}
 
+.profile-image {
+    width: 100%;
+    height: 100%;
+    
+    object-fit: cover;
+}
 
 </style>
 @props(['name'])
 <div class="cardcreator">
+  <div class="profile-container ml-16 ">
+    <img class="profile-image" src="{{asset('imgs/3.jpg')}}" alt="">
+  </div>
   <p class="headingg">{{$name}}</p>
   <p class="sec">Faculty Of Technology</p>
   <p class="thir">Business Computer</p>

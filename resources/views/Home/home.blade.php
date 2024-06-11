@@ -1,7 +1,7 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
 
-<!-- Hero Section -->
+
 <section class="hero bg-gradient-to-r from-green-400 to-blue-500 text-white py-16 shadow-xl">
     <div class="container mx-auto ">
         <div class="text-center">
@@ -13,11 +13,10 @@
                 <x-hovercards/>
             </div>
         </div>
-        <div class="mt-14">
-            <x-extracomponents.cmdlikecard/>
-        </div>
-    </div>
-    
+            <div class="mt-14">
+                <x-extracomponents.cmdlikecard/>
+            </div>      
+    </div>  
 </section>
 
 
@@ -41,7 +40,7 @@
 </section> -->
 
 
-<!-- About Us Section -->
+
 <section class="about-us  py-16 shadow-xl">
     <div class="container mx-auto text-center">
         <h2 class="text-3xl font-bold mb-4">About Us</h2>
@@ -53,19 +52,17 @@
     </div>
 </section>
 
-
 <x-extracomponents.testimonial/>
 
-
 <section>
-    <div class="bg-gray-100 py-12 mt-8 text-center transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg">
+    <div class="bg-black py-12  text-center text-white transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg">
         <h2 class="text-3xl font-bold mb-4">Get in Touch</h2>
-        <p class="text-lg mb-6">Have questions or feedback? We'd love to hear from you! Reach out to us at <a href="mailto:Bitehub@gmail.org" class="text-blue-500">Bitehub@gmail.org</a>.</p>
+        <p class="text-lg mb-6">Have questions or feedback? We'd love to hear from you! Reach out to us at <a href="mailto:Bitehub@gmail.org" class="text-blue-500">Bitehub@gmail.org</a></p>
     </div>
 <section>
 
 
-<!-- Follow Us Section -->
+
 <section class="follow-us py-16 shadow-xl ">
     <div class="container mx-auto text-center">
         <h2 class="text-3xl font-bold mb-4">Connect with Us</h2>

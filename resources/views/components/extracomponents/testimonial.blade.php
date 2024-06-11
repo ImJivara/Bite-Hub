@@ -25,12 +25,12 @@
             <!-- Testimonial 1 -->
             <div class="testimonial bg-white rounded-lg shadow-md p-6">
                 <p class="text-gray-700 mb-4">"This blog has transformed the way I cook. The recipes are easy to follow and delicious!"</p>
-                <h3 class="text-xl font-semibold">- Jane Doe</h3>
+                <h3 class="text-xl font-semibold">- Mia Doe</h3>
             </div>
             <!-- Testimonial 2 -->
             <div class="testimonial bg-white rounded-lg shadow-md p-6">
                 <p class="text-gray-700 mb-4">"I love the health tools provided here. They help me maintain a balanced diet effortlessly."</p>
-                <h3 class="text-xl font-semibold">- John Smith</h3>
+                <h3 class="text-xl font-semibold">- Jake Smith</h3>
             </div>
             <!-- Testimonial 3 -->
             <div class="testimonial bg-white rounded-lg shadow-md p-6">

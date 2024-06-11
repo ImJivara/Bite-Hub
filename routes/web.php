@@ -33,7 +33,10 @@ Route::get('/s', function () {
     return view('\components\sidebar');
 })->middleware('guest');
 Route::get('/p', function () {
-    return view('\components\piechart');
+    return view('\components\piecharts\piechart');
+});
+Route::get('/testpie', function () {
+    return view('\components\piecharts\testpiechart');
 });
 Route::get('/p1', function () {
     return view('\components\doughnutchart');
@@ -60,7 +63,7 @@ Route::get('/form', function () {
     return view('PostForm');
 });
 Route::get('/HealthTools', function () {
-    return view('Health');
+    return view('Health Folder.Health');
 });
 Route::get('/logreg', function () {
     return view('login-registration form');
