@@ -10,7 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;// for file saving
 
 class RecipeController extends Controller
 {
@@ -62,34 +63,6 @@ class RecipeController extends Controller
 
     }
 
-        // public function like(Request $request)
-        // {
-        //     try {
-        //         $user = User::findOrFail(Auth::user()->id);
-        //         $recipe = Recipe::findOrFail($request->RecipeId);
-        //         if (!$user->likedRecipes()->where('recipe_id', $recipe->id)->exists()) 
-        //         {
-        //             $user->likedRecipes()->attach($recipe->id);
-        //             $recipe->increment('NbLikes');
-        //             $recipe->save();
-        //             $NbLikes = $recipe->NbLikes; 
-
-        //             Activity::create([
-        //                 'user_id' => $user->id,
-        //                 'type' => 'like',
-        //                 'subject_type' => 'App\Models\Recipe',
-        //                 'subject_id' => $recipe->id,
-        //                 'description' => 'User ' . $user->name . ' liked the recipe ' . $recipe->RecipeName,
-        //             ]);
-                    
-                    
-        //             return response()->json([ 'NbLikes' => $NbLikes,'RecipeAlreadyLiked' => False]);
-        //         }
-        //         return response()->json(['RecipeAlreadyLiked' => True]);
-        //     } catch (\Exception $e) {
-        //         return response()->json(['error' => 'An error occurred while processing your request.'], 500);
-        //     }
-        // }
     public function like(Request $request)
     {
         try {
@@ -230,6 +203,107 @@ public function commentOnRecipe(Request $request, $recipeId)
     }
 
 #################################### Eeleq relationships functions  ################################################################3
+
+
+
+
+
+
+    public function fetchAndStoreRecipes()
+    {
+        $response = Http::get('https://api.spoonacular.com/recipes/random', [
+            'apiKey' => env('SPOONACULAR_API_KEY'),
+            'number' => 1 // Number of recipes to fetch
+        ]);
+
+        $recipeData = $response->json()['recipes'];
+        $nutritionalData = $this->fetchNutritionalData($recipeData[0]['id']);
+        $ingredients = $this->extractIngredients($recipeData);  
+        $selected_nutritional_values = ['calories', 'fat', 'carbs', 'protein'];
+        // dd($recipes);
+         // Convert the recipe data to JSON
+        //  $recipeJson = json_encode($recipes, JSON_PRETTY_PRINT);
+        //  $filePath = 'C:/Users/User/Documents/RecipeData/';
+        //  $fileName = 'recipe_' . time() . '.json'; 
+        //  file_put_contents($filePath . $fileName, $recipeJson);
+
+        return view('OneRecipedemo', [
+            'recipe' => $recipeData,
+            'nutritionalData' => $nutritionalData,
+            'ingredients' => $ingredients,
+            'selected_nutritional_values' => $selected_nutritional_values,
+        ]);
+    }
+
+    // Fetch nutritional data for a recipe from Spoonacular API
+    private function fetchNutritionalData($recipeId)
+    {
+        try {
+            $response = Http::get("https://api.spoonacular.com/recipes/{$recipeId}/nutritionWidget.json", [
+                'apiKey' => env('SPOONACULAR_API_KEY'),
+            ]);
+
+            if ($response->successful()) {
+                return $response->json();
+            } else {
+                // Log or handle the error response
+                return null;
+            }
+        } catch (\Exception $e) {
+            // Log or handle the exception
+            dd($e->getMessage()); // Dump the exception message
+            return null;
+        }
+    }
+
+    private function extractIngredients($recipeData)
+    {
+        $ingredients = [];
+
+        // Check if 'extendedIngredients' key exists in the $recipeData array
+        if (isset($recipeData['extendedIngredients'])) {
+            foreach ($recipeData['extendedIngredients'] as $ingredientData) {
+                $ingredient = [
+                    'name' => $ingredientData['name'],
+                    'amount' => $ingredientData['amount'],
+                    'unit' => $ingredientData['measures']['us']['unitLong'] // Assuming you want to use US units
+                ];
+                $ingredients[] = $ingredient;
+            }
+        }
+
+        return $ingredients;
+    }
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }
 
