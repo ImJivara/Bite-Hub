@@ -11,39 +11,49 @@
         </div>
         <!-- Recipe Information -->
         <div class="flex flex-col justify-center">
-            <h1 class="text-4xl font-semibold mb-4">{{ $r->RecipeName }}</h1>
-            <p class="text-lg text-gray-700 mb-4">{{ $r->Description }}</p>
-            <div class="flex items-center mb-4">
-                <span class="text-gray-600 mr-2">Rate this recipe:</span>
-                <div class="flex">
-                    @for ($i = 1; $i <= 5; $i++)
-                    <button class="text-yellow-400 focus:outline-none" onclick="rateRecipe({{ $i }})">
-                        @if ($i <= $r->rating)
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 filled-star" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l4 4m0 0l4-4m-4 4V4"></path>
-                        </svg>
-                        @else
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 empty-star" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l4 4m0 0l4-4m-4 4V4"></path>
-                        </svg>
-                        @endif
-                    </button>
-                    @endfor
+            <div>
+                <h1 class="text-4xl font-semibold mb-4">{{ $r->RecipeName }}</h1>
+                <p class="text-lg text-gray-700 mb-4">{{ $r->Description }}</p>
+                <div class="flex items-center mb-4">
+                    <span class="text-gray-600 mr-2">Rate this recipe:</span>
+                    <div class="flex">
+                        @for ($i = 1; $i <= 5; $i++)
+                        <button class="text-yellow-400 focus:outline-none" onclick="rateRecipe({{ $i }})">
+                            @if ($i <= $r->rating)
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 filled-star" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l4 4m0 0l4-4m-4 4V4"></path>
+                            </svg>
+                            @else
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 empty-star" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l4 4m0 0l4-4m-4 4V4"></path>
+                            </svg>
+                            @endif
+                        </button>
+                        @endfor
+                    </div>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <div>
+                        <span class="text-gray-600 mr-2">Number of Ingredients:</span>
+                        <p class="text-lg font-semibold">{{ $r->NbIngredients }}</p> 
+                    </div>
+                    <div>
+                        <span class="text-gray-600 mr-2">Number of Steps:</span>
+                        <p class="text-lg font-semibold">{{ $r->Steps }}</p>   
+                    </div>
+                    <div>
+                        <span class="text-gray-600 mr-2">Number of Likes:</span>
+                        <p class="text-lg font-semibold">{{ $r->NbLikes }}</p>
+                    </div>
                 </div>
             </div>
-            <div class="flex justify-between">
-                <span class="text-gray-600 mr-2">Number of Ingredients:</span>
-                <p class="text-lg font-semibold">{{ $r->NbIngredients }}</p> 
-                <span class="text-gray-600 mr-2">Number of Steps:</span>
-                <p class="text-lg font-semibold">{{ $r->Steps }}</p>   
-                <span class="text-gray-600 mr-2">Number of Likes:</span>
-                <p class="text-lg font-semibold">{{ $r->NbLikes }}</p>
-                
-                
+            <div class="Recipe-Pie-chart flex justify-center mt-4">
+                <x-piecharts.piechart :Proteins="70" :Carbs="50" :Fats="20" />
             </div>
         </div>
     </div>
 </section>
+
 <!-- End of Recipe Details Section -->
 
 <!-- Ingredients and Steps Section -->

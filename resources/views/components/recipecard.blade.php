@@ -26,16 +26,16 @@
                                 <time class="text-gray-600">{{ $r->created_at->diffForHumans() }}</time>
                             @endif
                     </div>
-                    <div class="flex justify-between">
+                    <div  class="display:block">
                         @php                     
                             if(Auth::user())
                             $likedRecipes = Auth::user()->likedRecipes->pluck('id')->toArray();
                             else $likedRecipes=[];
                         @endphp
-                        @if (in_array($r->id, $likedRecipes))
-                            <x-extracomponents.modernlikebutton :recipeId="$r->id" :IsLiked='True' data-likebtn />
-                        @else
-                            <x-extracomponents.modernlikebutton :recipeId="$r->id"  :IsLiked='False' data-likebtn />
+                        @if (in_array($r->id, $likedRecipes))                         
+                                <x-extracomponents.modernlikebutton :recipeId="$r->id" :IsLiked='True' data-likebtn />                           
+                        @else                           
+                                <x-extracomponents.modernlikebutton :recipeId="$r->id"  :IsLiked='False' data-likebtn />                           
                         @endif
                         
                         
