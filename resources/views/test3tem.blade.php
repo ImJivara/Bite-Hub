@@ -114,19 +114,16 @@
     <h2 class="text-3xl font-bold mb-4">Watch Our Video Tutorials</h2>
     <div class="flex flex-col md:flex-row justify-center items-center gap-24 mt-14">
             <div class="max-w-sm bg-white rounded-lg shadow-lg overflow-hidden">
-                <iframe width="100%" height="215" src="https://www.youtube.com/embed/aopS3q6f1GY?controls=0" frameborder="1" allowfullscreen></iframe>
-                <div class="p-6">
+=                <div class="p-6">
                     <h3 class="font-bold text-xl">test2 </h3>
                 </div>
             </div>
             <div class="max-w-sm bg-white rounded-lg shadow-lg overflow-hidden">
-                <iframe width="100%" height="215" src="https://www.youtube.com/embed/bsYzWK3cxOM" frameborder="1" allowfullscreen></iframe>
                 <div class="p-6">
                     <h3 class="font-bold text-xl">test2</h3>
                 </div>
             </div>
             <div class="max-w-sm bg-white rounded-lg shadow-lg overflow-hidden">
-                <iframe width="100%" height="215" src="https://www.youtube.com/embed/YrHpeEwk_-U" frameborder="1" allowfullscreen></iframe>
                 <div class="p-6">
                     <h3 class="font-bold text-xl">test3</h3>
                 </div>

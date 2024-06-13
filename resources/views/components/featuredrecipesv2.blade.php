@@ -75,8 +75,8 @@
                         <span class="text-red-800 text-4xl">And Don't Forget, Today's Featured Recipe</span>
                         @endif
                         </h1>
-                            @if (strlen($index->Description) > 600)
-                                <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($index->Description, 600, $end='...') }}</p>
+                            @if (strlen($index->Description) > 200)
+                                <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($index->Description, 200, $end='...') }}</p>
                                 <button id="toggleBtn_{{ $index->id }}" onclick="toggleDescription('{{ $index->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
                             @else
                                 <p class="text-gray-700 font-medium">{{ $index->Description }}</p>

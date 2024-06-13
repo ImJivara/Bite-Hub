@@ -16,7 +16,7 @@ use App\Http\Controllers\Auth\RegisterController;
 Route::get('/', function () {
     return view('\Home\home');
 });
-Route::get('/fetch', [RecipeController::class, 'fetchAndStoreRecipes']);
+Route::get('/fetch', [RecipeController::class, 'fetchAndStoreRecipes2']);
 // <a href="{{ route('contacts') }}">contacts</a>
 #################################### Home ################################################################3
 Route::get('/Services', function () {

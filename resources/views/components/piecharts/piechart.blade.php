@@ -14,7 +14,7 @@
     // Step 3: JavaScript for Pie Chart
     document.addEventListener('DOMContentLoaded', function () {
         const ctx = document.getElementById('nutritionPieChart').getContext('2d');
-        const data = [{{ $Proteins }}, {{ $Carbs }}, {{ $Fats }}];
+        const data = [{{ $Proteins }}, {{ $Carbs }} , {{ $Fats }}];
 
         // Calculate the total intake
         const totalIntake = data.reduce((acc, val) => acc + val, 0);

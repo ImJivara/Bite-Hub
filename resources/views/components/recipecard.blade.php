@@ -18,12 +18,12 @@
                     <a href="/Step/{{ $r->id }}" class="text-blue-500 font-semibold block">Steps: {{ $r->Steps }}</a>
                 </div>
                 <div class="flex justify-between items-center mt-2 relative space-x-4 ">
-                    <p class="text-gray-600 font-semibold mr-4 flex-2">Number of Likes: <span id="txt_{{ $r->id }}" class="text-red-500 text-semibold">{{ $r->NbLikes }}</span></p>
+                    <p class="text-gray-600 font-semibold mr-4 flex-2">Likes: <span id="txt_{{ $r->id }}" class="text-red-500 text-semibold">{{ $r->NbLikes }}</span></p>
                     <div class="   bg-gray-200 text-xs px-4 py-2 rounded-lg">
                             @if ($r->created_at == null) 
                                 <p class="text-gray-600">Created at../-/-/</p>
                             @else 
-                                <time class="text-gray-600">{{ $r->created_at->diffForHumans() }}</time>
+                                <time class="text-gray-600"><p class="w-16">{{ $r->created_at->diffForHumans()  }}</p></time>
                             @endif
                     </div>
                     <div  class="display:block">

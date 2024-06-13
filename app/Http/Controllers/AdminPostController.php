@@ -11,7 +11,7 @@ class AdminPostController extends Controller
     public function index()
     {
         return view('admin.posts.index', [
-            'posts' => Recipe::with('author')->paginate(8)
+            'posts' => Recipe::with('author')->paginate(8),
         ]);
     }
 
@@ -40,15 +40,19 @@ class AdminPostController extends Controller
     public function update(Request $request, Recipe $post)
     {
         $validatedData = $this->validateRecipe($request, $post);
-    
+
+        // Convert JSON string back to array/object
+        $validatedData['ingredients_details'] = json_decode($request->input('ingredients_details'), true);
+        $validatedData['NbIngredients']=count($validatedData['ingredients_details']);
         if ($request->hasFile('thumbnail')) {
             $validatedData['thumbnail'] = $request->file('thumbnail')->store('thumbnails');
         }
-    
+
         $post->update($validatedData);
-    
+
         return back()->with('success', 'Recipe Updated!');
     }
+
 
     public function destroy(Recipe $post)
     {
@@ -58,19 +62,25 @@ class AdminPostController extends Controller
     }
 
     protected function validateRecipe(Request $request, ?Recipe $recipe = null): array
-    {
-        $recipe ??= new Recipe();
+{
+    $recipe ??= new Recipe();
 
-        return $request->validate([
-            'RecipeName' => 'required|string|max:255',
-            'Description' => 'required|string',
-            'steps' => 'required|integer',
-            'steps_details' => 'required|string',
-            'NbIng' => 'required|integer|min:1',
-            'ingredient_details' => 'required|string',
-            'NbLikes' => 'nullable|integer|min:1',
-            'UserIsApproved' => 'required|boolean',
-            'Difficulty_level' => 'required|string|in:Easy,Medium,Hard'
-        ]);
-    }
+    return $request->validate([
+        'RecipeName' => 'required|string|max:255',
+        'Description' => 'required|string',
+        'Steps' => 'required|integer',
+        'steps_details' => 'required|string',
+        'NbIngredients' => 'required|integer|min:1',
+        'ingredients_details' => 'required|string', 
+        'NbLikes' => 'nullable|integer|min:0',
+        'IsApproved' => 'required|boolean',
+        'difficulty_level' => 'required|string|in:Easy,Medium,Hard',
+        'Category' => 'nullable|string',
+        'Health_Score' => 'nullable|integer|min:0',
+        'preparation_time' => 'nullable|integer|min:0',
+        'cooking_time' => 'nullable|integer|min:0',
+        // Add validation rules for any other fields as needed
+    ]);
+}
+    
 }

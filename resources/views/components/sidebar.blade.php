@@ -71,11 +71,16 @@
         <div class="relative pl-3 my-5 overflow-y-scroll bg-white">
             <div class="flex flex-col w-full font-medium bg-white">
                 <!-- menu item -->
-                <div class="bg-white">
-                    <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]  bg-white">
-                        <a href="/admin/posts" class="  bg-white flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Admin Control</a>
-                    </span>
-                </div  class="bg-white">
+                @if (Auth::check() && Auth::user()->UserIsAdmin)
+                    <div class="bg-white">
+                        <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]  bg-white">
+                            <a href="/admin/posts" class="bg-white flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Admin Control</a>
+                        </span>
+                    </div>
+                @endif
+
+
+                
                 <!-- menu item -->
                     <div>
                         <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
@@ -88,35 +93,35 @@
                         </span>
                     </div>
                 <!-- menu item -->
-                <div>
+                <!-- <div>
                     <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem] ">
                         <a href="javascript:;" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Settings</a>
                     </span>
-                </div>
+                </div> -->
                 <!-- menu item -->
                 <div class="block pt-5 pb-[.15rem]">
                     <div class="px-4 py-[.65rem]">
-                        <span class="font-semibold text-[0.95rem] uppercase dark:text-neutral-500/80 text-secondary-dark">Applications</span>
+                        <a href="/HealthTools" class="font-semibold text-[0.95rem] uppercase dark:text-neutral-500/80 text-secondary-dark">Applications</a>
                     </div>
                 </div>
                 <!-- menu item -->
-                <div>
+                <!-- <div>
                     <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
                         <a href="javascript:;" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Users</a>
                     </span>
-                </div>
+                </div> -->
                 <!-- menu item -->
-                <div>
+                <!-- <div>
                     <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
                         <a href="javascript:;" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Orders</a>
                     </span>
-                </div>
+                </div> -->
                 <!-- menu item -->
-                <div>
+                <!-- <div>
                     <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
                         <a href="javascript:;" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Track Order</a>
                     </span>
-                </div>
+                </div> -->
                 <!-- menu item -->
                 @if (!Auth::user())
                 <a href="/Login" class="block border border-red-500 rounded-[.95rem] hover:bg-red-100  ">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Activity;
+use App\Models\NutritionalData;
 use Laravel\Prompts\alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,12 +32,12 @@ class RecipeController extends Controller
             $recipe=Recipe::findOrFail($request->id);
             if($recipe==null) dd("such post doesnt exist");
             else
-            $ingredients=$recipe->ingredients_details;
-            $ingredients=explode("-",$ingredients);
-            $step=$recipe->steps_details;
-            $step=explode("-",$step);
+            $ingredients= json_decode($recipe->ingredients_details, true);
+            // $ingredients=explode("\n",$ingredients);
+            $step_details=$recipe->steps_details;
+            //  $step_details=explode(". ",$step_details);
             $comments=$this->getRecipeComments($recipe->id);
-            return view('Recipe',['r'=>$recipe,'ing'=>$ingredients,'steps'=>$step,'comments'=>$comments] );
+            return view('Recipe',['r'=>$recipe,'ing'=>$ingredients,'steps'=>$step_details,'comments'=>$comments] );
         } 
     }
     
@@ -220,19 +221,33 @@ public function commentOnRecipe(Request $request, $recipeId)
         $nutritionalData = $this->fetchNutritionalData($recipeData[0]['id']);
         $ingredients = $this->extractIngredients($recipeData);  
         $selected_nutritional_values = ['calories', 'fat', 'carbs', 'protein'];
-        // dd($recipes);
-         // Convert the recipe data to JSON
-        //  $recipeJson = json_encode($recipes, JSON_PRETTY_PRINT);
-        //  $filePath = 'C:/Users/User/Documents/RecipeData/';
-        //  $fileName = 'recipe_' . time() . '.json'; 
-        //  file_put_contents($filePath . $fileName, $recipeJson);
+        
 
-        return view('OneRecipedemo', [
-            'recipe' => $recipeData,
-            'nutritionalData' => $nutritionalData,
-            'ingredients' => $ingredients,
-            'selected_nutritional_values' => $selected_nutritional_values,
-        ]);
+         // Convert the recipe data to JSON
+        // Directory path
+        // $directoryPath = 'C:/Users/PC/Documents/RecipeData/';
+
+        // Check if the directory exists, if not, create it
+        // if (!is_dir($directoryPath)) {
+        //     mkdir($directoryPath, 0777, true);
+        // }
+
+        // // Save recipe data
+        // $recipeJson = json_encode($recipeData, JSON_PRETTY_PRINT);
+        // $recipeFileName = $directoryPath . 'recipe_' . time() . '.json'; 
+        // file_put_contents($recipeFileName, $recipeJson);
+
+        // // Save nutritional data
+        // $nutritionalDataJson = json_encode($nutritionalData, JSON_PRETTY_PRINT);
+        // $nutritionalDataFileName = $directoryPath . 'nutritionalData_recipe_' . $recipeData[0]['id'] . '.json'; 
+        // file_put_contents($nutritionalDataFileName, $nutritionalDataJson);
+
+        // return view('OneRecipedemo', [
+        //     'recipe' => $recipeData,
+        //     'nutritionalData' => $nutritionalData,
+        //     'ingredients' => $ingredients,
+        //     'selected_nutritional_values' => $selected_nutritional_values,
+        // ]);
     }
 
     // Fetch nutritional data for a recipe from Spoonacular API
@@ -279,6 +294,145 @@ public function commentOnRecipe(Request $request, $recipeId)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public function fetchAndStoreRecipes2()
+{
+    $response = Http::get('https://api.spoonacular.com/recipes/random', [
+        'apiKey' => env('SPOONACULAR_API_KEY'),
+        'number' => 1 // Number of recipes to fetch
+    ]);
+
+    $recipeData = $response->json()['recipes'][0]; // Assuming only one recipe is fetched
+    $nutritionalData = $this->fetchNutritionalData2($recipeData['id']);
+    $ingredients = $this->extractIngredients2($recipeData);  
+
+    if ($nutritionalData) {
+        DB::beginTransaction();
+        
+        $stepsDetails = [];
+
+        // Access the analyzedInstructions array and its steps
+        $analyzedInstructions = $recipeData['analyzedInstructions'];
+        if (!empty($analyzedInstructions)) 
+        {
+            foreach ($analyzedInstructions[0]['steps'] as $step)
+            {
+                // Collect step descriptions into the $stepsDetails array
+                $stepsDetails[] = $step['step'];
+            }
+        }
+        try {
+             // Insert recipe data
+             $recipe = Recipe::create([
+                'user_id' => 1, 
+                'RecipeName' => $recipeData['title'],
+                'Description' => strip_tags($recipeData['summary']),
+                'Steps' => count($recipeData['analyzedInstructions'][0]['steps']),
+                'steps_details' => json_encode($stepsDetails), 
+                'NbIngredients' => count($ingredients),
+                'ingredients_details' => json_encode($ingredients), 
+                'NbLikes' => $recipeData['aggregateLikes'],
+                'IsApproved' => 0, 
+                'difficulty_level' => 'Medium',
+                'thumbnail' => $recipeData['image'],
+                'cooking_time' => $recipeData['cookingMinutes'],
+                'preparation_time' => $recipeData['preparationMinutes'],
+                'Category' => isset($recipeData['dishTypes'][0]) ? $recipeData['dishTypes'][0] : 'Uncategorized',
+                'Health_Score' => $recipeData['healthScore'],
+            ]);
+
+            // Insert nutritional data
+            $nutritional = NutritionalData::create([     
+                'recipe_id'=>$recipe->id,       
+                'calories' => $nutritionalData['calories'],
+                'carbs' => $nutritionalData['carbs'],
+                'fat' => $nutritionalData['fat'],
+                'protein' => $nutritionalData['protein'],
+                'bad' => json_encode($nutritionalData['bad']),
+                'good' => json_encode($nutritionalData['good']),
+                'nutrients' => json_encode($nutritionalData['nutrients']),
+            ]);
+            DB::commit();
+            dd($recipe,$nutritional);
+           // return response()->json(['message' => 'Recipe and nutritional data saved successfully',"Recipe"=>$recipe,"Ingredients"=>$ingredients], 200);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Failed to save data', 'details' => $e->getMessage()], 500);
+        }
+    } else {
+        return response()->json(['error' => 'Failed to fetch nutritional data'], 500);
+    }
+}
+
+private function fetchNutritionalData2($recipeId)
+{
+    try {
+        $response = Http::get("https://api.spoonacular.com/recipes/{$recipeId}/nutritionWidget.json", [
+            'apiKey' => env('SPOONACULAR_API_KEY'),
+        ]);
+
+        if ($response->successful()) {
+            return $response->json();
+        } else {
+            // Log or handle the error response
+            return null;
+        }
+    } catch (\Exception $e) {
+        // Log or handle the exception
+        return null;
+    }
+}
+
+private function extractIngredients2($recipeData)
+{
+    $ingredients = [];
+
+    if (isset($recipeData['extendedIngredients'])) {
+        foreach ($recipeData['extendedIngredients'] as $ingredientData) {
+            $ingredient = [
+                'name' => $ingredientData['name'],
+                'amount' => $ingredientData['amount'],
+                'unit' => $ingredientData['measures']['us']['unitLong'] // Assuming you want to use US units
+            ];
+            $ingredients[] = $ingredient;
+        }
+    }
+
+    return $ingredients;
+}
 
 
 

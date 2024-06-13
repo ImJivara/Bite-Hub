@@ -144,13 +144,11 @@ public function updateProfile(Request $request, $id)
         
             if ($account->name === $request->input('name') && 
                 $account->email === $request->input('email') && 
-                $account->password === $request->input('password') && 
                 $account->location === $request->input('location')) 
                 return response()->json(['success' => false, 'message' => 'No changes detected']);
            else{
             $account->name = $request->input('name');
             $account->email = $request->input('email');
-            $account->password = bcrypt($request->input('password'));
             $account->location = $request->input('location');
             $account->save(); //Update it
             return response()->json([

@@ -13,19 +13,26 @@ return new class extends Migration
     {
         Schema::create('recipes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('RecipeName');
-            $table->string('Description');
-            $table->string('Steps');
-            $table->string('steps_details');
-            $table->integer('NbIngredients');
-            $table->string('ingredients_details');
-            $table->integer('NbLikes');
-            $table->boolean('IsApproved')->default(False); 
-            $table->string('difficulty_level'); 
+            $table->text('Description');
+            $table->json('Steps');
+            $table->json('steps_details')->nullable();
+            $table->integer('NbIngredients')->default(0);
+            $table->json('ingredients_details')->nullable();
+            $table->integer('NbLikes')->default(0);
+            $table->boolean('IsApproved')->default(false);
+            $table->string('difficulty_level')->nullable();
             $table->string('thumbnail')->nullable();
+            $table->integer('cooking_time')->nullable();
+            $table->integer('preparation_time')->nullable();
+            $table->string('Category')->default('Uncategorized');
+            $table->integer('Health_Score')->nullable();
             $table->timestamps();
+            
+            
         });
+        
     }
 
     /**

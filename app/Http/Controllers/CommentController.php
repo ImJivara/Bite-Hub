@@ -24,8 +24,6 @@ class CommentController extends Controller
         $comment->user_id = $user->id; // Auth::id()
         $comment->recipe_id = $recipe->id;
         $comment->body = $request->body;
-        $comment->author=$user->name;
-        $comment->NoLikes=0;
         $comment->save();
         Activity::create([
             'user_id' => $user->id,

@@ -16,8 +16,8 @@
         <div class=" h-100 p-6 w-2/3 "> <!-- hun rje3 hut l color-->
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">{{ $featuredrec->RecipeName }}</h2>
             
-            @if (strlen($featuredrec->Description) > 600)
-                    <p class="text-gray-700 font-medium " >{{ \Illuminate\Support\Str::limit($featuredrec->Description, 600, $end='...') }}</p>
+            @if (strlen($featuredrec->Description) > 100)
+                    <p class="text-gray-700 font-medium " >{{ \Illuminate\Support\Str::limit($featuredrec->Description, 100, $end='...') }}</p>
                     <button id="toggleBtn_{{ $featuredrec->id }}" onclick="toggleDescription('{{ $featuredrec->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
                     @else <p class="text-gray-700 font-medium ">{{ $featuredrec->Description }}</p>
             @endif

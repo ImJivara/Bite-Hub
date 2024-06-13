@@ -9,10 +9,32 @@ class Recipe extends Model
 {
     
     use HasFactory;
+   
     protected $fillable = [
-        'RecipeName', 'Description', 'steps', 'steps_details', 'NbIng',
-        'ingredient_details', 'NbLikes', 'IsApproved', 'Difficulty_level', 'user_id'
+        'user_id',
+        'RecipeName',
+        'Description',
+        'Steps',
+        'steps_details',
+        'NbIngredients',
+        'ingredients_details',
+        'NbLikes',
+        'IsApproved',
+        'difficulty_level',
+        'thumbnail',
+        'cooking_time',
+        'preparation_time',
+        'Nutritional_data',
+        'Category',
+        'Health_Score'
     ];
+
+    // Define the one-to-one relationship with NutritionalData
+    public function nutritionalData()
+    {
+        return $this->hasOne(NutritionalData::class, 'recipe_id');
+    }
+    
     public function author()
     {
         return $this->belongsTo(User::class, 'user_id');
