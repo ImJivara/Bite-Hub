@@ -54,25 +54,24 @@
 <body>
     <div class="max-w-screen-xl mx-auto px-4 py-8" id="featured">
         <div class="mb-6">
-            <h2 class="text-3xl font-semibold">Our Featured Recipes for Today</h2>
+            <h2 class="text-4xl font-semibold">Our Featured Recipes for Today</h2>
         </div>
         <div class="swiper-container">
             <div class="swiper-wrapper">
-                <!-- Repeat this block for each recipe -->
                 @foreach([$featuredrec, $MostRecentRecipe, $featuredrec] as $index) <!-- Dummy loop for 3 slides -->
                 <div class="swiper-slide">
                     <div class="recipe-card-wrapper max-h-80 rounded-lg overflow-hidden shadow-xl flex items-center">
                         <div class="w-1/3">
-                            <img class="h-auto object-cover transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg" src="{{ asset('imgs/'.$index->id.'.jpg') }}" alt="Featured Recipe Image">
+                            <img class="h-auto object-cover transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg" src="{{$index->thumbnail}}" alt="Featured Recipe Image">
                         </div>
                         <div class="h-100 p-6 w-2/3">
-                            <h1 class="text-6xl font-semibold text-gray-800 mb-4">{{ $index->RecipeName }} 
+                            <h1 class="text-4xl font-semibold text-gray-800 mb-4">{{ $index->RecipeName }} 
                         @if ($index==$featuredrec)
-                        <span class="text-red-800 text-4xl">This Week's Most Liked Recipe</span>
+                        <h3 class="text-red-800 text-2xl">This Week's Most Liked Recipe</h3>
                         @elseif($index==$MostRecentRecipe)
-                        <span class="text-red-800 text-4xl">Our Most Recent Recipe</span>
+                        <h3 class="text-red-800 text-2xl">Our Most Recent Recipe</span>
                         @else 
-                        <span class="text-red-800 text-4xl">And Don't Forget, Today's Featured Recipe</span>
+                        <h3 class="text-red-800 text-2xl">And Don't Forget, Today's Featured Recipe</span>
                         @endif
                         </h1>
                             @if (strlen($index->Description) > 200)

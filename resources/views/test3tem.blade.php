@@ -6,9 +6,9 @@
     <link rel="stylesheet"  href="{{ asset('/layoutcss.css') }}"> 
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <script src="/resources/views/components/sidebar.blade.php" type="module"></script>
+    <!-- <script src="/resources/views/components/sidebar.blade.php" type="module"></script> -->
     <script src="{{asset('js\ErrorHandle.js')}}"></script>
-  <title>The Foodies Blog</title>
+  <title>Bite-Hub</title>
 </head>
 <body>
 <!-- Sidebar --><!-- Sidebar --><!-- Sidebar -->
@@ -19,32 +19,37 @@
         <div id="error-message" class="error-message"></div> 
  <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
 
-<header class="header"> 
-    <div class="container">
-        <div class="logo">
-            <h1><a href="/Recipes" >Bite-Hub Blog</a></h1>
-            <p>Exploring the Art of Food</p>
+<header class="header flex justify-between items-center p-4"> 
+        <div class="logo flex items-center space-x-4">
+            <div>
+                <h1 class="text-2xl font-bold"><a href="/Recipes">Bite-Hub Blog</a></h1>
+                <p class="text-gray-600">Exploring the Art of Food</p>
+            </div>
+            <div>
+                <img src="{{ asset('imgs/Website Logo Cropped.png') }}" class="w-20 h-20 p-0">
+            </div>
         </div>
-        <nav class="navigation">
-            <ul>
+        <nav class="navigation hidden md:flex space-x-4">
+            <ul class="flex space-x-4">
                 <!-- <li><a href="/Home">Home</a></li>
                 <li><a href="/Recipes">Recipes</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="/Contact">Contact</a></li> -->
             </ul>
         </nav>
+        <div class="login-signup flex items-center space-x-4">
+            @if(Auth::user())
+            <p class="mr-4">Hello, {{ Auth::user()->name }} <a href="/Logout" style="color:#DD0525; font-weight: bolder;">Logout</a></p>
+            @else
+            <p class="mr-7">Guest User, <a href="/Login" style="color:#DD0525; font-weight: bolder;">Login</a></p>
+            @endif
+            <x-sidebarcomp />
+            <!-- profile photo component -->
+        </div>
+   
+</header>
 
-    <div class="login-signup" style= "display: flex; justify-content: space-between; align-items: center; ">
-        @if(Auth::user())
-        <p class="mr-4">Hello, {{Auth::user()->name}} <a href="/Logout"  style="color:#DD0525; font-weight: bolder;">Logout</a></p>
-        @else
-        <p class="mr-7">Guest User, <a href="/Login"  style="color:#DD0525; font-weight: bolder;">Login</a></p>   
-        @endif
-        <x-sidebarcomp />
-        <!-- profile photo component huta hun -->
-    </div>
-</div>
-</header> 
+
     <div class="meal-options">
                 <a href="#">Breakfast</a>
                 <a href="#">Lunch</a>

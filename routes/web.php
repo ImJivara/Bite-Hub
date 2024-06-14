@@ -26,6 +26,11 @@ Route::get('/Contact', function () {
     return view('\Home\Contact');
 })->name('Contact');
 
+
+Route::get('/recipesearch', [RecipeController::class, 'index'])->name('recipes.index');
+Route::get('/recipes/search', [RecipeController::class, 'fetchAndSaveImages'])->name('recipes.search');
+
+
 #################################### Home ################################################################3
 
 ####################################Testing components################################################################3

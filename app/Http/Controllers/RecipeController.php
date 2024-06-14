@@ -13,9 +13,15 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;// for file saving
+use Illuminate\Support\Str;
 
 class RecipeController extends Controller
-{
+{  
+    //   public function index()
+    // {
+
+    //     return view('SearchBar');
+    // }
     public function getRecipes(Request $request)
     {  
         if($request->id==null)
@@ -353,6 +359,7 @@ public function fetchAndStoreRecipes2()
                 $stepsDetails[] = $step['step'];
             }
         }
+        
         try {
              // Insert recipe data
              $recipe = Recipe::create([
@@ -434,10 +441,147 @@ private function extractIngredients2($recipeData)
     return $ingredients;
 }
 
+public function search(Request $request)
+    {   
+        // Validate the request input
+        $request->validate([
+            'query' => 'required|string',
+        ]);
+
+        // Get the search query from the request
+        $query = $request->input('query');
+
+        // Fetch Pexels API key from environment variables
+        $apiKey = env('PEXELS_API_KEY');
+
+        // Make request to Pexels API
+        $response = Http::withHeaders([
+            'Authorization' => $apiKey,
+        ])->get('https://api.pexels.com/v1/search', [
+            'query' => $query,
+            'per_page' => 1, // Adjust as per your requirement
+        ]);
+
+        // Handle API response
+        $photos = $response->json()['photos'] ?? [];
+        dd($photos);
+       //Save images to local storage
+        // $savedImageUrls = [];
+        // foreach ($photos as $photo) {
+        //     $imageUrl = $photo['src']['medium'] ?? null;
+        //     if ($imageUrl) {
+        //         $savedImageUrl = $this->saveImageLocally2($imageUrl);
+        //         if ($savedImageUrl) {
+        //             $savedImageUrls[] = $savedImageUrl;
+        //         }
+                
+        //     }
+        // }
+
+        //Pass the data to the view
+        // return view('SearchBar', [
+        //     'recipeName' => $query,
+        //     'imageUrls' => $savedImageUrl,
+        // ]);
+    }
+
+    public function fetchAndSaveImages(Request $request)
+{
+    $request->validate([
+        'query' => 'required|string',
+    ]);
+
+    // Get the search query from the request
+    $query = $request->input('query');
+
+    // Fetch Pexels API key from environment variables
+    $apiKey = env('PEXELS_API_KEY');
+
+    // Make request to Pexels API
+    $response = Http::withHeaders([
+        'Authorization' => $apiKey,
+    ])->get('https://api.pexels.com/v1/search', [
+        'query' => $query,
+        'per_page' => 1, // Adjust as per your requirement
+    ]);
+
+    // Handle API response
+    $photos = $response->json()['photos'] ?? [];
+
+    if (!empty($photos)) {
+        $imageUrl = $photos[0]['src']['original']; // Assuming 'original' is the full-size image URL
+        $savedImagePath = $this->saveImageLocally($imageUrl);
+
+        if ($savedImagePath) {
+            return "Image saved at: " . $savedImagePath;
+        } else {
+            return "Failed to save image.";
+        }
+    } else {
+        return "No photos found.";
+    }
+}
+
+    private function saveImageLocally($imageUrl)
+    {
+        try {
+            // Fetch image content
+            $response = Http::get($imageUrl);
+            $imageContent = $response->getBody();
+    
+            // Extract filename from URL
+            $filename = basename($imageUrl);
+    
+            // Specify the directory path
+            $directoryPath = 'C:/Users/User/Documents/RecipeImages/';
+    
+            // Save image to the specified directory
+            $filePath = $directoryPath . $filename;
+            file_put_contents($filePath, $imageContent);
+    
+            // Return the saved file path
+            return $filePath;
+        } catch (\Exception $e) {
+            // Log the error
+            \Log::error('Error saving image: ' . $e->getMessage());
+    
+            // Return null or handle the error as needed
+            return null;
+        }
+    }
+    
+    
 
 
-
-
+    private function saveImageLocally2($imageUrl)
+    {
+        try {
+            // Fetch image content
+            $response = Http::get($imageUrl);
+            $imageContent = $response->getBody();
+    
+            // Generate a unique filename with extension
+           // $filename = uniqid() . '.jpg'; // Assuming images fetched are in JPEG format
+           $extension = pathinfo($response, PATHINFO_EXTENSION);
+           $filename = Str::slug(pathinfo($response, PATHINFO_FILENAME)) . '_' . uniqid() . '.' . $extension;
+            // Specify the directory path
+            $directoryPath = 'C:/Users/User/Documents/RecipeImages/';
+    
+            // Save image to the specified directory
+            $filePath = $directoryPath . $filename;
+            file_put_contents($filePath, $imageContent);
+    
+            // Return the saved file path
+            return $filePath;
+        } catch (\Exception $e) {
+            // Log the error
+            \Log::error('Error saving image: ' . $e->getMessage());
+    
+            // Return null or handle the error as needed
+            return null;
+        }
+    }
+    
 
 
 

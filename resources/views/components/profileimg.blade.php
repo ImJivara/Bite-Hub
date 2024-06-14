@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<html>
+@props(['id'])
+
+
 <head>
     <style>
         /* Profile element styles */
@@ -47,11 +48,10 @@
     <!-- Profile container -->
     <div class="profile-container">
         <!-- Profile image -->
-        <img class="profile-image" src="profile.jpg" alt="Profile Picture">
+        
         <!-- Profile overlay (clickable) -->
         <a href="profile.html" class="profile-overlay">
-            <span class="profile-text">Profile</span>
+            <img class="profile-image" src="{{ asset('profileimgs/3.jpg') }}" alt="Profile Picture">
         </a>
     </div>
-</body>
-</html>
+    </body>
