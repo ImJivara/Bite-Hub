@@ -69,7 +69,7 @@ Route::get('/form', function () {
     return view('PostForm');
 });
 Route::get('/HealthTools', function () {
-    return view('Health Folder.Health');
+    return view('Health Folder.Health2');
 });
 Route::get('/logreg', function () {
     return view('login-registration form');

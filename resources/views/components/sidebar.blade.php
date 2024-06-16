@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/riva-dashboard-tailwind/riva-dashboard.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -29,7 +28,7 @@
         
     </style>
 </head>
-<body >    
+ 
 
     <aside class="group/sidebar flex flex-col  shrink-0 lg:w-[300px] w-[250px] transition-all duration-400 ease-in-out m-0 fixed z-40 inset-y-0 left-0 bg-white border-r border-r-dashed border-r-neutral-200 sidenav fixed-start loopple-fixed-start " id="sidenav-main">
         
@@ -78,9 +77,6 @@
                         </span>
                     </div>
                 @endif
-
-
-                
                 <!-- menu item -->
                     <div>
                         <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
@@ -92,37 +88,13 @@
                             @endif
                         </span>
                     </div>
-                <!-- menu item -->
-                <!-- <div>
-                    <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem] ">
-                        <a href="javascript:;" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Settings</a>
-                    </span>
-                </div> -->
-                <!-- menu item -->
+              
                 <div class="block pt-5 pb-[.15rem]">
                     <div class="px-4 py-[.65rem]">
                         <a href="/HealthTools" class="font-semibold text-[0.95rem] uppercase dark:text-neutral-500/80 text-secondary-dark">Applications</a>
                     </div>
                 </div>
-                <!-- menu item -->
-                <!-- <div>
-                    <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
-                        <a href="javascript:;" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Users</a>
-                    </span>
-                </div> -->
-                <!-- menu item -->
-                <!-- <div>
-                    <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
-                        <a href="javascript:;" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Orders</a>
-                    </span>
-                </div> -->
-                <!-- menu item -->
-                <!-- <div>
-                    <span class="select-none flex items-center px-4 py-[.775rem] cursor-pointer my-[.4rem] rounded-[.95rem]">
-                        <a href="javascript:;" class="flex items-center flex-grow text-[1.15rem] dark:text-neutral-400/75 text-stone-500 hover:text-dark">Track Order</a>
-                    </span>
-                </div> -->
-                <!-- menu item -->
+         
                 @if (!Auth::user())
                 <a href="/Login" class="block border border-red-500 rounded-[.95rem] hover:bg-red-100  ">
                     <div class="px-4 py-[.775rem] cursor-pointer " >
@@ -151,5 +123,4 @@
     window.toggleSidebar = toggleSidebar;
     // export { toggleSidebar };
 </script>
-</body>
-</html>
+

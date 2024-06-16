@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+
 <head>
 <script src="/resources/views/components/sidebar.blade.php" type="module"></script>
     <style>
@@ -46,12 +45,12 @@
         }
     </style>
 </head>
-<body>
+
     <!-- Sidebar toggle button -->
     <div class="sidebar-toggle" id="sidebarToggleBtn" onclick="toggleSidebar()">
         <div class="sidebar-toggle-bar"></div>
         <div class="sidebar-toggle-bar"></div>
         <div class="sidebar-toggle-bar"></div>
     </div>
-</body>
-</html>
+
+

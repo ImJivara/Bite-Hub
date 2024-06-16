@@ -1,17 +1,66 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: sans-serif;
-    /* background-color: #f8f8f8; */
+
+.nav-item {
+    position: relative;
+    overflow: hidden;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px; 
+    transition: background-color 0.5s ease-in-out;
+}
+
+.nav-item:hover {
+    background-color: black;
+    color: white;
+}
+
+.navbar-container {
+    border: 2px solid black;
+    border-radius: 9999px; 
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.meal-options {
+    right: 0;
+    top: 100%;
+    z-index: 10;
+}
+
+.meal-options.hidden {
+    display: none;
+}
+
+.meal-options a {
+    display: block;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+}
+.meal-options {
+    text-align: center;
+    margin: 20px 0px;
     }
-    body {
-    /* width:fit-content; */
+    
+    .meal-options a {
+    text-decoration: none;
+    color: #666;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 15px;
+    transition: color 0.3s ease;
+    }
+    
+    .meal-options a:hover {
+    color: #333;
+    }
+    /* body {
+
     width: auto;
     overflow-y: scroll;
     overflow-x: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    /*background-color: #f8f8f8;*/
+ 
     background-color: #fff;
     }
     
@@ -25,7 +74,7 @@
     background-color: #f8f8f8;
     }
     
-    /* Header Styles */
+
     .header {
     background-color: #f8f8f8;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -75,31 +124,15 @@
     color: #333;
     font-weight: bold;
     transition: color 0.3s ease;
-    }
+    } */
     
-    .navigation ul li a:hover {
+    /* .navigation ul li a:hover {
     color: #666;
     }
+     */
+
     
-    .meal-options {
-    text-align: center;
-    margin: 20px 0px;
-    }
-    
-    .meal-options a {
-    text-decoration: none;
-    color: #666;
-    font-size: 20px;
-    font-weight: bold;
-    margin: 0 15px;
-    transition: color 0.3s ease;
-    }
-    
-    .meal-options a:hover {
-    color: #333;
-    }
-    
-    .login-signup {
+    /* .login-signup {
     color: #333;
     font-weight: bold;
     transition: color 0.3s ease;
@@ -117,7 +150,7 @@
     
     .login-signup a:hover {
     color: #333;
-    }
+    } */
                                         /* Error message */
 .error-message {
     display: none;

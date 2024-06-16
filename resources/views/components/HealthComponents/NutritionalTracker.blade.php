@@ -15,8 +15,8 @@
             <h2 class="text-2xl font-bold mb-4 text-center">Log Your Food</h2>
             <form id="nutrition-form" class="space-y-4">
                 <div>
-                    <label for="food" class="block text-lg font-medium">Food Item:</label>
-                    <input type="text" id="food" class="w-full p-2 border rounded" required>
+                    <label for="food-item-meal" class="block text-lg font-medium">Food Item:</label>
+                    <input type="text" id="food-item-meal" class="w-full p-2 border rounded" required>
                 </div>
                 <div>
                     <label for="calories2" class="block text-lg font-medium">calories:</label>
@@ -69,7 +69,7 @@
         $('#nutrition-form').on('submit', function(event) {
             event.preventDefault();
 
-            const food = $('#food').val();
+            const food = $('#food-item-meal').val();
             const calories2 = parseInt($('#calories2').val()) || 0;
             const carbs = parseInt($('#carbs').val()) || 0;
             const protein = parseInt($('#protein').val()) || 0;
@@ -78,7 +78,7 @@
             const listItem = `
                 <li class="p-4 bg-gray-200 rounded flex justify-between items-center">
                     <div>
-                        <span class="text-sm calories">Calories: ${calories2} cal</span>
+                        <h3 class="text-md calories">Food: ${food}-Calories: ${calories2} cal</h3>
                         <span class="text-sm carbs">Carbs: ${carbs} g</span>
                         <span class="text-sm protein">Protein: ${protein} g</span>
                         <span class="text-sm fat">Fat: ${fat} g</span>

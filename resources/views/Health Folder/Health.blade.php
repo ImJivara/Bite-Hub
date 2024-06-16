@@ -36,7 +36,6 @@
 <!-- Tool Sections -->
  <section >
 <div  id="tool-sections" >
-    
             <!-- BMI Calculator Section -->
             <section id="bmi-calculator" class="hidden">        
                     <x-extracomponents.BMICalculator/>
