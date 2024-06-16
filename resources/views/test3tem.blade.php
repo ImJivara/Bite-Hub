@@ -31,7 +31,7 @@
 <nav class="p-4 flex justify-around items-center mt-6">
     <div class="logo flex items-center space-x-4">
         <div>
-            <a href="#" class="text-3xl font-bold text-black">Bite-Hub.com</a>
+            <a href="/" class="text-3xl font-bold text-black">Bite-Hub.com</a>
             <p class="text-gray-600 text-xl">Exploring the Art of Food</p>
         </div>
         <div>

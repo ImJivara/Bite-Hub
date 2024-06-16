@@ -22,7 +22,7 @@
             position: relative;
             overflow: hidden;
             padding: 0.5rem 1rem;
-            border-radius: 9999px; /* Full rounded */
+            border-radius: 9999px; 
             transition: background-color 0.5s ease-in-out;
         }
 
@@ -33,7 +33,7 @@
 
         .navbar-container {
             border: 2px solid black;
-            border-radius: 9999px; /* Full rounded */
+            border-radius: 9999px; 
             padding: 0.5rem 1rem;
             display: flex;
             align-items: center;
@@ -48,7 +48,7 @@
     <nav class="p-4 flex justify-around items-center mt-4">
         <div class="flex items-center space-x-4">
             <a href="#" class="text-2xl font-bold text-black">Bite-Hub.com</a>
-            <span class="bg-green-100 text-green-700 py-1 px-2 rounded-full">HIRING</span>
+            <span class="bg-green-100 text-green-700 py-1 px-2 rounded-full">Healthy</span>
         </div>
         <div class="navbar-container">
             <a href="#bmi-calculator" class="nav-item text-black hover:text-white ">BMI Calculator</a>

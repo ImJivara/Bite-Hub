@@ -7,11 +7,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\NutritionController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Auth\RegisterController;
+
 
 Route::get('/', function () {
     return view('\Home\home');
@@ -68,9 +70,7 @@ Route::get('/app', function () {
 Route::get('/form', function () {
     return view('PostForm');
 });
-Route::get('/HealthTools', function () {
-    return view('Health Folder.Health2');
-});
+
 Route::get('/logreg', function () {
     return view('login-registration form');
 });
@@ -79,6 +79,16 @@ Route::get('/profile/instagramreplica', function () {
     $recipes=Recipe::all();
     return view('Profile Folder.instagramreplica', ["user" => $user ,"rec"=>$recipes]);
 });
+Route::get('/HealthTools', function () {
+    return view('Health Folder.Health2');
+});
+Route::get('/nutritionsearch', function () {
+    return view('nutritionfetch');
+});
+Route::post('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
+Route::get('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
+Route::post('/fetch-nutritional-info', [NutritionController::class, 'fetchNutritionalInfo'])->name('fetch.nutritional.info');
+
 // Route::get('/profile/instagramreplica', [RecipeController::class, 'getRecipes']);
 // Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
 ####################################Testing components################################################################3
