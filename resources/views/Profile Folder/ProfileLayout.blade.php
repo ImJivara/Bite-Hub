@@ -54,40 +54,33 @@
 <body class="bg-gray-100">
     <!-- Sidebar -->
     <div class="sidebar">
-        <div class="p-4">
-            <a href="/Recipes" class="block py-2 px-4 bg-gray-800 text-white rounded-lg shadow-lg hover:bg-gray-700 transition duration-300 text-center">
-                Back
-            </a>
-        </div>   
+         
         
         <!-- Profile Image -->
         <div class="p-4">
-            <img class="w-16 h-16 rounded-full mx-auto" src="{{ asset('imgs/3.jpg') }}" alt="Profile Picture">
-            <p class="text-center text-gray-800 mt-2" id="name_sidebar" >{{Auth::user()->name}}</p>
+            <a href="/profile/{{Auth::user()->id}}"><img class="w-24 h-24 rounded-full mx-auto" src="{{ asset('imgs/3.jpg') }}" alt="Profile Picture">
+            <p class="text-center text-gray-800 mt-2" id="name_sidebar" >{{Auth::user()->name}}</p></a>
         </div>
         <!-- Sidebar Items -->
         <div class="mt-4">
             <div class="sidebar-item">
-                <a href="Edit Profile/{{Auth::user()->id}}" class="text-gray-800 font-semibold">Edit Profile</a>
+                <a href="/profile/Edit Profile/{{Auth::user()->id}}" class="text-gray-800 font-semibold">Edit Profile</a>
             </div>
             <div class="sidebar-item">
-                <a href="#" class="text-gray-800 font-semibold">Change Password</a>
-            </div>
-            <div class="sidebar-item">
-                <a href="#" class="text-gray-800 font-semibold">Account Settings</a>
+                <a href="/change-password" class="text-gray-800 font-semibold">Change Password</a>
             </div>
             <div class="sidebar-item">
                 <a href="/profile/recent-activities/all" class="text-gray-800 font-semibold">Recent Activities</a>
             </div>
             <div class="sidebar-item">
-                <a href="#" class="text-gray-800 font-semibold">Logout</a>
+                <a href="/Logout" class="text-gray-800 font-semibold">Logout</a>
             </div>
         </div>
     </div>
     
-        <div>
-            @yield('content')
-        </div>
+    <div class="main-content">
+        @yield('content')
+    </div>
     
         
            
