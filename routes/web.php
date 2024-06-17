@@ -13,7 +13,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\PasswordController;
 
 Route::get('/', function () {
     return view('\Home\home');
@@ -98,12 +98,16 @@ Route::post('/comments', [CommentController::class, 'store'])->name('comments.st
 
 Route::get('/profile/recent-activities/{type?}', [ActivityController::class, 'recentActivities'])->name('recent-activities')->middleware("auth");
 Route::get('/profile/{id}', [RecipeController::class, 'GetProfileInfo'])->middleware("auth");
-
+Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm']);
+Route::post('/change-password', [PasswordController::class, 'changePassword'])->name('password.change');
 Route::get('/profile/Edit Profile/{id}', function ($id) {
     $user = User::findOrFail($id);
     return view('Profile Folder.EditProfile', ["user" => $user]);
 })->middleware("auth");
-
+Route::get('/followers',function()
+{
+    return view('Profile Folder.followers');
+});
 Route::post('/profile/update/{id}', [UserController::class, 'updateProfile'])->middleware("auth");
 Route::post('/account/delete/{id}', [UserController::class, 'deleteAccount'])->middleware("auth");
 //Login view w button action//

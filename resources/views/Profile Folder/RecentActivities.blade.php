@@ -1,7 +1,7 @@
 @extends('Profile Folder.ProfileLayout')
 
 @section('content')
-    <div class="main-content">
+    <div class="">
         {{-- <div class="p-4">
             <img class="w-40 h-40 rounded-full mx-auto" src="{{ asset('imgs/3.jpg') }}" alt="Profile Picture">
             <p class="text-center text-gray-800 mt-2" id="name_sidebar">{{ Auth::user()->name }}</p>
