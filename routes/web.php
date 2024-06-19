@@ -13,7 +13,10 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\NutritionController;
+use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\Auth\RegisterController;
+
+
 
 Route::get('/', function () {
     return view('\Home\home');
@@ -85,9 +88,15 @@ Route::get('/HealthTools', function () {
 Route::get('/nutritionsearch', function () {
     return view('nutritionfetch');
 });
-Route::post('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
-Route::get('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
-Route::post('/fetch-nutritional-info', [NutritionController::class, 'fetchNutritionalInfo'])->name('fetch.nutritional.info');
+
+// Route::post('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
+// Route::get('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
+Route::post('/log-nutritional-data', [NutritionController::class, 'store'])->name('log-nutritional-data');
+Route::get('/get-workouts', [WorkoutController::class, 'GetWorkouts'])->name('get-workouts');
+Route::get('/exercise/{id}', [WorkoutController::class, 'GetExercise']);
+
+
+// Route::post('/fetch-nutritional-info', [NutritionController::class, 'fetchNutritionalInfo'])->name('fetch.nutritional.info');
 
 // Route::get('/profile/instagramreplica', [RecipeController::class, 'getRecipes']);
 // Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');

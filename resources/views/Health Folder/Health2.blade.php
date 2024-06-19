@@ -10,6 +10,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="{{asset('js\ErrorHandle.js')}}"></script>
+    <script src="{{asset('jquery-3.7.1.js')}}"></script>
     <style>
         
         .montserrat{
@@ -44,11 +46,14 @@
 </head>
 
 <body class="montserrat">
+        <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
+        <div id="error-message" class="error-message"></div> 
+        <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
     <!-- Navigation Bar -->
     <nav class="p-4 flex justify-around items-center mt-4">
         <div class="flex items-center space-x-4">
             <a href="#" class="text-2xl font-bold text-black">Bite-Hub.com</a>
-            <span class="bg-green-100 text-green-700 py-1 px-2 rounded-full">Healthy</span>
+            <span class="bg-green-300 text-black py-1 px-2 rounded-full">Healthy</span>
         </div>
         <div class="navbar-container">
             <a href="#bmi-calculator" class="nav-item text-black hover:text-white ">BMI Calculator</a>
@@ -60,28 +65,28 @@
     </nav>
 
     <!-- Main Content -->
-  <section >
-<div  id="tool-sections" >
-            <!-- BMI Calculator Section -->
-            <section id="bmi-calculator" class="hidden">        
-                    <x-HealthComponents.BMICalculator/>
-            </section>
-            <!-- Calorie Counter Section -->
-            <section id="calorie-counter" class="hidden">
-                <x-HealthComponents.CalorieCounter/>     
-            </section>
-            <!-- Nutrition Tracker Section -->
-            <section id="nutrition-tracker" class="">      
-            <div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6"> 
-                <x-HealthComponents.NutritionalTracker/>
-                <x-piecharts.testpiechart/>       
-            </div>
-            </section>
-            <!-- Workout Planner Section -->
-            <section id="workout-planner" class="hidden">
-                <!-- Workout Planner Content -->
-            </section>
-        </div>
+<section >
+    <div  id="tool-sections" >
+                <!-- BMI Calculator Section -->
+                <section id="bmi-calculator" class="hidden">        
+                        <x-HealthComponents.BMICalculator/>
+                </section>
+                <!-- Calorie Counter Section -->
+                <section id="calorie-counter" class="hidden">
+                    <x-HealthComponents.CalorieCounter/>     
+                </section>
+                <!-- Nutrition Tracker Section -->
+                <section id="nutrition-tracker" class="">      
+                <div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6"> 
+                    <x-HealthComponents.nutritionfetch/>
+                    <x-piecharts.testpiechart/>       
+                </div>
+                </section>
+                <!-- Workout Planner Section -->
+                <section id="workout-planner" class="hidden">
+                <x-HealthComponents.WorkoutPlanner/>
+                </section>
+    </div>
 </section>
 
     <script>
@@ -114,6 +119,8 @@
             });
         });
     </script>
+    <!-- Toast div for notifications -->
+    <div id="toast" class="fixed bottom-0 right-0 m-8 p-4 bg-gray-900 text-white rounded shadow-lg hidden"></div>
 </body>
 
 </html>

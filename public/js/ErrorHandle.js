@@ -23,7 +23,7 @@ function showToast(message, type) {
     setTimeout(function() {
         toast.classList.add('hidden');
         toast.classList.remove('bg-' + type + '-500');
-    }, 3000);
+    }, 5000);
 }
 
 //Script path//Script path//Script path

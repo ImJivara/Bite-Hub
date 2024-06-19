@@ -7,8 +7,7 @@
 <img class="w-16 h-16 rounded-full " src="{{ asset('profileimgs/'.$r->author->id.'.jpg') }}" alt="Profile Picture">
 <a href="#" ><h1 class="text-4xl font-semibold mb-4 capitalize"> @ {{ $r->author->name }} </h1></a>
 
-<!-- SPOONACULAR_API_KEY=a5e5afda0898426ab0bb39484bfdbde9 
-PEXELS_API_KEY=your_pexels_api_key=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
+
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Recipe Image -->
         <div>

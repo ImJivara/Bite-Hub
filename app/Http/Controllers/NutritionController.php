@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\NutritionalDataLog;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
@@ -8,84 +9,55 @@ use Illuminate\Support\Facades\Log;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-
-
+// YOUR_EDAMAM_APP_ID=7ba1f1e8 
+// YOUR_EDAMAM_APP_KEY=0bfaa9370bce866584f689af21404aa2
 class NutritionController extends Controller
 {
-    public function fetchNutritionalInfo(Request $request)
-    {
-        $food = $request->input('recipeName');
-        $category = $request->input('category');
-        $apiKey = env('SPOONACULAR_API_KEY');
-        $url = "https://api.spoonacular.com/recipes/complexSearch";
+    public function store(Request $request)
+{
+    // Validate the incoming request data
+    $validatedData = $request->validate([
+        'calories' => 'required|numeric',
+        'carbs' => 'required|numeric',
+        'protein' => 'required|numeric',
+        'fat' => 'required|numeric',
+        //'food' => 'required|string', // Validate 'food' attribute if necessary
+    ]);
 
-        $client = new Client();
+    // Retrieve the authenticated user
+    $user = Auth::user();
+    $currentDate = now()->toDateString();
 
-        try {
-            $response = $client->request('POST', $url, [
-                'headers' => [
-                    'Accept' => 'application/json',
-                    'Content-Type' => 'application/json',
-                ],
-                'json' => [
-                    'apiKey' => $apiKey,
-                    'query' => $food,
-                    'type' => $category,
-                    'addRecipeNutrition' => true,
-                    'number' => 1,
-                ],
-            ]);
+    // Check if a log already exists for the current date
+    $existingLog = NutritionalDataLog::where('user_id', $user->id)
+                                     ->where('log_date', $currentDate)
+                                     ->first();
 
-            $data = json_decode($response->getBody(), true);
+    if ($existingLog) {
+        return response()->json([
+            'success' => 'RecordExists',
+            'message' => 'A record for today already exists.'
+        ], 200);
+    }
 
-            // Extracting nutrition details from the response
-            if (isset($data['results'][0]['nutrition']['nutrients'])) {
-                $nutrients = $data['results'][0]['nutrition']['nutrients'];
+    // Create a new NutritionalDataLog instance
+    $log = new NutritionalDataLog();
+    $log->user_id = $user->id;
+    $log->log_date = $currentDate; // Use the current date
+    $log->calories = $validatedData['calories'];
+    $log->carbs = $validatedData['carbs'];
+    $log->protein = $validatedData['protein'];
+    $log->fat = $validatedData['fat'];
+    // $log->food = $validatedData['food'];  // Assign 'food' attribute if necessary
 
-                // Initialize variables to hold specific nutritional values
-                $calories = null;
-                $carbs = null;
-                $protein = null;
-                $fat = null;
+    // Save the log to the database
+    $log->save();
 
-                // Iterate through nutrients to find specific values
-                foreach ($nutrients as $nutrient) {
-                    switch ($nutrient['title']) {
-                        case 'Calories':
-                            $calories = $nutrient['amount'];
-                            break;
-                        case 'Carbohydrates':
-                            $carbs = $nutrient['amount'];
-                            break;
-                        case 'Protein':
-                            $protein = $nutrient['amount'];
-                            break;
-                        case 'Fat':
-                            $fat = $nutrient['amount'];
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                // return response()->json([
-                //     'calories' => $calories,
-                //     'carbs' => $carbs,
-                //     'protein' => $protein,
-                //     'fat' => $fat,
-                // ]);
-                return view('nutrition', [
-                    'calories' => $calories,
-                    'carbs' => $carbs,
-                    'protein' => $protein,
-                    'fat' => $fat,
-                ]);
-            }
-            else return;
-
-
-        
-    
-
+    // Optionally, return a response
+    return response()->json([
+        'success' => true,
+        'message' => 'Nutritional data logged successfully'
+    ], 200);
+}
 
 }

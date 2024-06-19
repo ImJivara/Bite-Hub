@@ -113,7 +113,7 @@
             $('#nutrition-result').text(`Total Intake - Calories: ${totalCal} cal, Carbs: ${totalCarbs} g, Protein: ${totalProtein} g, Fat: ${totalFat} g`);
 
             // Trigger event to update the chart with the latest total values
-            const updateEvent = new CustomEvent('nutritionalValuesUpdated', { 
+            const Z = new CustomEvent('nutritionalValuesUpdated', { 
                 detail: { carbs: totalCarbs, proteins: totalProtein,  fats: totalFat } 
             });
             document.dispatchEvent(updateEvent);

@@ -12,15 +12,16 @@
 
 <script>
     // Define the sendNutritionalValues function
-function sendNutritionalValues(carbs, proteins, fats) {
+function sendNutritionalValues(cals,carbs, proteins, fats) {
     const event = new CustomEvent('nutritionalValuesUpdated', { 
-        detail: { carbs: carbs, proteins: proteins, fats: fats } 
+        detail: {cals:cals ,  carbs: carbs, proteins: proteins, fats: fats } 
     });
     document.dispatchEvent(event);
 }
 
     // Function to initialize the nutritional tracker
-function initializeNutritionalTracker(data) {
+function initializeNutritionalTracker(data,totalCalories) 
+{
     // Calculate the total intake
     const totalIntake = data.reduce((acc, val) => acc + val, 0);
 
@@ -53,15 +54,15 @@ function initializeNutritionalTracker(data) {
                 animateRotate: true
             },
             plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
+                    title: {
+                        display: true,
+                        text: `Nutritional Facts (Total Calories: ${totalCalories})`, 
                         font: {
-                            size: 14,
+                            size: 18,
+                            weight: 'bold'
                         },
-                        color: '#4A5568', // Gray-700
+                        color: '#4A5568' 
                     },
-                },
                 tooltip: {
                     callbacks: {
                         label: function (tooltipItem) {
@@ -98,18 +99,18 @@ document.getElementById('showNutritionTracker').addEventListener('click', functi
         
         // Initialize the nutritional tracker with the updated total values
         document.addEventListener('nutritionalValuesUpdated', function (event) {
-            const { carbs, proteins, fats } = event.detail;
-            initializeNutritionalTracker([carbs, proteins, fats]);
+            const { cals, carbs, proteins, fats } = event.detail;
+            
+            initializeNutritionalTracker([carbs, proteins, fats], cals);
         });
 
         // Trigger event to update the chart with the latest total values
         const event = new CustomEvent('nutritionalValuesUpdated', { 
-            detail: { proteins: totalProtein, carbs: totalCarbs, fats: totalFat } 
+            detail: { cals: totalCalories, proteins: totalProtein, carbs: totalCarbs, fats: totalFat } 
         });
         document.dispatchEvent(event);
     }
-    
 });
-
+    
 
 </script>

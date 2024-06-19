@@ -105,4 +105,9 @@ class User extends Authenticatable
     {
         return $this->followers()->count();
     }
+    
+    public function nutritionalDataLogs()
+    {
+        return $this->hasMany(NutritionalDataLog::class);
+    }
 }

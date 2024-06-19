@@ -6,23 +6,25 @@
     <title>Nutrition Tracker</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    
 </head>
 <body>
     <div class="flex items-center justify-center mt-8">
         <div class="container mx-auto"> 
             <div class="max-w-lg mx-auto bg-white shadow-xl rounded-lg overflow-hidden p-8 tool-card">
                 <center>
-                    <button id="showNutritionTracker" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Show Nutritional Tracker's Pie Chart</button>
+                    <button id="showNutritionTracker" class="bg-black text-white px-4 py-2 rounded-lg mt-4">Show Nutritional Tracker's Pie Chart</button>
                 </center>
                 <h2 class="text-2xl font-bold mb-4 text-center">Log Your Food</h2>
                 <form id="nutrition-form" class="space-y-4">
                     <div>
-                        <label for="food-item-meal" class="block text-lg font-medium">Food Item:</label>
+                        <label for="food-item-meal" class="block text-lg font-medium" >Food Item:</label>
                         <input type="text" id="food-item-meal" class="w-full p-2 border rounded" required>
                     </div>
                     <div>
-                        <label for="quantity" class="block text-lg font-medium">Quantity:</label>
-                        <input type="number" id="quantity" class="w-full p-2 border rounded" required>
+                        <label for="quantity" class="block text-lg font-medium" >Quantity:</label>
+                        <input type="number" id="quantity" class="w-full p-2 border rounded"  required>
                     </div>
                     <div>
                         <label for="unit" class="block text-lg font-medium">Unit:</label>
@@ -81,9 +83,9 @@
                         <input type="number" id="fat" class="w-full p-2 border rounded">
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-600 transition duration-300 ease-in-out">Add Food</button>
+                        <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-600 transition duration-300 ease-in-out">Add Food</button></form>                     
+                        <button onclick=validateBackEnd() class="bg-purple-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-purple-600 transition duration-300 ease-in-out">Save Total Values</button>
                     </div>
-                </form>
                 <div id="nutrition-result" class="mt-4 text-center text-xl font-semibold text-green-700"></div>
                 <ul id="food-list2" class="mt-4 space-y-2"></ul>
             </div>
@@ -111,8 +113,50 @@
         $('#nutrition-result').text(`Total Intake - Calories: ${roundedCal} cal, Carbs: ${roundedCarbs} g, Protein: ${roundedProtein} g, Fat: ${roundedFat} g`);
 
         sendNutritionalValues(totalCal,totalCarbs, totalProtein, totalFat);
+        
     }
 
+    // Click event handler for saving total values button
+    function validateBackEnd() {
+        if (totalCal==0 || totalCarbs==0 || totalProtein==0 || totalFat==0 ) {
+            showToast('You need to add a food and its nutritional values to be able to log','red');   
+        }
+        else  saveTotalValuesToBackend();
+    }
+
+    // Function to send total nutritional values to backend
+    function saveTotalValuesToBackend() {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                type: 'POST',
+                url: '/log-nutritional-data', 
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    calories: totalCal,
+                    carbs: totalCarbs,
+                    protein: totalProtein,
+                    fat: totalFat
+                }),
+                success: function(response) {
+                    if (response.success==true) {
+                        console.log('Total values saved successfully:', response);  
+                    showToast('Total nutritional values saved successfully!','green');
+                    }
+                    else if(response.success=="RecordExists")
+                     showToast('It seems that you have already logged today, please try again the following day','red');
+                    else showToast('Failed to save total nutritional values. Please try again.','red');
+                    
+                },
+                error: function(error) {
+                    console.error('Error saving total values:', error);
+                    // Handle error, show appropriate message to user
+                    showToast('Failed to save total nutritional values. Please try again.','red');
+                }
+            });
+        }
     $(document).ready(function() {
         $('#nutrition-form').on('submit', function(event) {
             event.preventDefault();
@@ -157,7 +201,7 @@
             $('#nutrition-result').text(`Total Intake - Calories: ${roundedCal} cal, Carbs: ${roundedCarbs} g, Protein: ${roundedProtein} g, Fat: ${roundedFat} g`);
 
             const updateEvent = new CustomEvent('nutritionalValuesUpdated', { 
-                detail: { carbs: totalCarbs, proteins: totalProtein,  fats: totalFat } 
+                detail: { cals:totalCal,carbs: totalCarbs, proteins: totalProtein,  fats: totalFat } 
             });
             document.dispatchEvent(updateEvent);
 
@@ -166,7 +210,7 @@
 
         function sendNutritionalValues(cals,carbs, protein, fat) {
             const event = new CustomEvent('nutritionalValuesUpdated', { 
-                detail: { cals:cals , carbs: carbs, proteins: protein,  fats: fat } 
+                detail: {cals:totalCal , carbs: carbs, proteins: protein,  fats: fat } 
             });
             document.dispatchEvent(event);
         }
@@ -215,7 +259,7 @@
         //         }
         //     });
         // }
-       
+      
             function fetchNutritionalInfo(food, category, quantity, unit) {
                 const appId = '11644371';
                 const appKey = 'f77db8f356a217ef456686413e806c72';
@@ -264,6 +308,7 @@
                 const nutrient = nutrients.find(n => n.attr_id === attrId);
                 return nutrient ? nutrient.value : 0;
             }
+
 
 });
 
