@@ -92,6 +92,8 @@ Route::get('/nutritionsearch', function () {
 // Route::post('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
 // Route::get('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
 Route::post('/log-nutritional-data', [NutritionController::class, 'store'])->name('log-nutritional-data');
+Route::get('/nutrition-logs/data', [NutritionController::class, 'fetchNutritionData'])->name('nutrition.data');;
+
 Route::get('/get-workouts', [WorkoutController::class, 'GetWorkouts'])->name('get-workouts');
 Route::get('/exercise/{id}', [WorkoutController::class, 'GetExercise']);
 

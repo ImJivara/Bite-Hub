@@ -76,15 +76,16 @@
                     <x-HealthComponents.CalorieCounter/>     
                 </section>
                 <!-- Nutrition Tracker Section -->
-                <section id="nutrition-tracker" class="">      
+                <section id="nutrition-tracker" class="hidden">      
                 <div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6"> 
+                    <x-HealthComponents.LogDisplay/>
                     <x-HealthComponents.nutritionfetch/>
                     <x-piecharts.testpiechart/>       
                 </div>
                 </section>
                 <!-- Workout Planner Section -->
                 <section id="workout-planner" class="hidden">
-                <x-HealthComponents.WorkoutPlanner/>
+                    <x-HealthComponents.WorkoutPlanner/>
                 </section>
     </div>
 </section>
