@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\NutritionController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\AdminUserController;
+use App\Http\Controllers\NutritionController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\PasswordController;
 
 Route::get('/', function () {
     return view('\Home\home');
@@ -104,10 +104,19 @@ Route::get('/profile/Edit Profile/{id}', function ($id) {
     $user = User::findOrFail($id);
     return view('Profile Folder.EditProfile', ["user" => $user]);
 })->middleware("auth");
-Route::get('/followers',function()
-{
-    return view('Profile Folder.followers');
+// Route::get('/followers',function()
+// {
+//     return view('Profile Folder.followers');
+// });
+Route::get('/View Profile/User page',function(){
+    $user=User::findorfail(2);
+    $likedRecipes=Recipe::find(1);
+    return view('Profile Folder.OtherProfilePage',compact('user','likedRecipes'));
 });
+
+Route::post('/follow/{user}', [UserController::class, 'followUser'])->name('follow');
+Route::post('/unfollow/{user}', [UserController::class, 'unfollowUser'])->name('unfollow');
+
 Route::post('/profile/update/{id}', [UserController::class, 'updateProfile'])->middleware("auth");
 Route::post('/account/delete/{id}', [UserController::class, 'deleteAccount'])->middleware("auth");
 //Login view w button action//

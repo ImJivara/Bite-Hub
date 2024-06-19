@@ -3,10 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
@@ -81,6 +81,28 @@ class User extends Authenticatable
     // Check if a user is following another user
     public function isFollowing($userId)
     {
-        return $this->following()->where('id', $userId)->exists();
+        return $this->following()->where('followed_id', $userId)->exists();
+    }
+    
+    /**
+     * Get the count of users that the user is following.
+     *
+     * @return int
+     */
+
+    public function followingCount()
+    {
+        return $this->following()->count();
+    
+    }
+
+    /**
+     * Get the count of followers for the user.
+     *
+     * @return int
+     */
+    public function followersCount()
+    {
+        return $this->followers()->count();
     }
 }

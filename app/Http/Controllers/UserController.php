@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash ;
 // use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
+
 class UserController extends Controller
 {
     // public function login(Request $request)
@@ -170,18 +171,20 @@ public function updateProfile(Request $request, $id)
     }
 
 
-    public function followUser(Request $request, $userIdToFollow)
+    public function followUser( $userIdToFollow)
     {
-        // Retrieve the authenticated user
-        $user = $request->user();
+        $user = Auth::user();
 
-        // Check if the user to follow exists
-        $userToFollow = User::findOrFail($userIdToFollow);
+        if (!$user->isFollowing($userIdToFollow)) {
+            $user->follow($userIdToFollow);
+            $followersCount = User::findOrFail($userIdToFollow)->followersCount(); // Update followers count
+        } else {
+            $user->unfollow($userIdToFollow);
+            $followersCount = User::findOrFail($userIdToFollow)->followersCount(); // Update followers count
+        }
 
-        // Follow the user
-        $user->follow($userToFollow->id);
-
-        // You might return a success response here
+        return response()->json(['followersCount' => $followersCount]);
+        
     }
 
     public function unfollowUser(Request $request, $userIdToUnfollow)
@@ -195,7 +198,8 @@ public function updateProfile(Request $request, $id)
         // Unfollow the user
         $user->unfollow($userToUnfollow->id);
 
-        // You might return a success response here
+        $followingCount = $userIdToUnfollow->followingCount();
+        return response()->json(['$followingCount' => $followingCount]);
     }
 
     public function checkIfFollowing(Request $request, $userId)
