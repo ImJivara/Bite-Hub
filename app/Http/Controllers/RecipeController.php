@@ -27,24 +27,39 @@ class RecipeController extends Controller
     {  
         if($request->id==null)
         {
-            $recipes=Recipe::all();
-        //    $RecipesLikedByUser=$this->RecipesLikedByUser(Auth::user()->id);
-            $FeaturedRecipe = $recipes->sortByDesc('NbLikes')->first();
-            $MostRecentRecipe=$recipes->sortByDesc('created_at')->first();
-            // dd($MostRecentRecipe);
-            //  dd($RecipesLikedByUser);
-            return view('Recipes',['rec'=>$recipes,'featuredrec'=>$FeaturedRecipe,'MostRecentRecipe'=>$MostRecentRecipe] );
+            // Default sorting
+            $sortBy = $request->input('sort_by', 'created_at');
+            $sortOrder = $request->input('sort_order', 'desc');
+
+            // Query for recipes based on sorting parameters
+            $recipesQuery = Recipe::orderBy($sortBy, $sortOrder);
+            $recipes = $recipesQuery->paginate(10);
+            $featuredRecipe = Recipe::orderBy('NbLikes', 'desc')->first();
+            $MostRecentRecipe = Recipe::orderBy('created_at', 'desc')->first();
+        
+            return view('Recipes', [
+                'rec' => $recipes,
+                'featuredrec' => $featuredRecipe,
+                'MostRecentRecipe' => $MostRecentRecipe
+            ]);
         }
         else{
-            $recipe=Recipe::findOrFail($request->id);
-            if($recipe==null) dd("such post doesnt exist");
-            else
-            $ingredients= json_decode($recipe->ingredients_details, true);
-            // $ingredients=explode("\n",$ingredients);
-            $step_details=$recipe->steps_details;
-            //  $step_details=explode(". ",$step_details);
-            $comments=$this->getRecipeComments($recipe->id);
-            return view('Recipe',['r'=>$recipe,'ing'=>$ingredients,'steps'=>$step_details,'comments'=>$comments] );
+            try {
+                $recipe = Recipe::findOrFail($request->id);
+            } catch (\Exception $e) {
+                dd("Such post doesn't exist."); 
+            }
+        
+            $ingredients = json_decode($recipe->ingredients_details, true);
+            $step_details = $recipe->steps_details;
+            $comments = $this->getRecipeComments($recipe->id);
+        
+            return view('Recipe', [
+                'r' => $recipe,
+                'ing' => $ingredients,
+                'steps' => $step_details,
+                'comments' => $comments
+            ]);
         } 
     }
     
@@ -533,7 +548,7 @@ public function search(Request $request)
             return $filePath;
         } catch (\Exception $e) {
             // Log the error
-            \Log::error('Error saving image: ' . $e->getMessage());
+            Log::error('Error saving image: ' . $e->getMessage());
     
             // Return null or handle the error as needed
             return null;
@@ -565,7 +580,7 @@ public function search(Request $request)
             return $filePath;
         } catch (\Exception $e) {
             // Log the error
-            \Log::error('Error saving image: ' . $e->getMessage());
+            Log::error('Error saving image: ' . $e->getMessage());
     
             // Return null or handle the error as needed
             return null;

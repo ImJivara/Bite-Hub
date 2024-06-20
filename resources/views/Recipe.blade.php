@@ -4,9 +4,10 @@
 
 <!-- Recipe Details Section --> 
 <section class="max-w-screen-xl mx-auto px-4 py-8"> 
-<img class="w-16 h-16 rounded-full " src="{{ asset('profileimgs/'.$r->author->id.'.jpg') }}" alt="Profile Picture">
-<a href="#" ><h1 class="text-4xl font-semibold mb-4 capitalize"> @ {{ $r->author->name }} </h1></a>
-
+    <div class=" flex items-center space-x-4">
+        <img class="w-16 h-16 rounded-full " src="{{ asset('profileimgs/'.$r->author->id.'.jpg') }}" alt="Profile Picture">
+        <a href="/profile/{{$r->author->id}}" ><h1 class="text-4xl font-semibold mb-4 "> @ {{ $r->author->name }} </h1></a>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Recipe Image -->
@@ -50,7 +51,7 @@
                     </div>
                 </div>
             </div>
-            <div class="Recipe-Pie-chart flex justify-center mt-4">
+            <div class="Recipe-Pie-chart-div flex justify-center mt-4">
                 <x-piecharts.piechart :Proteins=" str_replace('g', '', $r->nutritionalData->protein) " :Carbs=" str_replace('g', '', $r->nutritionalData->carbs)" :Fats=" str_replace('g', '', $r->nutritionalData->fat)" />
             </div>
         </div>
@@ -80,7 +81,6 @@
             <ol class="list-decimal">
                     @foreach ($r->steps_details as $index => $step)
                             <p class="text-lg text-gray-700"  ><h3 class="text-xl font-semibold mb-2">Step {{ $index + 1 }}</h3>{{ $step }}</p>
-                            <p class="text-lg text-gray-700"  ><h3 class="text-xl font-semibold mb-2">Step {{ $index + 1 }}</h3>{{ $step }}</p>                      
                     @endforeach 
             </ol>
         </div>
@@ -93,7 +93,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Nutritional Information -->
         
-        <div class="bg-white rounded-lg shadow-xl p-6">
+        <div class="bg-white rounded-lg shadow-xl p-6 ">
             <div class="flex flex-col justify-between">
                 <div class="Nutritional Information ">
                     <h3 class="text-xl font-semibold mb-4">Nutritional Information</h3>
@@ -108,19 +108,21 @@
                     <p>No nutritional data available</p>
                     @endif
                 </div>
-                <div class="Comment-Form ">
+                <div class="Comment-Form grid content-between ">
                     <!-- Comments Section -->
-                    <h3 class="text-xl font-semibold mb-4">Comments</h3>
-                    <div class="mb-4">
-                        <!-- Comments -->
-                        <div id="comment-placer"></div>
-                        @if(!$comments)
-                        <h2 class="text-3xl font-semibold">Oops Looks Empty</h1>
-                            @else
-                            @foreach ($comments as $comment)
-                            <x-comment :comment="$comment" />
-                            @endforeach
-                            @endif
+                    <div>
+                        <h3 class="text-xl font-semibold mb-4">Comments</h3>
+                        <div class="mb-4">
+                            <!-- Comments -->
+                            <div id="comment-placer"></div>
+                            @if(!$comments)
+                            <h2 class="text-3xl font-semibold">Oops Looks Empty</h1>
+                                @else
+                                @foreach ($comments as $comment)
+                                <x-comment :comment="$comment" />
+                                @endforeach
+                                @endif
+                        </div>
                     </div>
                     <!-- Comment Form -->
                     @if (!Auth::user())
@@ -129,25 +131,27 @@
                         <a href="/Login" style="color:#DD0525; font-weight: bolder;">Login</a>
                     </div>
                     @else
-                    <h5>Add a Comment</h5>
-                    <form action="{{ route('comments.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="recipe_id" value="{{ $r->id }}">
-                        <div class="form-group">
-                            <input type="text" name="body" placeholder="Your comment" id="commentInput" maxlength="300" class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none 
-                            focus:border-red-500" value="{{ $body->value ?? '' }}">
-                            <p id="charCount" class="text-xs text-gray-500 mt-1">0 / 300 characters</p>
+                        <div>
+                            <h5>Add a Comment</h5>
+                            <form action="{{ route('comments.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="recipe_id" value="{{ $r->id }}">
+                                <div class="form-group">
+                                    <input type="text" name="body" placeholder="Your comment" id="commentInput" maxlength="300" class="border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none 
+                                    focus:border-red-500" value="{{ $body->value ?? '' }}">
+                                    <p id="charCount" class="text-xs text-gray-500 mt-1">0 / 300 characters</p>
+                                </div>
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-red-600 focus:outline-none">Submit</button>
+                            </form>
+                            <script>
+                                const commentInput = document.getElementById('commentInput');
+                                const charCount = document.getElementById('charCount');
+                                commentInput.addEventListener('input', function() {
+                                    const length = commentInput.value.length;
+                                    charCount.textContent = length + ' / 300 characters';
+                                });
+                            </script>
                         </div>
-                        <button type="submit" class="bg-red-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-red-600 focus:outline-none">Submit</button>
-                    </form>
-                    <script>
-                        const commentInput = document.getElementById('commentInput');
-                        const charCount = document.getElementById('charCount');
-                        commentInput.addEventListener('input', function() {
-                            const length = commentInput.value.length;
-                            charCount.textContent = length + ' / 300 characters';
-                        });
-                    </script>
                     @endif
                 </div>
             </div>

@@ -1,11 +1,13 @@
 @props(['r' ])
 
 <div class="recipe-card-wrapper flex items-stretch "> 
-    <a href="/Recipe/{{ $r->id }}" class="recipe-card-link block "> 
+    
         <div class="max-w-sm mx-auto bg-white rounded-lg border border-0.5-black overflow-hidden transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg">
-            <img class="w-full h-56 object-cover object-center" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image">
+             <a href="/Recipe/{{ $r->id }}" class="recipe-card-link block "> 
+                <img class="w-full h-56 object-cover object-center" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image">
+            </a>
             <div class="p-6 flex-grow">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $r->RecipeName }}</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $r->RecipeName }}<a href="/profile/{{$r->author->id}}" class="ml-2 text-red-500 capitalize ">{{$r->author->name}}</a></h2>
                 @if (strlen($r->Description) > 100)
                     <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($r->Description, 100, $end='...') }}</p>
                     <button id="toggleBtn_{{ $r->id }}" onclick="toggleDescription('{{ $r->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
@@ -26,25 +28,21 @@
                                 <time class="text-gray-600"><p class="w-16">{{ $r->created_at->diffForHumans()  }}</p></time>
                             @endif
                     </div>
-                    <div  class="display:block">
-                        @php                     
-                            if(Auth::user())
-                            $likedRecipes = Auth::user()->likedRecipes->pluck('id')->toArray();
-                            else $likedRecipes=[];
+                    <div class="display:block">
+                        @php
+                            $likedRecipes = Auth::check() ? Auth::user()->likedRecipes->pluck('id')->toArray() : [];
                         @endphp
-                        @if (in_array($r->id, $likedRecipes))                         
-                                <x-extracomponents.modernlikebutton :recipeId="$r->id" :IsLiked='True' data-likebtn />                           
-                        @else                           
-                                <x-extracomponents.modernlikebutton :recipeId="$r->id"  :IsLiked='False' data-likebtn />                           
+                        
+                        @if (in_array($r->id, $likedRecipes))
+                            <x-extracomponents.modernlikebutton :recipeId="$r->id" :IsLiked="true" data-likebtn />
+                        @else
+                            <x-extracomponents.modernlikebutton :recipeId="$r->id" :IsLiked="false" data-likebtn />
                         @endif
-                        
-                        
                     </div>
-                    
+
                 </div>
             </div>   
         </div>
-    </a>
 </div>
 
 <script>

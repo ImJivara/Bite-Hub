@@ -1,16 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nutrition Tracker</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
-</head>
-<body>
-    <div class="flex items-center justify-center mt-8">
-        <div class="container mx-auto"> 
-            <div class="max-w-lg mx-auto bg-white shadow-xl rounded-lg overflow-hidden p-8 tool-card">
+    <div class="flex items-center justify-center mt-8 ">
+        <div class="container mx-auto "> 
+            <div class="max-w-md mx-auto bg-white shadow-xl rounded-lg overflow-hidden p-8 tool-card ">
                 <center>
                     <button id="showNutritionTracker" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Show Nutritional Tracker's Pie Chart</button>
                 </center>
@@ -269,5 +261,4 @@
 
 </script>
 
-</body>
-</html>
+

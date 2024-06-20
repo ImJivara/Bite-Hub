@@ -13,18 +13,19 @@
     <script src="{{asset('js\ErrorHandle.js')}}"></script>
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
     <style>
-        
-        .montserrat{
+        .montserrat {
             font-family: "Montserrat", sans-serif;
             font-optical-sizing: auto;
-            font: weight 1px;;
+            font: weight 1px;
+            ;
             font-style: normal;
         }
+
         .nav-item {
             position: relative;
             overflow: hidden;
             padding: 0.5rem 1rem;
-            border-radius: 9999px; 
+            border-radius: 9999px;
             transition: background-color 0.5s ease-in-out;
         }
 
@@ -35,7 +36,7 @@
 
         .navbar-container {
             border: 2px solid black;
-            border-radius: 9999px; 
+            border-radius: 9999px;
             padding: 0.5rem 1rem;
             display: flex;
             align-items: center;
@@ -46,9 +47,9 @@
 </head>
 
 <body class="montserrat">
-        <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
-        <!-- <div id="error-message" class="error-message"></div>  -->
-        <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
+    <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
+    <!-- <div id="error-message" class="error-message"></div>  -->
+    <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
     <!-- Navigation Bar -->
     <nav class="p-4 flex justify-between items-center mt-4">
         <div class="flex items-center space-x-2">
@@ -58,44 +59,45 @@
         <div class="navbar-container">
             <a href="#bmi-calculator" class="nav-item text-black hover:text-white ">BMI Calculator</a>
             <a href="#calorie-counter" class="nav-item text-black hover:text-white">Calorie Counter</a>
-            <a href="#nutrition-tracker" class="nav-item text-black hover:text-white">Nutrition Tracker</a>
+            <a href="#nutrition-tracker" class="nav-item text-black hover:text-white" data-section="nutrition-tracker">Nutrition Tracker</a>
             <a href="#workout-planner" class="nav-item text-black hover:text-white">Workout Planner</a>
         </div>
         @auth
-            <h2  class="text-xl font-bold text-black">Hello, {{Auth::user()->name}}</h2>
-        @else 
-            <a href="/Login" class="bg-black text-white py-2 px-4 rounded-full">LOGIN</a>
+        <h2 class="text-xl font-bold text-black">Hello, {{Auth::user()->name}}</h2>
+        @else
+        <a href="/Login" class="bg-black text-white py-2 px-4 rounded-full">LOGIN</a>
         @endauth
     </nav>
 
     <!-- Main Content -->
-<section >
-    <div  id="tool-sections" >
-                <!-- BMI Calculator Section -->
-                <section id="bmi-calculator" class="hidden">        
-                        <x-HealthComponents.BMICalculator/>
-                </section>
-                <!-- Calorie Counter Section -->
-                <section id="calorie-counter" class="hidden">
-                    <x-HealthComponents.CalorieCounter/>     
-                </section>
-                <!-- Nutrition Tracker Section -->
-                <section id="nutrition-tracker" class="hidden">      
-                <div class="grid  items-start grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6"> 
-                    <x-HealthComponents.LogDisplay/>
-                    <x-HealthComponents.nutritionfetch/>
-                    <x-piecharts.testpiechart/>       
+    <section>
+        <div id="tool-sections">
+            <!-- BMI Calculator Section -->
+            <section id="bmi-calculator" class="hidden">
+                <x-HealthComponents.BMICalculator />
+            </section>
+            <!-- Calorie Counter Section -->
+            <section id="calorie-counter" class="hidden">
+                <x-HealthComponents.CalorieCounter />
+            </section>
+            <!-- Nutrition Tracker Section -->
+            <section id="nutrition-tracker" class="hidden">
+                <div class="grid  items-start grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                    <x-HealthComponents.LogDisplay />
+                    <x-HealthComponents.nutritionfetch />
+                    <x-piecharts.testpiechart />
                 </div>
-                </section>
-                <!-- Workout Planner Section -->
-                <section id="workout-planner" class="hidden">
-                    <x-HealthComponents.WorkoutPlanner/>
-                </section>
-    </div>
-</section>
+            </section>
+            <!-- Workout Planner Section -->
+            <section id="workout-planner" class="hidden">
+                <x-HealthComponents.WorkoutPlanner />
+            </section>
+        </div>
+    </section>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
+            let myChart = null;
             const toolLinks = document.querySelectorAll('nav a[href^="#"]');
             const toolSections = document.querySelectorAll('#tool-sections section');
 
@@ -106,7 +108,7 @@
 
             // Add click event listener to each tool link
             toolLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
+                link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
                     const targetSection = document.getElementById(targetId);
@@ -116,10 +118,26 @@
                         section.classList.add('hidden');
                     });
 
+                    
+                    // Destroy the chart if it exists
+                    if (myChart !== null) {
+                        myChart.destroy();
+                        myChart = null; // Reset Chart.js instance variable
+                    }
+
                     // Show the target tool section
                     if (targetSection) {
                         targetSection.classList.remove('hidden');
+
+                        // Check if the target section is the Nutrition Tracker
+                        if (targetId === 'nutrition-tracker') {
+                            // Initialize the bar graph
+                            setTimeout(() => {
+                                initializeBarGraph();
+                            }, 800); // Delay initialization to ensure section is visible
+                        }
                     }
+
                 });
             });
         });

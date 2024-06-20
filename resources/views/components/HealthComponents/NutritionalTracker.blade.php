@@ -12,7 +12,7 @@
     <div class="container mx-auto"> 
         <div class="max-w-lg mx-auto bg-white shadow-xl rounded-lg overflow-hidden p-8 tool-card">
        <center> <button id="showNutritionTracker" class="bg-blue-500 text-white px-4 py-2 rounded-lg mt-4">Show Nutritional Tracker's Pie Chart</button></center>
-            <h2 class="text-2xl font-bold mb-4 text-center">Log Your Food</h2>
+            <h2 class="text-2xl font-bold mb-4 text-center" required>Log Your Food</h2>
             <form id="nutrition-form" class="space-y-4">
                 <div>
                     <label for="food-item-meal" class="block text-lg font-medium">Food Item:</label>

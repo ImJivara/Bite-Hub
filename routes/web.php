@@ -93,6 +93,7 @@ Route::get('/nutritionsearch', function () {
 // Route::get('/nutrition/fetch', [NutritionController::class, 'fetchNutritionalInfo']);
 Route::post('/log-nutritional-data', [NutritionController::class, 'store'])->name('log-nutritional-data');
 Route::get('/nutrition-logs/data', [NutritionController::class, 'fetchNutritionData'])->name('nutrition.data');;
+Route::get('/user/monthly-nutritional-data', [NutritionController::class, 'fetchNutritionData']);
 
 Route::get('/get-workouts', [WorkoutController::class, 'GetWorkouts'])->name('get-workouts');
 Route::get('/exercise/{id}', [WorkoutController::class, 'GetExercise']);
@@ -105,7 +106,7 @@ Route::get('/exercise/{id}', [WorkoutController::class, 'GetExercise']);
 ####################################Testing components################################################################3
 
 #################################### User ################################################################3
-Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::post('/comments', [CommentController::class, 'storre'])->name('comments.store');
 
 Route::get('/profile/recent-activities/{type?}', [ActivityController::class, 'recentActivities'])->name('recent-activities')->middleware("auth");
 Route::get('/profile/{id?}', [UserController::class, 'GetProfileInfo'])->middleware("auth");
@@ -148,7 +149,7 @@ Route::get('/Registration', function () {
 
 #################################### Recipes ################################################################3
 //Nav bar//
-Route::get('/Recipes', [RecipeController::class, 'getRecipes']);
+Route::get('/Recipes', [RecipeController::class, 'getRecipes'])->name('recipes.sorted');
 Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
 
 //Recipe card functions//

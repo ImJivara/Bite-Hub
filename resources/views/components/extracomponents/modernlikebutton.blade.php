@@ -1,4 +1,5 @@
-@props(['recipeId','IsLiked'])
+@props(['recipeId', 'IsLiked'])
+
 <style>
     label.container {
         background-color: white;
@@ -76,10 +77,8 @@
     }
 </style>
 
-<input type="checkbox" id="like-btn-{{ $recipeId }}" class="{{ $IsLiked ? 'checked' : '' }}">
-<label for="like-btn-{{ $recipeId }}" class="container m-0 like-btn {{ $IsLiked ? 'liked' : '' }}"  onclick="toggleLike(this,{{$recipeId}},'{{$IsLiked}}')">
-
-
+<input type="checkbox" id="like-btn-{{ $recipeId }}" {{ $IsLiked ? 'checked' : '' }}>
+<label for="like-btn-{{ $recipeId }}" class="container m-0 like-btn {{ $IsLiked ? 'liked' : '' }}"  onclick="toggleLike(this, {{ $recipeId }})">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart">
         <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
     </svg>
@@ -90,53 +89,38 @@
 </label>
 
 <script>
-    
-    function toggleLike(button,recipeId,IsLiked) {
-    var recipeId = recipeId;
-    // Apply animation if the button is not already liked
-    var IsLiked = button.classList.contains('liked');
-    if (!IsLiked) {
-        button.style.animation = 'heartButton 0.5s ease';
+    function toggleLike(button, recipeId) {
+        var isLiked = button.classList.contains('liked');
+        
+        // Toggle like state and apply animation
+        button.style.animation = isLiked ? '' : 'heartButton 0.5s ease';
         setTimeout(() => {
             button.querySelector('.feather-heart').style.animation = '';
         }, 500);
-    }
-    
-    // Toggle like state and make AJAX request
-    if (!IsLiked) {
-        incrementLikes(recipeId, button);
-    } else {
-        decrementLikes(recipeId, button);
-    }
-
-    function incrementLikes(recipeId, button) {
+        
         button.classList.toggle('liked');
+
+        // AJAX request to like/unlike the recipe
+        var url = isLiked ? '/Dislike/' : '/Like/';
         $.ajax({
             type: 'GET',
-            url: '/Like/' + recipeId,
+            url: url + recipeId,
             success: function(data) {
                 $('#txt_' + recipeId).html(data.NbLikes);
                 if (data.success == false) showError(data.error);
-            },
-            error: function() {
-                // showError("An error occurred. Please try again later.");
-            }
-        });
-    }
-
-    function decrementLikes(recipeId, button) {
-        button.classList.toggle('liked');
-        $.ajax({
-            type: 'GET',
-            url: '/Dislike/' + recipeId,
-            success: function(data) {
-                $('#txt_' + recipeId).html(data.NbLikes);
             },
             error: function() {
                 showError("An error occurred. Please try again later.");
             }
         });
     }
-}
 
+    function showError(message) {
+        var errorMessage = document.getElementById('error-message');
+        errorMessage.textContent = message;
+        errorMessage.classList.add('show');
+        setTimeout(() => {
+            errorMessage.classList.remove('show');
+        }, 3000);
+    }
 </script>

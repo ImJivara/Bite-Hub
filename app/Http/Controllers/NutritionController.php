@@ -84,5 +84,21 @@ class NutritionController extends Controller
             ]
         ]);
     }
+    public function getMonthlyNutritionalData(Request $request)
+{
+    $user = Auth::user();
+    $currentMonth = now()->month;
+    $currentYear = now()->year;
+
+    $logs = DB::table('nutritional_data_logs')
+        ->where('user_id', $user->id)
+        ->whereYear('log_date', $currentYear)
+        ->whereMonth('log_date', $currentMonth)
+        ->orderBy('log_date')
+        ->get(['log_date', 'calories', 'carbs', 'protein', 'fat']);
+
+    return response()->json($logs);
+}
+
 
 }

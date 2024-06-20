@@ -33,7 +33,7 @@ PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
 <div id="error-message" class="error-message"></div> 
  <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
 <!-- Navbar -->
-<nav class="p-4 flex justify-around items-center mt-6">
+<nav class="p-4 flex justify-around items-center mt-6 mb-8">
     <div class="logo flex items-center space-x-4">
         <div>
             <a href="/" class="text-3xl font-bold text-black">Bite-Hub.com</a>
@@ -97,10 +97,6 @@ PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
    <x-sidebar/>
 <!-- Sidebar --><!-- Sidebar --><!-- Sidebar -->  
 
-
-
-
-
     <!--################################Contents################################-->
     <div class="contents">
         @yield('content_body')
@@ -109,10 +105,10 @@ PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
 
 <!-- Ending section -->
     <!-- Nice Ending Section -->
-    <div class="bg-gray-100 py-12 mt-8 text-center">
+<div class="bg-gray-100 py-12 mt-8 text-center">
     <h2 class="text-3xl font-bold mb-4">Stay Updated with Our Latest Recipes!</h2>
     <p class="text-lg mb-6">Subscribe to our newsletter to receive delicious recipes and cooking tips straight to your inbox.</p>
-    <form class="max-w-md mx-auto">
+    <form class="max-w-md mx-auto" id="newsletter">
         <div class="flex items-center border-b border-b-2 border-gray-300 py-2">
             <input class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="email" placeholder="Enter your email" aria-label="Email">
             <button class="flex-shrink-0 bg-blue-500 hover:bg-blue-700 border-blue-500 hover:border-blue-700 text-sm border-4 text-white py-1 px-2 rounded" type="button">
@@ -164,7 +160,7 @@ PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
     <h2 class="text-3xl font-bold mb-4">Watch Our Video Tutorials</h2>
     <div class="flex flex-col md:flex-row justify-center items-center gap-24 mt-14">
             <div class="max-w-sm bg-white rounded-lg shadow-lg overflow-hidden">
-=                <div class="p-6">
+                <div class="p-6">
                     <h3 class="font-bold text-xl">test2 </h3>
                 </div>
             </div>
@@ -182,7 +178,7 @@ PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
 </div>
 <!-- Ending section -->
 
-<footer class="text-white py-12 mt-8" style="background-color: rgb(12, 9, 10);">
+<footer class="text-white py-12 " style="background-color: rgb(12, 9, 10);">
     <div class="max-w-screen-xl mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <!-- Footer Column 1 -->
