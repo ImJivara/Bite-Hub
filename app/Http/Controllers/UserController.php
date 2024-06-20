@@ -166,10 +166,15 @@ public function updateProfile(Request $request, $id)
     // }
 
     
-
+/**
+     * Toggle follow/unfollow a user.
+     *
+     * @param int $userId
+     * @return \Illuminate\Http\Response
+     */
     public function toggleFollow($userId)
     {
-        $authUser = auth()->user();
+        $authUser = Auth::user();
 
         // Validate that the user is not trying to follow/unfollow themselves
         if ($authUser->id == $userId) {
@@ -187,13 +192,13 @@ public function updateProfile(Request $request, $id)
         }
 
         // Check if the authenticated user is already following the user
-        if ($authUser->isfollowing($userId)) {
+        if (Auth::isfollowing($userId)) {
             // Unfollow the user
-            $authUser->unfollow($userId);
+            Auth::unfollow($userId);
             $message = 'User unfollowed successfully.';
         } else {
             // Follow the user
-            $authUser->follow($userId);
+            Auth::follow($userId);
             $message = 'User followed successfully.';
         }
 
@@ -202,8 +207,13 @@ public function updateProfile(Request $request, $id)
         ]);
     }
 
-  
-    public function IsFollowing($userId)
+    /**
+     * Check if the authenticated user is following another user.
+     *
+     * @param int $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function isFollowing($userId)
     {
         $authUser = auth()->user();
 
@@ -215,29 +225,37 @@ public function updateProfile(Request $request, $id)
             ], 404);
         }
 
-        $isFollowing = $authUser->isfollowing($userId);
+        $isFollowing = Auth::isfollowing($userId);
 
         return response()->json([
             'is_following' => $isFollowing,
         ]);
     }
 
-   
-    public function FollowingCount()
+    /**
+     * Get the count of users that the authenticated user is following.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function followingCount()
     {
         $authUser = auth()->user();
-        $count = $authUser->followingCount();
+        $count = Auth::followingcount();
 
         return response()->json([
             'following_count' => $count,
         ]);
     }
 
-   
-    public function FollowersCount()
+    /**
+     * Get the count of followers for the authenticated user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function followersCount()
     {
         $authUser = auth()->user();
-        $count = $authUser->followersCount();
+        $count = Auth::followerscount();
 
         return response()->json([
             'followers_count' => $count,

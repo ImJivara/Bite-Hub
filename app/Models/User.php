@@ -135,13 +135,13 @@ class User extends Authenticatable
     }
 
     // Get the count of users that the user is following
-    public function followingCount()
+    public function followingcount()
     {
         return $this->following()->count();
     }
 
     // Get the count of followers for the user
-    public function followersCount()
+    public function followerscount()
     {
         return $this->followers()->count();
     }
