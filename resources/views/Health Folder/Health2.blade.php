@@ -17,7 +17,7 @@
         .montserrat{
             font-family: "Montserrat", sans-serif;
             font-optical-sizing: auto;
-            font-weight: <weight>;
+            font: weight 1px;;
             font-style: normal;
         }
         .nav-item {
@@ -47,13 +47,13 @@
 
 <body class="montserrat">
         <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
-        <div id="error-message" class="error-message"></div> 
+        <!-- <div id="error-message" class="error-message"></div>  -->
         <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
     <!-- Navigation Bar -->
-    <nav class="p-4 flex justify-around items-center mt-4">
-        <div class="flex items-center space-x-4">
-            <a href="#" class="text-2xl font-bold text-black">Bite-Hub.com</a>
-            <span class="bg-green-300 text-black py-1 px-2 rounded-full">Healthy</span>
+    <nav class="p-4 flex justify-between items-center mt-4">
+        <div class="flex items-center space-x-2">
+            <a href="/" class="text-2xl font-bold text-black">Bite-Hub.com</a>
+            <p class="bg-green-300 text-black py-1 px-2 rounded-full">Healthy</p>
         </div>
         <div class="navbar-container">
             <a href="#bmi-calculator" class="nav-item text-black hover:text-white ">BMI Calculator</a>
@@ -61,7 +61,11 @@
             <a href="#nutrition-tracker" class="nav-item text-black hover:text-white">Nutrition Tracker</a>
             <a href="#workout-planner" class="nav-item text-black hover:text-white">Workout Planner</a>
         </div>
-        <a href="#" class="bg-black text-white py-2 px-4 rounded-full">LOGIN</a>
+        @auth
+            <h2  class="text-xl font-bold text-black">Hello, {{Auth::user()->name}}</h2>
+        @else 
+            <a href="/Login" class="bg-black text-white py-2 px-4 rounded-full">LOGIN</a>
+        @endauth
     </nav>
 
     <!-- Main Content -->
@@ -77,7 +81,7 @@
                 </section>
                 <!-- Nutrition Tracker Section -->
                 <section id="nutrition-tracker" class="hidden">      
-                <div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6"> 
+                <div class="grid  items-start grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6"> 
                     <x-HealthComponents.LogDisplay/>
                     <x-HealthComponents.nutritionfetch/>
                     <x-piecharts.testpiechart/>       

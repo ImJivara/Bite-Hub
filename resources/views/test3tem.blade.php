@@ -59,7 +59,7 @@ PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
     </div>
     <div class="login-signup flex items-center space-x-4">
         @if(Auth::user())
-        <p class="mr-4 text-lg">Hello, <span class="capitalize">{{ Auth::user()->name }}</span> <a href="/Logout" style="color:#DD0525; font-weight: bolder;">Logout</a></p>
+        <p class="mr-4 text-xl font-bold text-black">Hello, <span class="capitalize">{{ Auth::user()->name }}</span> <a href="/Logout" style="color:#DD0525; font-weight: bolder;">Logout</a></p>
         @else
         <p class="mr-7 text-lg">Guest User <a href="/Login" class="bg-black text-white py-2 px-4 rounded-full">LOGIN</a></p>
         @endif

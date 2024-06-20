@@ -1,4 +1,5 @@
 <!-- Followers Modal -->
+ @props(['likedRecipes'])
 <div id="followersModal" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
     <div class="bg-white rounded-lg shadow-lg  w-full sm:w-3/4 md:w-1/2 lg:w-1/3">
         <!-- Modal header -->
@@ -9,7 +10,7 @@
         <!-- Modal body -->
         <div class="p-4 max-h-96 overflow-y-auto">
             <div class="grid grid-cols-1 gap-4">
-                {{-- @forelse($followers as $follower) --}}
+                @forelse($likedRecipes as $follower)
                 <div class="flex items-center space-x-4">
                     <img src="{{ asset('imgs/user.jpg') }}" alt="Profile Picture" class="w-12 h-12 rounded-full border">
                     <div class="flex-grow">
@@ -72,9 +73,9 @@
                 </div>
                 
                 <!-- Repeat for other followers -->
-                {{-- @empty --}}
+                @empty
                 <p class="text-gray-500 col-span-full text-center">No followers yet.</p>
-                {{-- @endforelse --}}
+                @endforelse 
             </div>
         </div>
     </div>

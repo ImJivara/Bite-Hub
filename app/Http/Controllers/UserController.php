@@ -13,25 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-    // public function login(Request $request)
-    // {
-    //     $email = $request->input('email');
-    //     $password = $request->input('password');
-
-    //     // Call a custome function to validate credentials
-    //     if ($this->validateCredentials($email, $password)) 
-    //     {
-    //      $account = User::where('email', $email)->first();
-    //      session(['user' => $account]);
-    //      Auth::login($account);
-    //      return response()->json(['success' => true]);
-            
-    //     } else {
-    //         // Authentication failed
-    //         // abort(404);
-    //         return  response()->json(['message' => 'Invalid email or password']);
-    //     }
-    // }
+   
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -86,38 +68,6 @@ class UserController extends Controller
                                     return response()->json(['message' => $e->getMessage(), 'success' => False]);       
                                 }
     }
-   
-
-// public function register(Request $r)
-// {
-    // Validate the incoming request data
-    // $validator = Validator::make($r->all(), [
-    //     'name' => 'required|string|max:255',
-    //     'email' => 'required|string|email|max:255|unique:user',
-    //     'password' => 'required|string|min:3|confirmed',
-    // ]);
-
-    // Check if validation fails
-    // if ($validator->fails()) {
-    //     return response()->json(['message' => $validator->errors()], 422);
-    // }
-    // try {
-    //     // Create the user account
-    //     $account = User::create([
-    //         'name' => $r->name,
-    //         'email' => $r->email,
-    //         'password' => $r->password,
-    //         'location' => "Lebanon",
-    //     ]);
-        
-    //     return response()->json(['message' => 'Your Account Has Been Successfully Created', 'success' => true]);
-    // } catch (\Exception $e) {
-    //     return response()->json(['message' => 'An error occurred while processing your request'], 500);
-    // }
-// }
-
-    
-
 
     // public function clearSession()
     // {
@@ -171,50 +121,126 @@ public function updateProfile(Request $request, $id)
     }
 
 
-    public function followUser( $userIdToFollow)
-    {
-        $user = Auth::user();
+    // public function followUser( $userIdToFollow)
+    // {
+    //     $user = Auth::user();
 
-        if (!$user->isFollowing($userIdToFollow)) {
-            $user->follow($userIdToFollow);
-            $followersCount = User::findOrFail($userIdToFollow)->followersCount(); // Update followers count
-        } else {
-            $user->unfollow($userIdToFollow);
-            $followersCount = User::findOrFail($userIdToFollow)->followersCount(); // Update followers count
-        }
+    //     if (!$user->$this->checkIfFollowing($userIdToFollow)) {
+    //         $userToFollow=User::findOrFail($userIdToFollow);
+    //         $user->following()->detach();
+    //         $followersCount = User::findOrFail($userIdToFollow)->followersCount(); // Update followers count
+    //     } else {
+    //        $userIdToFollowCount= $user->$this->unfollowUser($userIdToFollow);
+    //         // $followersCount = User::findOrFail($userIdToFollow)->followersCount(); // Update followers count
+    //     }
 
-        return response()->json(['followersCount' => $followersCount]);
+    //     return response()->json(['followersCount' => $userIdToFollowCount]);
         
-    }
+    // }
 
-    public function unfollowUser(Request $request, $userIdToUnfollow)
-    {
-        // Retrieve the authenticated user
-        $user = $request->user();
+    // public function unfollowUser(Request $request, $userIdToUnfollow)
+    // {
+    //     // Retrieve the authenticated user
+    //     $user = $request->user();
 
-        // Check if the user to unfollow exists
-        $userToUnfollow = User::findOrFail($userIdToUnfollow);
+    //     // Check if the user to unfollow exists
+    //     $userToUnfollow = User::findOrFail($userIdToUnfollow);
 
-        // Unfollow the user
-        $user->unfollow($userToUnfollow->id);
+    //     // Unfollow the user
+    //     $user->unfollow($userToUnfollow->id);
 
-        $followingCount = $userIdToUnfollow->followingCount();
-        return response()->json(['$followingCount' => $followingCount]);
-    }
+    //     $followingCount = $userIdToUnfollow->followingCount();
+    //     return $followingCount;
+    // }
 
-    public function checkIfFollowing(Request $request, $userId)
-    {
-        // Retrieve the authenticated user
-        $user = $request->user();
+    // public function checkIfFollowing(Request $request, $userId)
+    // {
+    //     // Retrieve the authenticated user
+    //     $user = $request->user();
 
-        // Check if the user is following the specified user
-        $isFollowing = $user->isFollowing($userId);
+    //     // Check if the user is following the specified user
+    //     $isFollowing = $user->isFollowing($userId);
 
-        // You might return a JSON response indicating whether the user is following the specified user
-        return response()->json(['is_following' => $isFollowing]);
-    }
+    //     // You might return a JSON response indicating whether the user is following the specified user
+    //     return response()->json(['is_following' => $isFollowing]);
+    // }
 
     
 
+    public function toggleFollow($userId)
+    {
+        $authUser = auth()->user();
 
+        // Validate that the user is not trying to follow/unfollow themselves
+        if ($authUser->id == $userId) {
+            return response()->json([
+                'message' => 'You cannot follow or unfollow yourself.',
+            ], 400);
+        }
+
+        // Validate that the user to be followed/unfollowed exists
+        $userToFollow = User::find($userId);
+        if (!$userToFollow) {
+            return response()->json([
+                'message' => 'User not found.',
+            ], 404);
+        }
+
+        // Check if the authenticated user is already following the user
+        if ($authUser->isfollowing($userId)) {
+            // Unfollow the user
+            $authUser->unfollow($userId);
+            $message = 'User unfollowed successfully.';
+        } else {
+            // Follow the user
+            $authUser->follow($userId);
+            $message = 'User followed successfully.';
+        }
+
+        return response()->json([
+            'message' => $message,
+        ]);
+    }
+
+  
+    public function IsFollowing($userId)
+    {
+        $authUser = auth()->user();
+
+        // Validate that the user to check exists
+        $userToCheck = User::find($userId);
+        if (!$userToCheck) {
+            return response()->json([
+                'message' => 'User not found.',
+            ], 404);
+        }
+
+        $isFollowing = $authUser->isfollowing($userId);
+
+        return response()->json([
+            'is_following' => $isFollowing,
+        ]);
+    }
+
+   
+    public function FollowingCount()
+    {
+        $authUser = auth()->user();
+        $count = $authUser->followingCount();
+
+        return response()->json([
+            'following_count' => $count,
+        ]);
+    }
+
+   
+    public function FollowersCount()
+    {
+        $authUser = auth()->user();
+        $count = $authUser->followersCount();
+
+        return response()->json([
+            'followers_count' => $count,
+        ]);
+    }
 }

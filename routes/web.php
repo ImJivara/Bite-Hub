@@ -108,7 +108,7 @@ Route::get('/exercise/{id}', [WorkoutController::class, 'GetExercise']);
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get('/profile/recent-activities/{type?}', [ActivityController::class, 'recentActivities'])->name('recent-activities')->middleware("auth");
-Route::get('/profile/{id}', [RecipeController::class, 'GetProfileInfo'])->middleware("auth");
+Route::get('/profile/{id}', [UserController::class, 'GetProfileInfo'])->middleware("auth");
 Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm']);
 Route::post('/change-password', [PasswordController::class, 'changePassword'])->name('password.change');
 Route::get('/profile/Edit Profile/{id}', function ($id) {

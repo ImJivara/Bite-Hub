@@ -201,6 +201,7 @@ public function commentOnRecipe(Request $request, $recipeId)
     {
 
         $likedRecipes=$this->RecipesLikedByUser();
+        $followers=
         $recentActivities = Activity::where('user_id', Auth::user()->id)
                                     ->latest()
                                     ->take(10)

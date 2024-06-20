@@ -1,58 +1,4 @@
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-{{--  <div class="container mx-auto p-4">
-       <!-- Profile Header -->
-       <div class="flex items-center justify-center mb-8">
-           <div class="w-40 h-40 relative">
-               <img class="w-full h-full rounded-full object-cover" src="{{ asset('imgs/3.jpg') }}" alt="Profile Picture">
-               <button class="absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded-full" onclick="changeProfilePicture()">
-                   ✏️
-               </button>
-           </div>
-           <div class="ml-8">
-               <h1 class="text-3xl font-semibold">{{ Auth::user()->name }}</h1>
-               <p class="text-gray-600">{{ Auth::user()->email }}</p>
-               <p class="text-gray-600">{{ Auth::user()->location }}</p>
-               <div class="flex mt-4 space-x-4">
-                   <div class="text-center">
-                       <span class="font-bold text-xl">330</span>
-                       <p class="text-gray-600">Posts</p>
-                   </div>
-                   <div class="text-center">
-                       <span class="font-bold text-xl">77</span>
-                       <p class="text-gray-600">Followers</p>
-                   </div>
-                   <div class="text-center">
-                       <span class="font-bold text-xl">66</span>
-                       <p class="text-gray-600">Following</p>
-                   </div>
-               </div>
-           </div>
-       </div>
-       
 
-       <!-- Liked Recipes Section -->
-           <div class="liked-posts mt-16 mb-8">
-               <h2 class="text-2xl text-center font-bold mb-4">Liked Recipes</h2>
-               <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                   @forelse($likedRecipes as $recipe)
-                       <div class="relative bg-white rounded-lg shadow-md overflow-hidden">
-                           <img src="{{ $recipe->image_url }}" alt="{{ $recipe->RecipeName }}" class="w-full h-40 object-cover">
-                           <div class="p-4">
-                               <h3 class="text-xl font-semibold mb-2">{{ $recipe->RecipeName }}</h3>
-                               <p class="text-gray-600">{{ Str::limit($recipe->Description, 100) }}</p>
-                               <a href="/Recipe/{{ $recipe->id }}" class="text-blue-500 hover:underline mt-2 inline-block">Read More</a>
-                           </div>
-                       </div>
-                   @empty
-                       <p class="text-center text-gray-500 col-span-full">You have not liked any recipes yet.</p>
-                   @endforelse
-               </div>
-           </div>
-
-
-      
-   </div>
---}}
 
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <script src="{{ asset('jquery-3.7.1.js') }}"></script>
@@ -67,20 +13,12 @@
         document.getElementById(modalId).classList.add('hidden');
     }
 
-    // Event listener to open the Followers modal
-    document.getElementById('openFollowersModal').addEventListener('click', function() {
-        openModal('followersModal');
-    });
 
     // Event listener to close the Followers modal
     document.getElementById('closeFollowersModal').addEventListener('click', function() {
         closeModal('followersModal');
     });
 
-    // Event listener to open the Following modal
-    document.getElementById('openFollowingModal').addEventListener('click', function() {
-        openModal('followingModal');
-    });
 
     // Event listener to close the Following modal
     document.getElementById('closeFollowingModal').addEventListener('click', function() {
@@ -252,6 +190,6 @@
 
 
 <!-- Modal or overlay container -->
-<x-ProfileComponents.followers/>
+<x-ProfileComponents.followers :likedRecipes="$likedRecipes"/>
 <x-ProfileComponents.followings/>
 {{-- @endsection --}}

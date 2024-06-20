@@ -5,7 +5,7 @@
         <div class="max-w-sm mx-auto bg-white rounded-lg border border-0.5-black overflow-hidden transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg">
             <img class="w-full h-56 object-cover object-center" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image">
             <div class="p-6 flex-grow">
-                <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ $r->RecipeName }}</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">{{ $r->RecipeName }}</h2>
                 @if (strlen($r->Description) > 100)
                     <p class="text-gray-700 font-medium">{{ \Illuminate\Support\Str::limit($r->Description, 100, $end='...') }}</p>
                     <button id="toggleBtn_{{ $r->id }}" onclick="toggleDescription('{{ $r->id }}')" class="text-blue-500 font-medium mt-2 focus:outline-none">Show More</button>
