@@ -1,7 +1,7 @@
 
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Loopple/loopple-public-assets@main/riva-dashboard-tailwind/riva-dashboard.css">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
 
     <style>
         /* Additional styles */

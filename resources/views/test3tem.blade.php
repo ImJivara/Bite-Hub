@@ -4,13 +4,13 @@ YOUR_EDAMAM_APP_KEY=0bfaa9370bce866584f689af21404aa2
 WORKOUT_API_KEY=55715de52a098e66a462f228656ba1c7b0a7ac0c
 PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth"r>
+<html lang="en" class="scroll-smooth">
 <head>
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"  href="{{ asset('/layoutcss.css') }}"> 
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+     <link href="{{asset('\css\tailwindstyles.css')}}" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/kTcsm6FQ4RSAP9z9b8fqjeanU/6lmV4DJEFuOWzTpBdaJ98loG8mGbB6iTP6y7H5NU6tuGt+OMj8w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

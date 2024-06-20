@@ -7,7 +7,7 @@
     <!-- Include Tailwind CSS -->
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
     <script src="{{ asset('js\ErrorHandle.js') }}"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
     
     <!-- Custom Styles -->
     <style>

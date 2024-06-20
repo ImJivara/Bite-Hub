@@ -1,4 +1,4 @@
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
 <body class=" bg-gray-800">
 <section id="health-tools" class="py-16 bg-gradient-to-r from-red-400 to-yellow-500 ">
     <div class="container mx-auto text-center">
@@ -47,6 +47,7 @@
             <!-- Nutrition Tracker Section -->
             <section id="nutrition-tracker" class="">      
             <div class="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-6"> 
+                <x-LogDisplay/>
                 <x-extracomponents.NutritionalTracker/>
                 <x-piecharts.testpiechart/>
                 

@@ -1,6 +1,6 @@
 
 
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
 <script src="{{ asset('jquery-3.7.1.js') }}"></script>
 <script>
   // Function to open the modal

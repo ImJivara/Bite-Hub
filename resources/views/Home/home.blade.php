@@ -9,7 +9,7 @@
     
 
 
-<link href="/tailwind.css" rel="stylesheet">
+<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
 
 
 

@@ -1,4 +1,4 @@
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
 
 <x-setting :heading="'Edit post: ' . $post->RecipeName">
     <div class="shadow-lg rounded-lg p-8 mb-8">
