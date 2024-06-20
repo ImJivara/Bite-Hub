@@ -57,7 +57,7 @@
                 <p class="text-gray-600">{{ Auth::user()->location }}</p>
                 <div class="flex mt-4 space-x-4">
                     <div class="text-center">
-                        <span class="font-bold text-xl">330</span>
+                        <span class="font-bold text-xl">{{$followers->count()}}</span>
                         <p class="text-gray-600">Posts</p>
                     </div>
                     <div class="text-center cursor-pointer" id="openFollowersModal">

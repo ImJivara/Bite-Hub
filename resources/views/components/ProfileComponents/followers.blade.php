@@ -10,7 +10,7 @@
         <!-- Modal body -->
         <div class="p-4 max-h-96 overflow-y-auto">
             <div class="grid grid-cols-1 gap-4">
-                @forelse($likedRecipes as $follower)
+                {{-- @forelse($followers as $follower) --}}
                 <div class="flex items-center space-x-4">
                     <img src="{{ asset('imgs/user.jpg') }}" alt="Profile Picture" class="w-12 h-12 rounded-full border">
                     <div class="flex-grow">
@@ -73,9 +73,9 @@
                 </div>
                 
                 <!-- Repeat for other followers -->
-                @empty
+                {{-- @empty --}}
                 <p class="text-gray-500 col-span-full text-center">No followers yet.</p>
-                @endforelse 
+                {{-- @endforelse  --}}
             </div>
         </div>
     </div>
