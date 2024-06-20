@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;// for file saving
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log ;
 
 class RecipeController extends Controller
 {  
@@ -197,18 +198,6 @@ public function commentOnRecipe(Request $request, $recipeId)
         }
     }
     
-    public function GetProfileInfo()
-    {
-
-        $likedRecipes=$this->RecipesLikedByUser();
-        $followers=
-        $recentActivities = Activity::where('user_id', Auth::user()->id)
-                                    ->latest()
-                                    ->take(10)
-                                    ->get();
-     return view("Profile Folder.ProfilePage",["likedRecipes"=>$likedRecipes]);
-        
-    }
 
 #################################### Eeleq relationships functions  ################################################################3
 

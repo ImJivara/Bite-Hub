@@ -8,12 +8,12 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\NutritionController;
-use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\Auth\RegisterController;
 
 
@@ -108,7 +108,7 @@ Route::get('/exercise/{id}', [WorkoutController::class, 'GetExercise']);
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
 
 Route::get('/profile/recent-activities/{type?}', [ActivityController::class, 'recentActivities'])->name('recent-activities')->middleware("auth");
-Route::get('/profile/{id}', [UserController::class, 'GetProfileInfo'])->middleware("auth");
+Route::get('/profile/{id?}', [UserController::class, 'GetProfileInfo'])->middleware("auth");
 Route::get('/change-password', [PasswordController::class, 'showChangePasswordForm']);
 Route::post('/change-password', [PasswordController::class, 'changePassword'])->name('password.change');
 Route::get('/profile/Edit Profile/{id}', function ($id) {
@@ -125,8 +125,11 @@ Route::get('/View Profile/User page',function(){
     return view('Profile Folder.OtherProfilePage',compact('user','likedRecipes'));
 });
 
-Route::post('/follow/{user}', [UserController::class, 'followUser'])->name('follow');
-Route::post('/unfollow/{user}', [UserController::class, 'unfollowUser'])->name('unfollow');
+Route::middleware('auth')->group(function () {
+    Route::post('/follow/{user}', [UserController::class, 'followUser'])->name('follow');
+    Route::post('/unfollow/{user}', [UserController::class, 'unfollowUser'])->name('unfollow');
+    Route::get('/check-follow/{user}', [UserController::class, 'checkIfFollowing'])->name('checkIfFollowing');
+});
 
 Route::post('/profile/update/{id}', [UserController::class, 'updateProfile'])->middleware("auth");
 Route::post('/account/delete/{id}', [UserController::class, 'deleteAccount'])->middleware("auth");
