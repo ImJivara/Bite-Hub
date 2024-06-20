@@ -4,7 +4,7 @@ YOUR_EDAMAM_APP_KEY=0bfaa9370bce866584f689af21404aa2
 WORKOUT_API_KEY=55715de52a098e66a462f228656ba1c7b0a7ac0c
 PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth"r>
 <head>
 <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">

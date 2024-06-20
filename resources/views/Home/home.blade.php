@@ -1,4 +1,15 @@
-<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bite-hub</title>
+</head>
+<body>
+    
+
+
+<link href="/tailwind.css" rel="stylesheet">
 
 
 
@@ -18,28 +29,6 @@
             </div>      
     </div>  
 </section>
-
-
-<!-- Featured Recipes Section -->
-<!-- <section class="featured-recipes py-16">
-    <div class="container mx-auto">
-        <h2 class="text-3xl font-bold mb-8 text-center">Featured Recipes</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            
-            <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition duration-300 ease-in-out">
-                <img class="w-full h-48 object-cover object-center" src="https://via.placeholder.com/600x400" alt="Recipe Image">
-                <div class="p-6">
-                    <h3 class="text-xl font-semibold mb-2">Recipe Title</h3>
-                    <p class="text-gray-700">Short description of the recipe...</p>
-                    <a href="#" class="block text-blue-500 font-semibold mt-2 hover:text-blue-600">Read More</a>
-                </div>
-            </div>
-           
-        </div>
-    </div>
-</section> -->
-
-
 
 <section class="about-us  py-16 shadow-xl">
     <div class="container mx-auto text-center">
@@ -71,4 +60,5 @@
     </div>
 </section>
 
-
+</body>
+</html>

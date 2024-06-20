@@ -17,7 +17,6 @@
         class="px-4 py-2 bg-black rounded-lg">Oldest to Newest</a>
     <a href="{{ route('recipes.sorted', ['sort_by' => 'NbLikes', 'sort_order' => 'desc']) }}"
         class="px-4 py-2 bg-black rounded-lg">Most Liked to Least Liked</a>
-
     <x-extracomponents.searchrecipes/>
 </div>
 
