@@ -7,8 +7,7 @@
     <!-- Include Tailwind CSS -->
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
     <script src="{{ asset('js\ErrorHandle.js') }}"></script>
-    <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
-    
+    <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">    
     <!-- Custom Styles -->
     <style>
         /* Sidebar Styles */

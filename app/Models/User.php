@@ -129,19 +129,20 @@ class User extends Authenticatable
     }
 
     // Check if a user is following another user
-    public function isfollowing($userId)
+    public function isFollowing($userId)
     {
         return $this->following()->where('followed_id', $userId)->exists();
     }
 
     // Get the count of users that the user is following
-    public function followingcount()
+    public function followingCount()
     {
         return $this->following()->count();
     }
 
+
     // Get the count of followers for the user
-    public function followerscount()
+    public function followersCount()
     {
         return $this->followers()->count();
     }

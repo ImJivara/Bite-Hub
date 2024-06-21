@@ -50,7 +50,7 @@
         <!-- Profile image -->
         
         <!-- Profile overlay (clickable) -->
-        <a href="profile.html" class="profile-overlay">
+        <a href="/profile/{{Auth::user()->id}}" class="profile-overlay">
             <img class="profile-image" src="{{ asset('profileimgs/3.jpg') }}" alt="Profile Picture">
         </a>
     </div>
