@@ -32,8 +32,8 @@ Route::get('/Contact', function () {
 })->name('Contact');
 
 
-Route::get('/recipesearch', [RecipeController::class, 'index'])->name('recipes.index');
-Route::get('/recipes/search', [RecipeController::class, 'fetchAndSaveImages'])->name('recipes.search');
+Route::get('/image search', [RecipeController::class, 'index'])->name('recipes.index');
+Route::get('/image search', [RecipeController::class, 'fetchAndSaveImages'])->name('recipes.search');
 
 
 #################################### Home ################################################################3
@@ -156,9 +156,13 @@ Route::post('/Register', [UserController::class, 'registerr']);
 //Nav bar//
 Route::get('/categories', [RecipeController::class, 'getCategories']);
 Route::get('/Recipes', [RecipeController::class, 'getRecipes'])->name('recipes.sorted');
-Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
-Route::get('/recipes/search', [RecipeController::class, 'searchrecipesbar'])->name('recipes.searchbar');
 
+Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
+
+
+Route::get('/recipes/create', [RecipeController::class,'getForm'])->name('recipes.Form');
+Route::post('/recipes/create', [RecipeController::class,'store'])->name('recipes.create');
+Route::get('/recipes/search img', [RecipeController::class, 'searchrecipesbar'])->name('recipes.searchbar');
 //Recipe card functions//
 Route::get('/Step/{id}', [RecipeController::class, 'getStep']);
 Route::get('/Ing/{id}', [RecipeController::class, 'getIng']);

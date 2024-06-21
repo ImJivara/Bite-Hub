@@ -16,33 +16,38 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;// for file saving
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log ;
+use Illuminate\Support\Facades\Validator;
 
 class RecipeController extends Controller
 {  
-    //   public function index()
-    // {
-
-    //     return view('SearchBar');
-    // }
+   
     public function getRecipes(Request $request)
     {  
         if($request->id==null)
         {
-            // Default sorting
+            // Fetch distinct categories
+            $categories = Recipe::select('Category')->distinct()->pluck('Category');
+
             $sortBy = $request->input('sort_by', 'created_at');
             $sortOrder = $request->input('sort_order', 'desc');
-           
+            $category = $request->input('category');
 
-            // Query for recipes based on sorting parameters
-            $recipesQuery = Recipe::orderBy($sortBy, $sortOrder);
+            $recipesQuery = Recipe::query();
+
+            if ($category) {
+                $recipesQuery->where('Category', $category);
+            }
+
+            $recipesQuery->orderBy($sortBy, $sortOrder);
             $recipes = $recipesQuery->paginate(10);
             $featuredRecipe = Recipe::orderBy('NbLikes', 'desc')->first();
             $MostRecentRecipe = Recipe::orderBy('created_at', 'desc')->first();
-        
+
             return view('Recipes', [
                 'rec' => $recipes,
                 'featuredrec' => $featuredRecipe,
-                'MostRecentRecipe' => $MostRecentRecipe
+                'MostRecentRecipe' => $MostRecentRecipe,
+                'categories' => $categories // Pass categories to the view
             ]);
         }
         else{
@@ -64,13 +69,86 @@ class RecipeController extends Controller
             ]);
         } 
     }
-    public function getCategories()
+
+    public function getForm()
     {
-        $categories = Recipe::select('Category')->distinct()->get();
-        return response()->json($categories);
+        return view('recipeForm');
+    }
+
+    public function store(Request $request)
+    {
+        // Validate the incoming request data
+        $validator = Validator::make($request->all(), [
+            'RecipeName' => 'required|string|max:255',
+            'Description' => 'required|string',
+            'Category' => 'required|string|max:255',
+            'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'difficulty_level' => 'required|string|max:255',
+            'cooking_time' => 'required|integer|min:1',
+            'preparation_time' => 'required|integer|min:1',
+            'Health_Score' => 'required|integer|min:1',
+            'steps.*' => 'required|string',
+            'ingredients.*.name' => 'required|string',
+            'ingredients.*.amount' => 'required|numeric',
+            'ingredients.*.unit' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // Handle thumbnail upload if provided
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+        } else {
+            $thumbnailPath = null;
+        }
+
+        // Create a new Recipe instance
+        $recipe = new Recipe();
+        $recipe->user_id = auth()->user()->id; // Assuming the recipe is associated with the authenticated user
+        $recipe->RecipeName = $request->input('RecipeName');
+        $recipe->Description = $request->input('Description');
+        $recipe->Category = $request->input('Category');
+        $recipe->thumbnail = $thumbnailPath; // Store the thumbnail path
+        $recipe->difficulty_level = $request->input('difficulty_level');
+        $recipe->cooking_time = $request->input('cooking_time');
+        $recipe->preparation_time = $request->input('preparation_time');
+        $recipe->Health_Score = $request->input('Health_Score');
+
+        // Convert steps and ingredients data to JSON format
+        $steps = $request->input('steps');
+        $ingredients = $request->input('ingredients');
+
+        // Prepare steps_details and ingredients_details as JSON arrays
+        $recipe->Steps = count($steps);
+        $recipe->steps_details =  json_encode($steps);;
+        $recipe->NbIngredients = count($ingredients);
+        $recipe->ingredients_details = json_encode($ingredients);
+
+        // Save the recipe to the database
+        $recipe->save();
+
+        // Create a new NutritionalData instance
+        $nutritionalData = new NutritionalData();
+        $nutritionalData->recipe_id = $recipe->id;
+        $nutritionalData->calories = $request->input('calories');
+        $nutritionalData->carbs = $request->input('carbs');
+        $nutritionalData->fat = $request->input('fat');
+        $nutritionalData->protein = $request->input('protein');
+        
+        // Save the nutritional data to the database
+        $nutritionalData->save();
+
+        // Redirect to a success page or somewhere else
+        return redirect()->route('recipes.Form')->with('success', 'Recipe added successfully!');
     }
 
 
+    
 
 
     public function searchrecipesbar(Request $request)
@@ -523,102 +601,7 @@ public function search(Request $request)
         // ]);
     }
 
-    public function fetchAndSaveImages(Request $request)
-{
-    $request->validate([
-        'query' => 'required|string',
-    ]);
-
-    // Get the search query from the request
-    $query = $request->input('query');
-
-    // Fetch Pexels API key from environment variables
-    $apiKey = env('PEXELS_API_KEY');
-
-    // Make request to Pexels API
-    $response = Http::withHeaders([
-        'Authorization' => $apiKey,
-    ])->get('https://api.pexels.com/v1/search', [
-        'query' => $query,
-        'per_page' => 1, // Adjust as per your requirement
-    ]);
-
-    // Handle API response
-    $photos = $response->json()['photos'] ?? [];
-
-    if (!empty($photos)) {
-        $imageUrl = $photos[0]['src']['original']; // Assuming 'original' is the full-size image URL
-        $savedImagePath = $this->saveImageLocally($imageUrl);
-
-        if ($savedImagePath) {
-            return "Image saved at: " . $savedImagePath;
-        } else {
-            return "Failed to save image.";
-        }
-    } else {
-        return "No photos found.";
-    }
-}
-
-    private function saveImageLocally($imageUrl)
-    {
-        try {
-            // Fetch image content
-            $response = Http::get($imageUrl);
-            $imageContent = $response->getBody();
-    
-            // Extract filename from URL
-            $filename = basename($imageUrl);
-    
-            // Specify the directory path
-            $directoryPath = 'C:/Users/User/Documents/RecipeImages/';
-    
-            // Save image to the specified directory
-            $filePath = $directoryPath . $filename;
-            file_put_contents($filePath, $imageContent);
-    
-            // Return the saved file path
-            return $filePath;
-        } catch (\Exception $e) {
-            // Log the error
-            Log::error('Error saving image: ' . $e->getMessage());
-    
-            // Return null or handle the error as needed
-            return null;
-        }
-    }
-    
-    
-
-
-    private function saveImageLocally2($imageUrl)
-    {
-        try {
-            // Fetch image content
-            $response = Http::get($imageUrl);
-            $imageContent = $response->getBody();
-    
-            // Generate a unique filename with extension
-           // $filename = uniqid() . '.jpg'; // Assuming images fetched are in JPEG format
-           $extension = pathinfo($response, PATHINFO_EXTENSION);
-           $filename = Str::slug(pathinfo($response, PATHINFO_FILENAME)) . '_' . uniqid() . '.' . $extension;
-            // Specify the directory path
-            $directoryPath = 'C:/Users/User/Documents/RecipeImages/';
-    
-            // Save image to the specified directory
-            $filePath = $directoryPath . $filename;
-            file_put_contents($filePath, $imageContent);
-    
-            // Return the saved file path
-            return $filePath;
-        } catch (\Exception $e) {
-            // Log the error
-            Log::error('Error saving image: ' . $e->getMessage());
-    
-            // Return null or handle the error as needed
-            return null;
-        }
-    }
+   
     
 
 
