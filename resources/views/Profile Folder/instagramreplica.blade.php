@@ -1,6 +1,6 @@
 <!-- resources/views/profile/show.blade.php -->
 
-<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">>>
+<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
 @php $user=Auth::user(); @endphp
 <div class="container mx-auto p-4">
     <!-- Cover Photo -->

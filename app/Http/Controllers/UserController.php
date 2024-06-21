@@ -88,18 +88,19 @@ class UserController extends Controller
 
         return redirect('/Recipes');
     }
-    public function GetProfileInfo($id = null)
+    public function GetProfileInfo(Request $request)
     {
-        if ($id === null) {
+        if ($request->id === Auth::user()->id) {
             // Fetch authenticated user's profile
             $user = Auth::user();
         } else {
             // Fetch other user's profile by ID
-            $user = User::find($id);
+            $user = User::find($request->id);
 
             if (!$user) {
                 abort(404);
             }
+            
         }
 
         // Fetch posts based on the user
@@ -109,7 +110,7 @@ class UserController extends Controller
             ->get();
 
         // Fetch liked recipes by the user
-        $likedRecipes = $user->likedRecipes(); // Assuming you have a method in RecipeController
+        $likedRecipes = $user->likedRecipes; 
 
         // Fetch followers and following using relationships
         $followers = $user->followers;
@@ -122,7 +123,7 @@ class UserController extends Controller
             ->get();
 
         // Determine which view to return based on whether it's the authenticated user's profile or another user's profile
-        $view = $id === null ? 'Profile Folder.ProfilePage' : 'Profile Folder.OtherProfilePage';
+        $view = $user->id === Auth::user()->id ? 'Profile Folder.ProfilePage' : 'Profile Folder.OtherProfilePage';
 
         return view($view, [
             'user' => $user,
@@ -227,35 +228,34 @@ class UserController extends Controller
     public function toggleFollow($userId)
     {
         $authUser = Auth::user();
-
+    
         // Validate that the user is not trying to follow/unfollow themselves
         if ($authUser->id == $userId) {
-            return response()->json([
-                'message' => 'You cannot follow or unfollow yourself.',
-            ], 400);
+            abort(400, 'You cannot follow or unfollow yourself.');
         }
-
+    
         // Validate that the user to be followed/unfollowed exists
         $userToFollow = User::find($userId);
         if (!$userToFollow) {
-            return response()->json([
-                'message' => 'User not found.',
-            ], 404);
+            abort(404, 'User not found.');
         }
-
+    
         // Check if the authenticated user is already following the user
-        if (Auth::isfollowing($userId)) {
+        if ($authUser->isFollowing($userId)) {
             // Unfollow the user
-            Auth::unfollow($userId);
+            $authUser->unfollow($userId);
             $message = 'User unfollowed successfully.';
         } else {
             // Follow the user
-            Auth::follow($userId);
+            $authUser->follow($userId);
             $message = 'User followed successfully.';
         }
-
-        return response()->json([
+    
+        // Optionally, you can redirect or render a view instead of returning JSON
+        return redirect()->back()->with([
             'message' => $message,
+            'followersCount' => $userToFollow->followers()->count(),
+            'followingCount' => $authUser->following()->count(),
         ]);
     }
 
@@ -312,5 +312,58 @@ class UserController extends Controller
         return response()->json([
             'followers_count' => $count,
         ]);
+    }
+
+    public function uploadPicture(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
+        ]);
+
+        $user = Auth::user();
+
+        // Get the file from the request
+        $file = $request->file('profile_picture');
+
+        // Generate a unique file name
+        $fileName = 'profile_' . $user->id . '.' . $file->getClientOriginalExtension();
+
+        // Move the uploaded file to public directory
+        $file->move(public_path('imgs/profile_pictures'), $fileName);
+
+        // Update user's profile picture path in the database
+        $user->profile_picture = 'imgs/profile_pictures/' . $fileName;
+        $user->save();
+
+        return response()->json(['message' => 'Profile picture uploaded successfully'], 200);
+    }
+
+    public function updatePicture(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
+        ]);
+
+        $user = Auth::user();
+
+        // Delete the old profile picture file if exists
+        if (file_exists(public_path($user->profile_picture))) {
+            unlink(public_path($user->profile_picture));
+        }
+
+        // Get the file from the request
+        $file = $request->file('profile_picture');
+
+        // Generate a unique file name
+        $fileName = 'profile_' . $user->id . '.' . $file->getClientOriginalExtension();
+
+        // Move the uploaded file to public directory
+        $file->move(public_path('imgs/profile_pictures'), $fileName);
+
+        // Update user's profile picture path in the database
+        $user->profile_picture = 'imgs/profile_pictures/' . $fileName;
+        $user->save();
+
+        return response()->json(['message' => 'Profile picture updated successfully'], 200);
     }
 }
