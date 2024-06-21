@@ -10,7 +10,7 @@
 
 <style> 
 *{color:black;
-/* background-color: RGB(242, 242, 242);*/} 
+}
 </style>
 </head>
   <body class=" bg-white overflow-y-hidden">
@@ -30,6 +30,10 @@
               <div class="mb-2">
                 <input type="text" id="txt_name" class="form-control form-control-lg border-black" required/> <!--name-->
                 <label class="form-label" for="txt_name">Name</label>
+              </div>
+              <div class="mb-2">
+                <input type="text" id="txt_username" class="form-control form-control-lg border-black" required/> <!--name-->
+                <label class="form-label" for="txt_username">Username</label>
               </div>
 
               <div class="mb-2">
@@ -89,6 +93,7 @@
                     var email = $('#txt_email').val();
                     var password = $('#txt_pwd').val();
                     var name = $('#txt_name').val();
+                    var username = $('#txt_username').val();
 
                     $.ajax({
                         url: '/Register',
@@ -98,6 +103,7 @@
                             'email': email,
                             'password': password,
                             'name': name,
+                            'username':username
                         },
                         success: function(response)
                         {

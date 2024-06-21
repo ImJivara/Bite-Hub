@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('RecipeName');
             $table->text('Description');
-            $table->json('Steps');
+            $table->integer('Steps');
             $table->json('steps_details')->nullable();
             $table->integer('NbIngredients')->default(0);
             $table->json('ingredients_details')->nullable();
@@ -28,9 +28,7 @@ return new class extends Migration
             $table->integer('preparation_time')->nullable();
             $table->string('Category')->default('Uncategorized');
             $table->integer('Health_Score')->nullable();
-            $table->timestamps();
-            
-            
+            $table->timestamps(); 
         });
         
     }

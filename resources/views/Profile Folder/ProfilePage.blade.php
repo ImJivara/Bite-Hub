@@ -4,8 +4,9 @@
       crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-    rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
 <style>
     .montserrat {
         font-family: "Montserrat", sans-serif;
@@ -32,7 +33,7 @@
                 </button>
             </div>
             <div class="ml-8">
-                <h1 class="text-3xl font-semibold">{{ Auth::user()->name }}</h1>
+                <h1 class="text-3xl font-semibold">@ {{ Auth::user()->username }}</h1>
 
                 <p class="text-gray-600">{{ Auth::user()->location }}</p>
                 <div class="flex mt-4 space-x-4">
@@ -105,7 +106,7 @@
                 <div class="flex items-center p-2">
                     <a href="/profile/{{$post->author->id}}"><img src="{{ asset('imgs/3.jpg') }}" alt="User profile" class="w-12 h-12 rounded-full mr-2"></a>
                     <div>
-                        <a href="/profile/{{$post->author->id}}"><p class="font-semibold">{{ Auth::user()->name }}</p></a>
+                        <a href="/profile/{{$post->author->id}}"><p class="font-semibold">{{ Auth::user()->username }}</p></a>
                         @if ($recipe->created_at)
                             <p class="text-gray-500 text-sm">{{ $recipe->created_at->format('M d') }}</p>
                         @endif

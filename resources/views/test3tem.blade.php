@@ -47,7 +47,7 @@ PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
         <a href="/" class="nav-item text-black text-xl">Home</a>
         <a href="/HealthTools" class="nav-item text-black text-xl">For You Page</a>
         <a href="/HealthTools" class="nav-item text-black text-xl">Our Health Tools</a>
-        <div class="relative dropdown">
+        <!-- <div class="relative dropdown">
             <a href="#" class="nav-item text-black text-xl">Categories</a>
             <div class="meal-options absolute bg-white shadow-lg rounded-lg hidden">
                 <a href="#Breakfast" class="category-link" data-category="breakfast">Breakfast</a>
@@ -55,8 +55,45 @@ PEXELS_API_KEY=ThNtlJ7bMm7Mpkl4U8PsKwIgHEJqwgFEM8fM4WbF2zc28hVkb4Ob73HH  -->
                 <a href="#Dinner" class="category-link" data-category="dinner">Dinner</a>
                 <a href="/" class="category-link" data-category="dessert">Dessert</a>
             </div>
-        </div>
+        </div> -->
+            <div class="relative dropdown">
+                    <a href="#" class="nav-item text-black text-xl">Categories</a>
+                <div class="meal-options absolute bg-white shadow-lg rounded-lg hidden">
+                    <!-- Categories will be populated here -->
+                </div>
+            </div>
+            <script>
+                    $(document).ready(function() {
+                        $.ajax({
+                            url: '/categories',
+                            type: 'GET',
+                            success: function(data) {
+                                console.log(data); // Add this line to log the response
+                                var categoriesContainer = $('.meal-options');
+                                categoriesContainer.empty(); // Clear any existing content
+                                data.forEach(function(item) {
+                                    var categoryLink = `<a href="#" class="category-link" data-category="${item.Category}">${item.Category}</a>`;
+                                    categoriesContainer.append(categoryLink);
+                                });
+                            },
+                            error: function(xhr, status, error) {
+                                console.error('Failed to fetch categories:', error);
+                            }
+                        });
+
+                        $('.nav-item').on('click', function(e) {
+                            e.preventDefault();
+                            $('.meal-options').toggleClass('hidden');
+                        });
+                        $('.category-link').on('click', function(e) {
+                            e.preventDefault();
+                            var category = $(this).data('category');
+                                href.window={{ route('recipes.sorted', ['sort_by' => 'Category', 'sort_order' => 'asc']) }}
+                        });
+                    });
+            </script>
     </div>
+    
     <div class="login-signup flex items-center space-x-4">
         @if(Auth::user())
         <p class="mr-4 text-xl font-bold text-black">Hello, <span class="capitalize">{{ Auth::user()->name }}</span> <a href="/Logout" style="color:#DD0525; font-weight: bolder;">Logout</a></p>

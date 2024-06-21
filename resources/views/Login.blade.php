@@ -43,47 +43,12 @@
     });
 </script>
 
-     </script>
+
 <style> 
 
 </style>
 </head>
 <body class="bg-gradient-to-r from-green-400 to-blue-50 flex items-center justify-center min-h-screen">
          <x-extracomponents.LogReg/>   
-
 </body>
-<!-- <body class="bg-cover bg-center bg-no-repeat overflow-y-hidden" style="background-image: url({{asset('imgs/bg1.jpg')}});"> -->
-
-<!-- <body class=" bg-cover "style="background-image: url({{asset('imgs/backgroundimgs/black.jpg')}}); background-size: contain; overflow-y-hidden background-position: center;"> -->
-  <!-- <section class="vh-100">
-    <div class="container-fluid">
-        <div class="col-sm-6 text-black">
-          <div class="px-5 ms-xl-4">
-              <i class="fas fa-crow fa-2x me-3 pt-5 mt-xl-4" ></i>
-            
-              <h1>Food Blog</h1>
-          </div>
-          <div  class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-            <form style="width: 23rem;">
-              <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
-                <div class="form-outline mb-4">
-                  <div id="result2" style="color: red;"></div>
-                  <input type="email" id="txt_email" class="form-control form-control-lg border-red-500" /> 
-                  <label class="form-label" for="txt_email">Email address</label>
-                </div>
-                <div class="form-outline mb-4">
-                  <div id="result1" style="color: red;"></div>
-                  <input type="password" id="txt_pwd" class="form-control form-control-lg border-red-500" required /> 
-                  <label class="form-label" for="txt_pwd">Password</label>
-                </div>
-                <div class="pt-1 mb-4">
-                  <input class="btn btn-primary" type="submit" id="btn_login" value="Login">
-                </div>
-              <p>Don't have an account? <a href="/Registration" class="link">Register here</a></p>
-            </form> 
-            </div>
-         </div>
-    </div>
-  </section> -->
-
 </html>

@@ -126,6 +126,10 @@
                     <input type="text" id="name" name="name" value="{{ $user->name }}" class="border border-gray-300 rounded-md p-2 w-full">
                 </div>
                 <div class="mb-4">
+                    <label for="name" class="block text-gray-700 font-semibold mb-2">User name</label>
+                    <input type="text" id="username" name="username" value="{{ $user->username }}" class="border border-gray-300 rounded-md p-2 w-full">
+                </div>
+                <div class="mb-4">
                     <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
                     <input type="email" id="email" name="email" value="{{ $user->email }}" class="border border-gray-300 rounded-md p-2 w-full">
                 </div>
@@ -156,6 +160,7 @@
             $('#updateProfileForm').submit(function(e) {
                 e.preventDefault();
                 var email = $('#email').val();
+                var username = $('#username').val();
                 var name = $('#name').val();
                 var location = $('#location').val();
                 $.ajax({
@@ -165,6 +170,7 @@
                         '_token': '{{ csrf_token() }}',
                         'email': email,
                         'name': name,
+                        'username': username,
                         'location': location
                     },
                     success: function(response) {
@@ -172,6 +178,7 @@
                             // Update profile information displayed on the page
                             $("#name").text(name);
                             $("#email").text(email);
+                            $("#username").text(username);
                             $("#location").text(location);
                             showToast('Profile updated successfully', 'green');
                         } else {

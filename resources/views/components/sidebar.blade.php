@@ -45,10 +45,10 @@
                 <div class="mr-2 ">
                     <a href="javascript:void(0)" class="dark:hover:text-primary hover:text-primary transition-colors duration-200 ease-in-out text-[1.075rem] font-medium dark:text-neutral-400/90 text-secondary-inverse">
                     @if(Auth::user() && Auth::user()->UserIsAdmin==0)
-        <!--name   --><a>Hello, <span>{{Auth::user()->name}}<span></a>
+        <!--name   --><a>Hello, <span>{{Auth::user()->username}}<span></a>
         <!--status --><span class="text-secondary-dark dark:text-stone-500 font-medium block text-[0.85rem] text-red-500">User</span>
                     @elseif(Auth::user() && Auth::user()->UserIsAdmin==1 )
-        <!--name   --><a>Hello, <span>{{Auth::user()->name}}<span></a> 
+        <!--name   --><a>Hello, <span>{{Auth::user()->username}}<span></a> 
         <!--status --> <span class="text-secondary-dark dark:text-stone-500 font-medium block text-[0.85rem] text-red-500">Admin</span>
                     @else
                         <h3  class="nav-link">Guest User</h3>   

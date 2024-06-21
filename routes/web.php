@@ -147,15 +147,17 @@ Route::post('/Login', [UserController::class, 'login']);
 Route::get('/logout', [UserController::class, 'clearSession']);
 Route::post('/Register', [UserController::class, 'registerr']);
 //create account //
-Route::get('/Registration', function () {
-    return view('Registration');
-});
+// Route::get('/Registration', function () {
+//     return view('Registration');
+// });
 #################################### User ################################################################3
 
 #################################### Recipes ################################################################3
 //Nav bar//
+Route::get('/categories', [RecipeController::class, 'getCategories']);
 Route::get('/Recipes', [RecipeController::class, 'getRecipes'])->name('recipes.sorted');
 Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
+Route::get('/recipes/search', [RecipeController::class, 'searchrecipesbar'])->name('recipes.searchbar');
 
 //Recipe card functions//
 Route::get('/Step/{id}', [RecipeController::class, 'getStep']);

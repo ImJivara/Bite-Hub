@@ -6,6 +6,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <style>
     .montserrat {
         font-family: "Montserrat", sans-serif;
@@ -15,7 +16,7 @@
     }
 </style>
 <script src="{{ asset('jquery-3.7.1.js') }}"></script>
-<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
+<!-- <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet"> -->
 
 <div class="mx-auto max-w-7xl p-4 Montserrat">
     <div class="flex items-center mb-6">
@@ -33,7 +34,7 @@
                     alt="Profile Picture">
             </div>
             <div class="ml-8">
-                <h1 class="text-3xl font-semibold">{{ $user->name }}</h1>
+                <h1 class="text-3xl font-semibold">@ {{ $user->username }}</h1>
 
                 <p class="text-gray-600">{{ $user->location }}</p>
                 <div class="flex mt-4 space-x-4">
@@ -72,10 +73,6 @@
         <button class="tab p-4 text-center border-t-2 border-black active" onclick="showSection('posts')">POSTS</button>
     </div>
 
-    <div class="main-content">
-        @yield('content')
-    </div>
-
     <!-- Posts Section -->
 
     <div id="posts" class="tab-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
@@ -88,11 +85,10 @@
                         <img src="{{ asset('imgs/' . $post->id . '.jpg') }}" alt="{{ $post->RecipeName }}"
                             class="w-full h-64 object-cover">
                         <!-- Hover effect -->
-                        <div
-                            class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <div class="text-white text-center">
-                                <p class="text-lg"><i class="fa fa-heart"></i> {{ $post->NbLikes }}</p>
-                                <p class="text-lg"><i class="fa fa-comment"></i> {{ $post->comments->count() }}</p>
+                                <p class="text-lg"><i class="fas fa-heart"></i> {{ $post->NbLikes }}</p>
+                                <p class="text-lg"><i class="fas fa-comment"></i> {{ $post->comments->count() }}</p>
                             </div>
                         </div>
                     </a>

@@ -1,4 +1,4 @@
-<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">>>>
+<link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
 <style>
     .wrapper {
         --input-focus: #2d8cf0;
@@ -10,7 +10,7 @@
     }
     /* switch card */
     .switch {
-        transform: translateY(-200px);
+        transform: translateY(-350px);
         position: relative;
         display: flex;
         flex-direction: column;
@@ -171,8 +171,8 @@
         cursor: pointer;
     } 
 </style>
-<body class="bg-gradient-to-r from-green-400 to-blue-500 flex items-center justify-center min-h-screen">
-    <div class="flex flex-col items-center">
+<body class=" ">
+    <div class="flex flex-col ">
         <div class="wrapper">
             <div class="card-switch">
                 <label class="switch">
@@ -194,10 +194,11 @@
                             <div class="title">Sign up</div>
                             <form class="flip-card__form" id="registrationForm">
                                 <input class="flip-card__input" id="register_name" name="name" placeholder="Name" type="text" required>
-                                <div id="resgisterresult1" style="color: red;"></div>
+                                <input class="flip-card__input" id="register_username" name="username" placeholder="User Name" type="text" required>
+                                    <div id="resgisterresult1" style="color: red;"></div>
                                 <input class="flip-card__input mt-2" id="register_email" name="email" placeholder="Email" type="email" required>
                                 <input class="flip-card__input mt-4" id="register_password" name="password" placeholder="Password" type="password" required>
-                                <div id="resultpass" class="mt-2" style="color: red;"></div>
+                                    <div id="resultpass" class="mt-2" style="color: red;"></div>
                                 <input class="flip-card__input " id="register_confirm_password" name="confirm_password" placeholder="Confirm Password" type="password" disabled>
                                 <button class="flip-card__btn" id="btn_register">Confirm!</button>
                             </form>
@@ -255,7 +256,8 @@
                     var email = $('#register_email').val();
                     var password = $('#register_password').val();
                     var name = $('#register_name').val();
-
+                    var username = $('#register_username').val();
+                    alert(username);
                     $.ajax({
                         url: '/Register',
                         type: 'POST',
@@ -264,6 +266,7 @@
                             'email': email,
                             'password': password,
                             'name': name,
+                            'username': username,
                         },
                         success: function(response) {
                             if (response.success) {

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Activity;
 use App\Models\NutritionalData;
+use Illuminate\Support\Facades\View;
 use Laravel\Prompts\alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,6 +31,7 @@ class RecipeController extends Controller
             // Default sorting
             $sortBy = $request->input('sort_by', 'created_at');
             $sortOrder = $request->input('sort_order', 'desc');
+           
 
             // Query for recipes based on sorting parameters
             $recipesQuery = Recipe::orderBy($sortBy, $sortOrder);
@@ -62,6 +64,37 @@ class RecipeController extends Controller
             ]);
         } 
     }
+    public function getCategories()
+    {
+        $categories = Recipe::select('Category')->distinct()->get();
+        return response()->json($categories);
+    }
+
+
+
+
+    public function searchrecipesbar(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Perform the search query based on your criteria (e.g., title or author name)
+        $r= Recipe::where('RecipeName', 'like', '%' . $query . '%')
+                        ->orWhereHas('author', function($queryBuilder) use ($query) {
+                            $queryBuilder->where('name', 'like', '%' . $query . '%');
+                        })
+                        ->with('author') // Eager load the author relationship
+                        ->get();
+
+        // Render the Blade component with recipes
+          $recipe_cards = View::make('components.recipecard2search', compact('r'))->render();
+
+        return response()->json([
+            'recipe_cards' => $recipe_cards
+        ]);
+            
+       
+    }
+
     
     public function getStep(Request $request)
     {   

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Activity;
 // use Laravel\Prompts\alert;
+use App\Rules\UsernameValidationRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -40,12 +41,17 @@ class UserController extends Controller
     public function registerr(Request $r)
     {
         try {
-            if ($account = User::where('email', $r->email)->first()) {
+            if (User::where('email', $r->email)->first()) {
                 return response()->json(['message' => 'Invalid email', 'success' => False]);
+            }
+            // Check if username is already taken
+            if (User::where('username', $r->username)->exists()) {
+                return response()->json(['message' => 'Username already taken', 'success' => false]);
             }
 
             $validator = Validator::make($r->all(), [
                 'name' => 'required|string|max:255',
+                'username' => ['required', 'string', 'max:20', 'unique:users'],
                 'email' => 'required|string|email|max:255|unique:users',
                 'password' => 'required|string|min:6',
             ]);
@@ -59,6 +65,7 @@ class UserController extends Controller
             }
             $account = User::create([
                 'name' => $r->name,
+                'username'=> $r->username,
                 'email' => $r->email,
                 'password' => bcrypt($r->password),
                 'location' => "Lebanon",
@@ -145,11 +152,13 @@ class UserController extends Controller
             if (
                 $account->name === $request->input('name') &&
                 $account->email === $request->input('email') &&
+                $account->username === $request->input('username') &&
                 $account->location === $request->input('location')
             )
                 return response()->json(['success' => false, 'message' => 'No changes detected']);
             else {
                 $account->name = $request->input('name');
+                $account->username = $request->input('username');
                 $account->email = $request->input('email');
                 $account->location = $request->input('location');
                 $account->save(); //Update it
@@ -157,6 +166,7 @@ class UserController extends Controller
                     'success' => true,
                     'message' => 'Profile updated successfully',
                     'name' => $request->name,
+                    'username' => $request->username,
                     'email' => $request->email,
                     'location' => $request->location,
                 ]);
