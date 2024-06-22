@@ -19,23 +19,6 @@
             <div>
                 <h1 class="text-4xl font-semibold mb-4">{{ $r->RecipeName }}</h1>
                 <p class="text-lg text-gray-700 mb-4">{{ $r->Description }}</p>
-                <div class="flex items-center mb-4">
-                    <span class="text-gray-600 mr-2">Rate this recipe:</span>
-                    <div class="flex">
-                        @for ($i = 1; $i <= 5; $i++) <button class="text-yellow-400 focus:outline-none" onclick="rateRecipe({{ $i }})">
-                            @if ($i <= $r->rating)
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 filled-star" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l4 4m0 0l4-4m-4 4V4"></path>
-                                </svg>
-                                @else
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 empty-star" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l4 4m0 0l4-4m-4 4V4"></path>
-                                </svg>
-                                @endif
-                                </button>
-                                @endfor
-                    </div>
-                </div>
                 <div class="flex justify-between mb-4">
                     <div>
                         <span class="text-gray-600 mr-2">Number of Ingredients:</span>
@@ -160,7 +143,7 @@
         <!-- Image beside Nutritional Information -->
         <div>
             <!-- <img class="w-full h-auto rounded-lg shadow-xl" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image"> -->
-            <img class="w-full h-auto rounded-lg shadow-xl" src="{{ $r->thumbnail}}" alt="Recipe Image">
+            <img class="w-full h-auto rounded-lg shadow-xl" src="{{ asset('storage/' . $r->thumbnail) }}" alt="Recipe Image">
         </div>
     </div>
 </section>

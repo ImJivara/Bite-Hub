@@ -46,11 +46,9 @@
 </head>
 
 <body class="montserrat">
-    <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
-    <!-- <div id="error-message" class="error-message"></div>  -->
-    <!-- Error Handler --><!-- Error Handler --><!-- Error Handler -->
+
     <!-- Navigation Bar -->
-    <nav class="p-4 flex justify-between items-center mt-4">
+    <nav class="p-4 flex justify-around items-center mt-4 ">
         <div class="flex items-center space-x-2">
             <a href="/" class="text-2xl font-bold text-black">Bite-Hub.com</a>
             <p class="bg-green-300 text-black py-1 px-2 rounded-full">Healthy</p>
@@ -62,9 +60,9 @@
             <a href="#workout-planner" class="nav-item text-black hover:text-white">Workout Planner</a>
         </div>
         @auth
-        <h2 class="text-xl font-bold text-black">Hello, {{Auth::user()->name}}</h2>
+        <h2 class="text-xl font-bold text-black capitalize">Hello, {{Auth::user()->name}}</h2>
         @else
-        <a href="/Login" class="bg-black text-white py-2 px-4 rounded-full">LOGIN</a>
+        <a href="/Login" class="bg-black text-white py-2 px-4 rounded-full">Login</a>
         @endauth
     </nav>
 
@@ -136,7 +134,6 @@
                             }, 800); // Delay initialization to ensure section is visible
                         }
                     }
-
                 });
             });
         });

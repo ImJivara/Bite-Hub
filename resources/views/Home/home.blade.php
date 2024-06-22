@@ -6,13 +6,7 @@
     <title>Bite-hub</title>
 </head>
 <body>
-    
-
-
 <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
-
-
-
 <section class="hero bg-gradient-to-r from-green-400 to-blue-500 text-white py-16 shadow-xl">
     <div class="container mx-auto ">
         <div class="text-center">

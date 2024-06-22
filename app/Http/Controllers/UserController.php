@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
-
+#################################### Authentication ################################################################
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -30,12 +30,6 @@ class UserController extends Controller
         } else {
             return response()->json(['message' => 'Invalid credentials', 'success' => false]);
         }
-    }
-
-    private function validateCredentials($email, $password)
-    {
-        $account = User::where('email', $email)->where('password', $password)->first();
-        return $account !== null;
     }
 
     public function registerr(Request $r)
@@ -78,13 +72,6 @@ class UserController extends Controller
         }
     }
 
-    // public function clearSession()
-    // {
-    //     Session::flush();
-    //     $recipes=Recipes::all();
-    // //    return view('Recipes',['rec'=>$recipes]); // aw 3mel redirect aal /Recipes route directly
-    // return redirect('Recipes');
-    // }
     public function logout(Request $request)
     {
         Auth::logout();
@@ -95,6 +82,48 @@ class UserController extends Controller
 
         return redirect('/Recipes');
     }
+    public function updateProfile(Request $request, $id)
+    {
+
+        try {
+            $account = User::findOrFail($id);
+
+            if (
+                $account->name === $request->input('name') &&
+                $account->email === $request->input('email') &&
+                $account->username === $request->input('username') &&
+                $account->location === $request->input('location')
+            )
+                return response()->json(['success' => false, 'message' => 'No changes detected']);
+            else {
+                $account->name = $request->input('name');
+                $account->username = $request->input('username');
+                $account->email = $request->input('email');
+                $account->location = $request->input('location');
+                $account->save(); //Update it
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Profile updated successfully',
+                    'name' => $request->name,
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'location' => $request->location,
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to update profile']);
+        }
+    }
+    public function deleteAccount(Request $request)
+    {
+
+        $account = User::findOrFail($request->id); // Find the account by ID
+        $account->delete(); // Delete the account
+        return response()->json(['success' => true, 'message' => 'Account deleted successfully']);
+    }
+#################################### Authentication ################################################################ 
+
+#################################### User Profile ################################################################
     public function GetProfileInfo(Request $request)
     {
         if ($request->id === Auth::user()->id) {
@@ -141,80 +170,59 @@ class UserController extends Controller
             'recentActivities' => $recentActivities,
         ]);
     }
-    
-
-    public function updateProfile(Request $request, $id)
+    public function uploadPicture(Request $request)
     {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
+        ]);
 
-        try {
-            $account = User::findOrFail($id);
+        $user = Auth::user();
 
-            if (
-                $account->name === $request->input('name') &&
-                $account->email === $request->input('email') &&
-                $account->username === $request->input('username') &&
-                $account->location === $request->input('location')
-            )
-                return response()->json(['success' => false, 'message' => 'No changes detected']);
-            else {
-                $account->name = $request->input('name');
-                $account->username = $request->input('username');
-                $account->email = $request->input('email');
-                $account->location = $request->input('location');
-                $account->save(); //Update it
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Profile updated successfully',
-                    'name' => $request->name,
-                    'username' => $request->username,
-                    'email' => $request->email,
-                    'location' => $request->location,
-                ]);
-            }
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Failed to update profile']);
+        // Get the file from the request
+        $file = $request->file('profile_picture');
+
+        // Generate a unique file name
+        $fileName = 'profile_' . $user->id . '.' . $file->getClientOriginalExtension();
+
+        // Move the uploaded file to public directory
+        $file->move(public_path('imgs/profile_pictures'), $fileName);
+
+        // Update user's profile picture path in the database
+        $user->profile_picture = 'imgs/profile_pictures/' . $fileName;
+        $user->save();
+
+        return response()->json(['message' => 'Profile picture uploaded successfully'], 200);
+    }
+
+    public function updatePicture(Request $request)
+    {
+        $request->validate([
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
+        ]);
+
+        $user = Auth::user();
+
+        // Delete the old profile picture file if exists
+        if (file_exists(public_path($user->profile_picture))) {
+            unlink(public_path($user->profile_picture));
         }
+
+        // Get the file from the request
+        $file = $request->file('profile_picture');
+
+        // Generate a unique file name
+        $fileName = 'profile_' . $user->id . '.' . $file->getClientOriginalExtension();
+
+        // Move the uploaded file to public directory
+        $file->move(public_path('imgs/profile_pictures'), $fileName);
+
+        // Update user's profile picture path in the database
+        $user->profile_picture = 'imgs/profile_pictures/' . $fileName;
+        $user->save();
+
+        return response()->json(['message' => 'Profile picture updated successfully'], 200);
     }
-    public function deleteAccount(Request $request)
-    {
-
-        $account = User::findOrFail($request->id); // Find the account by ID
-        $account->delete(); // Delete the account
-        return response()->json(['success' => true, 'message' => 'Account deleted successfully']);
-    }
-
-
-    // public function followUser( $userIdToFollow)
-    // {
-    //     $user = Auth::user();
-
-    //     if (!$user->$this->checkIfFollowing($userIdToFollow)) {
-    //         $userToFollow=User::findOrFail($userIdToFollow);
-    //         $user->following()->detach();
-    //         $followersCount = User::findOrFail($userIdToFollow)->followersCount(); // Update followers count
-    //     } else {
-    //        $userIdToFollowCount= $user->$this->unfollowUser($userIdToFollow);
-    //         // $followersCount = User::findOrFail($userIdToFollow)->followersCount(); // Update followers count
-    //     }
-
-    //     return response()->json(['followersCount' => $userIdToFollowCount]);
-
-    // }
-
-    // public function unfollowUser(Request $request, $userIdToUnfollow)
-    // {
-    //     // Retrieve the authenticated user
-    //     $user = $request->user();
-
-    //     // Check if the user to unfollow exists
-    //     $userToUnfollow = User::findOrFail($userIdToUnfollow);
-
-    //     // Unfollow the user
-    //     $user->unfollow($userToUnfollow->id);
-
-    //     $followingCount = $userIdToUnfollow->followingCount();
-    //     return $followingCount;
-    // }
+#################################### User Profile ################################################################
 
     // public function checkIfFollowing(Request $request, $userId)
     // {
@@ -228,7 +236,7 @@ class UserController extends Controller
     //     return response()->json(['is_following' => $isFollowing]);
     // }
 
-
+#################################### User To User Events ################################################################
     /**
      * Toggle follow/unfollow a user.
      *
@@ -324,56 +332,5 @@ class UserController extends Controller
         ]);
     }
 
-    public function uploadPicture(Request $request)
-    {
-        $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
-        ]);
-
-        $user = Auth::user();
-
-        // Get the file from the request
-        $file = $request->file('profile_picture');
-
-        // Generate a unique file name
-        $fileName = 'profile_' . $user->id . '.' . $file->getClientOriginalExtension();
-
-        // Move the uploaded file to public directory
-        $file->move(public_path('imgs/profile_pictures'), $fileName);
-
-        // Update user's profile picture path in the database
-        $user->profile_picture = 'imgs/profile_pictures/' . $fileName;
-        $user->save();
-
-        return response()->json(['message' => 'Profile picture uploaded successfully'], 200);
-    }
-
-    public function updatePicture(Request $request)
-    {
-        $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
-        ]);
-
-        $user = Auth::user();
-
-        // Delete the old profile picture file if exists
-        if (file_exists(public_path($user->profile_picture))) {
-            unlink(public_path($user->profile_picture));
-        }
-
-        // Get the file from the request
-        $file = $request->file('profile_picture');
-
-        // Generate a unique file name
-        $fileName = 'profile_' . $user->id . '.' . $file->getClientOriginalExtension();
-
-        // Move the uploaded file to public directory
-        $file->move(public_path('imgs/profile_pictures'), $fileName);
-
-        // Update user's profile picture path in the database
-        $user->profile_picture = 'imgs/profile_pictures/' . $fileName;
-        $user->save();
-
-        return response()->json(['message' => 'Profile picture updated successfully'], 200);
-    }
+    
 }

@@ -1,13 +1,15 @@
 
-<script src="https://cdn.tailwindcss.com"></script>
+@extends('test3tem')
 
-<div class="max-w-4xl mx-auto py-8">
-    <h2 class="text-2xl font-bold mb-4">Add New Recipe</h2>
+@section('content_body')
+<link rel="stylesheet" href="{{ asset('css/tailwindstyles.css') }}">
+<div class="max-w-4xl mx-auto py-8 mt-">
+    <h2 class="text-3xl font-bold mb-4">Add New Recipe</h2>
 
     <form action="{{ route('recipes.create') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
         @csrf
         <div>
-            <label for="RecipeName" class="block font-medium text-gray-700">Recipe Name</label>
+            <label for="RecipeName" class="block font-medium text-gray-700 text-xl">Recipe Name</label>
             <input type="text" id="RecipeName" name="RecipeName" value="{{ old('RecipeName') }}"
                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('RecipeName') border-red-500 @enderror">
             @error('RecipeName')
@@ -16,7 +18,7 @@
         </div>
 
         <div>
-            <label for="Description" class="block font-medium text-gray-700">Description</label>
+            <label for="Description" class="block font-medium text-gray-700 text-xl">Description</label>
             <textarea id="Description" name="Description" rows="3" 
                       class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('Description') border-red-500 @enderror">{{ old('Description') }}</textarea>
             @error('Description')
@@ -25,7 +27,7 @@
         </div>
 
         <div>
-            <label for="Health_Score" class="block font-medium text-gray-700">Health Score</label>
+            <label for="Health_Score" class="block font-medium text-gray-700 text-xl">Health Score</label>
             <input type="number" id="Health_Score" name="Health_Score" value="{{ old('Health_Score') }}" 
                     class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('Health_Score') border-red-500 @enderror">
             @error('Health_Score')
@@ -33,7 +35,7 @@
             @enderror
         </div>
         <div>
-            <label for="cooking_time" class="block font-medium text-gray-700">Cooking Time (minutes)</label>
+            <label for="cooking_time" class="block font-medium text-gray-700 text-xl">Cooking Time (minutes)</label>
             <input type="number" id="cooking_time" name="cooking_time" value="{{ old('cooking_time') }}" 
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('cooking_time') border-red-500 @enderror">
             @error('cooking_time')
@@ -41,7 +43,7 @@
             @enderror
         </div>
         <div>
-            <label for="preparation_time" class="block font-medium text-gray-700">Preparation Time (minutes)</label>
+            <label for="preparation_time" class="block font-medium text-gray-700 text-xl">Preparation Time (minutes)</label>
                 <input type="number" id="preparation_time" name="preparation_time" value="{{ old('preparation_time') }}" 
                         class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('preparation_time') border-red-500 @enderror">
             @error('preparation_time')
@@ -49,7 +51,7 @@
             @enderror
         </div>
         <div>
-            <label for="difficulty_level" class="block font-medium text-gray-700">Difficulty Level</label>
+            <label for="difficulty_level" class="block font-medium text-gray-700 text-xl">Difficulty Level</label>
             <select id="difficulty_level" name="difficulty_level"  class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('difficulty_level') border-red-500 @enderror">>
                 <option value="Easy" {{ old('difficulty_level') == 'Easy' ? 'selected' : '' }}>Easy</option>
                 <option value="Medium" {{ old('difficulty_level') == 'Medium' ? 'selected' : '' }}>Medium</option>
@@ -62,8 +64,8 @@
 
         <hr>
 
-        <div id="stepsContainer">
-        <label class="block font-medium text-gray-700">Steps</label>
+    <div id="stepsContainer">
+        <label class="block font-medium text-gray-700 text-xl">Steps</label>
         <div id="stepsList">
             <div class="flex items-center space-x-2 mb-2">
                 <input type="text" name="steps[]" placeholder="Step 1" 
@@ -76,7 +78,7 @@
         <hr>
 
         <div id="ingredientsContainer">
-        <label class="block font-medium text-gray-700">Ingredients</label>
+        <label class="block font-medium text-gray-700 text-xl">Ingredients</label>
         <div id="ingredientsList">
             <div class="flex items-center space-x-2 mb-2">
                 <input type="text" name="ingredients[0][name]" placeholder="Ingredient Name" 
@@ -91,7 +93,7 @@
     </div>
     <div class="flex flex-wrap space-x-4">
         <div class="flex-1">
-            <label for="calories" class="block font-medium text-gray-700 text-center">Calories</label>
+            <label for="calories" class="block font-medium text-gray-700 text-center ">Calories</label>
             <input type="text" id="calories" name="calories" value="{{ old('calories') }}"
                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('calories') border-red-500 @enderror">
             @error('calories')
@@ -125,7 +127,7 @@
     </div>
 
         <div>
-            <label for="Category" class="block font-medium text-gray-700">Category</label>
+            <label for="Category" class="block font-medium text-gray-700 text-xl">Category</label>
             <input type="text" id="Category" name="Category" value="{{ old('Category') }}"
                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('Category') border-red-500 @enderror">
             @error('Category')
@@ -134,16 +136,26 @@
         </div>
 
         <div>
-            <label for="thumbnail" class="block font-medium text-gray-700">Thumbnail</label>
-            <input type="file" id="thumbnail" name="thumbnail" 
-                   class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('thumbnail') border-red-500 @enderror">
-            @error('thumbnail')
-                <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
-            @enderror
+            <div class="flex items-center space-x-2 mb-2">
+                <div> 
+                    <label for="thumbnail" class="block font-medium text-gray-700 text-xl">Thumbnail</label>
+                    <div class="flex items-center space-x-2 mb-2">
+                        <input type="file" id="thumbnail" name="thumbnail" 
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm @error('thumbnail') border-red-500 @enderror">
+                       <a href="/image-search-form">
+                         <span class="block font-medium text-gray-700 text-xl text-center text-bold 
+                         transition-transform duration-300 hover:transform hover:scale-110 ">Try our <span class="text-red-500 " >New </span>Image Search Engine</span>
+                        </a>
+                </div>
+            </div>
+                @error('thumbnail')
+            <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+         @enderror
+            
         </div>
 
        
-            <button type="submit" class="recipe-form-submit bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-200 transition duration-300 ease-in-out">
+            <button type="submit" class="recipe-form-submit bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-200 transition duration-300 ease-in-out text-xl">
             Add Recipe
             </button>
        
@@ -216,3 +228,4 @@
     });
 </script>
 
+@endsection

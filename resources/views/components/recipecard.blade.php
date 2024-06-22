@@ -4,7 +4,7 @@
 
     <div class="Card-class max-w-sm mx-auto bg-white rounded-lg border border-0.5-black overflow-hidden transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg">
         <a href="/Recipe/{{ $r->id }}" class="recipe-card-link block">
-            <img class="w-full h-56 object-cover object-center" src="{{ asset('imgs/' . $r->id . '.jpg') }}"
+            <img class="w-full h-56 object-cover object-center" src="{{ asset('storage/' . $r->thumbnail) }}"
                 alt="Recipe Image">
         </a>
         <div class="Header-class p-6 flex-grow">

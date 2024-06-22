@@ -3,6 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use App\Services\SerpApiService;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ImageSearchEngine extends Controller
 {   
@@ -110,4 +117,86 @@ class ImageSearchEngine extends Controller
             return null;
         }
     }
+
+
+
+
+    
+
+    protected $serpApiService;
+
+    public function __construct(SerpApiService $serpApiService)
+    {
+        $this->serpApiService = $serpApiService;
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $images = $this->serpApiService->searchImages($query);
+    
+        // Assuming $images['images_results'] is the array of images from SerpApi
+        $perPage = 12; // Number of items per page
+        $currentPage = LengthAwarePaginator::resolveCurrentPage();
+        $currentItems = array_slice($images['images_results'], ($currentPage - 1) * $perPage, $perPage);
+        $paginatedItems = new LengthAwarePaginator($currentItems, count($images['images_results']), $perPage);
+    
+        return view('ImageSearchResults', ['images' => $paginatedItems]);
+    }
+    public function saveImage(Request $request)
+    {
+        try {
+            $imageUrl = $request->input('selected_image');
+            if (!$imageUrl) {
+                return redirect()->back()->with('error', 'No image selected.');
+            }
+
+            $imageContents = file_get_contents($imageUrl);
+            if ($imageContents === false) {
+                return redirect()->back()->with('error', 'Failed to download the image.');
+            }
+
+            $imageName = basename($imageUrl);
+            Storage::put('public/ImageSearchResults/' . $imageName, $imageContents);
+
+            return redirect()->back()->with('success', 'Image saved successfully!');
+        } catch (\Exception $e) {
+            Log::error('Failed to save image: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to save the image.');
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

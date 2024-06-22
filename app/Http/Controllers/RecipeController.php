@@ -15,12 +15,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;// for file saving
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log ;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class RecipeController extends Controller
 {  
-   
+   #################################### Post Events ################################################################
+   //get all recipes for main page
     public function getRecipes(Request $request)
     {  
         if($request->id==null)
@@ -69,7 +70,78 @@ class RecipeController extends Controller
             ]);
         } 
     }
+    public function getStep(Request $request)
+    {   
+        $recipe=Recipe::findOrFail($request->id);
+        if($recipe==null) dd("such post doesnt exist");
+        else
+        $step=$recipe->steps_details;
+        $step=explode("-",$step);
+        return view('step',['steps'=>$step,'rec'=>$recipe]);
 
+
+    }
+
+    public function getIng(Request $request)
+    {
+        $recipe=Recipe::findOrFail($request->id);
+        if($recipe==null) dd("such post doesnt exist");
+        else
+        $Ing=$recipe->ingredients_details;
+        $Ing=explode("-",$Ing);
+        return view('Ingredients',['Ing'=>$Ing,'rec'=>$recipe]);
+
+    }
+    public function like(Request $request)
+    {
+        try {
+            $user = User::findOrFail(Auth::user()->id);
+            $recipe = Recipe::findOrFail($request->RecipeId);
+            
+            if (!$user->likedRecipes()->where('recipe_id', $recipe->id)->exists()) {
+                $user->likedRecipes()->attach($recipe->id);
+                $recipe->increment('NbLikes');
+                $recipe->save();
+                $NbLikes = $recipe->NbLikes; 
+
+                Activity::create([
+                    'user_id' => $user->id,
+                    'type' => 'like_recipe',
+                    'subject_type' => 'App\Models\Recipe',
+                    'subject_id' => $recipe->id,
+                    'description' => 'User ' . $user->name . ' liked the recipe ' . $recipe->RecipeName,
+                ]);
+                
+                return response()->json(['NbLikes' => $NbLikes, 'RecipeAlreadyLiked' => False]);
+            }
+            return response()->json(['RecipeAlreadyLiked' => True]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage(),"success"=>False]);
+        }
+    }
+
+    public function dislike(Request $request)
+    {
+        try {
+            $user = User::findOrFail(Auth::user()->id);
+            $recipe = Recipe::findOrFail($request->RecipeId);
+            if ($user->likedRecipes()->where('recipe_id', $recipe->id)->exists()) 
+            {
+                $user->likedRecipes()->detach($recipe->id);
+                $recipe->decrement('NbLikes');
+                $recipe->save();
+                $NbLikes = $recipe->NbLikes; 
+                return response()->json([ 'NbLikes' => $NbLikes]);
+            }
+            return ;
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'An error occurred while processing your request.'], 500);
+        }
+    }
+
+#################################### Post #######################################################################
+
+#################################### Post Recipe ################################################################
     public function getForm()
     {
         return view('recipeForm');
@@ -102,7 +174,14 @@ class RecipeController extends Controller
 
         // Handle thumbnail upload if provided
         if ($request->hasFile('thumbnail')) {
-            $thumbnailPath = $request->file('thumbnail')->store('thumbnails', 'public');
+            // Get the uploaded file
+            $thumbnailFile = $request->file('thumbnail');
+            
+            // Generate a unique filename based on the recipe ID
+            $thumbnailFileName = 'recipe_' . uniqid() . '.' . $thumbnailFile->getClientOriginalExtension();
+            
+            // Store the file in the public storage directory
+            $thumbnailPath = $thumbnailFile->storeAs('thumbnails', $thumbnailFileName, 'public');
         } else {
             $thumbnailPath = null;
         }
@@ -146,9 +225,9 @@ class RecipeController extends Controller
         // Redirect to a success page or somewhere else
         return redirect()->route('recipes.Form')->with('success', 'Recipe added successfully!');
     }
+#################################### Post Recipe ################################################################
 
-
-    
+#################################### Recipe Search ################################################################  
 
 
     public function searchrecipesbar(Request $request)
@@ -169,102 +248,15 @@ class RecipeController extends Controller
         return response()->json([
             'recipe_cards' => $recipe_cards
         ]);
-            
-       
+                 
     }
+#################################### Recipe Search ################################################################################
+    
+    
 
     
-    public function getStep(Request $request)
-    {   
-        $recipe=Recipe::findOrFail($request->id);
-        if($recipe==null) dd("such post doesnt exist");
-        else
-        $step=$recipe->steps_details;
-        $step=explode("-",$step);
-        return view('step',['steps'=>$step,'rec'=>$recipe]);
 
-
-    }
-
-    public function getIng(Request $request)
-    {
-        $recipe=Recipe::findOrFail($request->id);
-        if($recipe==null) dd("such post doesnt exist");
-        else
-        $Ing=$recipe->ingredients_details;
-        $Ing=explode("-",$Ing);
-        return view('Ingredients',['Ing'=>$Ing,'rec'=>$recipe]);
-
-    }
-
-    public function like(Request $request)
-    {
-        try {
-            $user = User::findOrFail(Auth::user()->id);
-            $recipe = Recipe::findOrFail($request->RecipeId);
-            
-            if (!$user->likedRecipes()->where('recipe_id', $recipe->id)->exists()) {
-                $user->likedRecipes()->attach($recipe->id);
-                $recipe->increment('NbLikes');
-                $recipe->save();
-                $NbLikes = $recipe->NbLikes; 
-
-                Activity::create([
-                    'user_id' => $user->id,
-                    'type' => 'like_recipe',
-                    'subject_type' => 'App\Models\Recipe',
-                    'subject_id' => $recipe->id,
-                    'description' => 'User ' . $user->name . ' liked the recipe ' . $recipe->RecipeName,
-                ]);
-                
-                return response()->json(['NbLikes' => $NbLikes, 'RecipeAlreadyLiked' => False]);
-            }
-            return response()->json(['RecipeAlreadyLiked' => True]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage(),"success"=>False]);
-        }
-    }
-
-    public function dislike(Request $request)
-{
-    try {
-        $user = User::findOrFail(Auth::user()->id);
-        $recipe = Recipe::findOrFail($request->RecipeId);
-        if ($user->likedRecipes()->where('recipe_id', $recipe->id)->exists()) 
-        {
-            $user->likedRecipes()->detach($recipe->id);
-            $recipe->decrement('NbLikes');
-            $recipe->save();
-            $NbLikes = $recipe->NbLikes; 
-            return response()->json([ 'NbLikes' => $NbLikes]);
-        }
-        return ;
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'An error occurred while processing your request.'], 500);
-    }
-}
-public function commentOnRecipe(Request $request, $recipeId)
-{
-    $recipe = Recipe::findOrFail($recipeId);
-    $user = Auth::user();
-
-    // Record the comment (assuming you have a Comment model and table)
-    $comment = $recipe->comments()->create([
-        'user_id' => $user->id,
-        'content' => $request->input('content'),
-    ]);
-
-    // Record the activity
-    Activity::create([
-        'user_id' => $user->id,
-        'type' => 'comment',
-        'description' => "You commented on the recipe: {$recipe->title}",
-    ]);
-
-    return redirect()->back()->with('success', 'Comment added successfully!');
-}
-
-#################################### Eeleq relationships functions  ################################################################3
+#################################### Eeleq relationships functions  ################################################################
     public function RecipeLikedByWho(Request $request)
     {
         $recipe = Recipe::findOrFail($request->RecipeId);
@@ -325,116 +317,91 @@ public function commentOnRecipe(Request $request, $recipeId)
     }
     
 
-#################################### Eeleq relationships functions  ################################################################3
+#################################### Eeleq relationships functions  ################################################################
 
+#################################### API Functions  ################################################################
 
+    // public function fetchAndStoreRecipes()
+    // {
+    //     $response = Http::get('https://api.spoonacular.com/recipes/random', [
+    //         'apiKey' => env('SPOONACULAR_API_KEY'),
+    //         'number' => 1 // Number of recipes to fetch
+    //     ]);
 
-
-
-
-    public function fetchAndStoreRecipes()
-    {
-        $response = Http::get('https://api.spoonacular.com/recipes/random', [
-            'apiKey' => env('SPOONACULAR_API_KEY'),
-            'number' => 1 // Number of recipes to fetch
-        ]);
-
-        $recipeData = $response->json()['recipes'];
-        $nutritionalData = $this->fetchNutritionalData($recipeData[0]['id']);
-        $ingredients = $this->extractIngredients($recipeData);  
-        $selected_nutritional_values = ['calories', 'fat', 'carbs', 'protein'];
+    //     $recipeData = $response->json()['recipes'];
+    //     $nutritionalData = $this->fetchNutritionalData($recipeData[0]['id']);
+    //     $ingredients = $this->extractIngredients($recipeData);  
+    //     $selected_nutritional_values = ['calories', 'fat', 'carbs', 'protein'];
         
 
-         // Convert the recipe data to JSON
-        // Directory path
-        // $directoryPath = 'C:/Users/PC/Documents/RecipeData/';
+    //      // Convert the recipe data to JSON
+    //     // Directory path
+    //     // $directoryPath = 'C:/Users/PC/Documents/RecipeData/';
 
-        // Check if the directory exists, if not, create it
-        // if (!is_dir($directoryPath)) {
-        //     mkdir($directoryPath, 0777, true);
-        // }
+    //     // Check if the directory exists, if not, create it
+    //     // if (!is_dir($directoryPath)) {
+    //     //     mkdir($directoryPath, 0777, true);
+    //     // }
 
-        // // Save recipe data
-        // $recipeJson = json_encode($recipeData, JSON_PRETTY_PRINT);
-        // $recipeFileName = $directoryPath . 'recipe_' . time() . '.json'; 
-        // file_put_contents($recipeFileName, $recipeJson);
+    //     // // Save recipe data
+    //     // $recipeJson = json_encode($recipeData, JSON_PRETTY_PRINT);
+    //     // $recipeFileName = $directoryPath . 'recipe_' . time() . '.json'; 
+    //     // file_put_contents($recipeFileName, $recipeJson);
 
-        // // Save nutritional data
-        // $nutritionalDataJson = json_encode($nutritionalData, JSON_PRETTY_PRINT);
-        // $nutritionalDataFileName = $directoryPath . 'nutritionalData_recipe_' . $recipeData[0]['id'] . '.json'; 
-        // file_put_contents($nutritionalDataFileName, $nutritionalDataJson);
+    //     // // Save nutritional data
+    //     // $nutritionalDataJson = json_encode($nutritionalData, JSON_PRETTY_PRINT);
+    //     // $nutritionalDataFileName = $directoryPath . 'nutritionalData_recipe_' . $recipeData[0]['id'] . '.json'; 
+    //     // file_put_contents($nutritionalDataFileName, $nutritionalDataJson);
 
-        // return view('OneRecipedemo', [
-        //     'recipe' => $recipeData,
-        //     'nutritionalData' => $nutritionalData,
-        //     'ingredients' => $ingredients,
-        //     'selected_nutritional_values' => $selected_nutritional_values,
-        // ]);
-    }
+    //     // return view('OneRecipedemo', [
+    //     //     'recipe' => $recipeData,
+    //     //     'nutritionalData' => $nutritionalData,
+    //     //     'ingredients' => $ingredients,
+    //     //     'selected_nutritional_values' => $selected_nutritional_values,
+    //     // ]);
+    // }
 
-    // Fetch nutritional data for a recipe from Spoonacular API
-    private function fetchNutritionalData($recipeId)
-    {
-        try {
-            $response = Http::get("https://api.spoonacular.com/recipes/{$recipeId}/nutritionWidget.json", [
-                'apiKey' => env('SPOONACULAR_API_KEY'),
-            ]);
+    // // Fetch nutritional data for a recipe from Spoonacular API
+    // private function fetchNutritionalData($recipeId)
+    // {
+    //     try {
+    //         $response = Http::get("https://api.spoonacular.com/recipes/{$recipeId}/nutritionWidget.json", [
+    //             'apiKey' => env('SPOONACULAR_API_KEY'),
+    //         ]);
 
-            if ($response->successful()) {
-                return $response->json();
-            } else {
-                // Log or handle the error response
-                return null;
-            }
-        } catch (\Exception $e) {
-            // Log or handle the exception
-            dd($e->getMessage()); // Dump the exception message
-            return null;
-        }
-    }
+    //         if ($response->successful()) {
+    //             return $response->json();
+    //         } else {
+    //             // Log or handle the error response
+    //             return null;
+    //         }
+    //     } catch (\Exception $e) {
+    //         // Log or handle the exception
+    //         dd($e->getMessage()); // Dump the exception message
+    //         return null;
+    //     }
+    // }
 
-    private function extractIngredients($recipeData)
-    {
-        $ingredients = [];
+    // private function extractIngredients($recipeData)
+    // {
+    //     $ingredients = [];
 
-        // Check if 'extendedIngredients' key exists in the $recipeData array
-        if (isset($recipeData['extendedIngredients'])) {
-            foreach ($recipeData['extendedIngredients'] as $ingredientData) {
-                $ingredient = [
-                    'name' => $ingredientData['name'],
-                    'amount' => $ingredientData['amount'],
-                    'unit' => $ingredientData['measures']['us']['unitLong'] // Assuming you want to use US units
-                ];
-                $ingredients[] = $ingredient;
-            }
-        }
+    //     // Check if 'extendedIngredients' key exists in the $recipeData array
+    //     if (isset($recipeData['extendedIngredients'])) {
+    //         foreach ($recipeData['extendedIngredients'] as $ingredientData) {
+    //             $ingredient = [
+    //                 'name' => $ingredientData['name'],
+    //                 'amount' => $ingredientData['amount'],
+    //                 'unit' => $ingredientData['measures']['us']['unitLong'] // Assuming you want to use US units
+    //             ];
+    //             $ingredients[] = $ingredient;
+    //         }
+    //     }
 
-        return $ingredients;
-    }
+    //     return $ingredients;
+    // }
 
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
