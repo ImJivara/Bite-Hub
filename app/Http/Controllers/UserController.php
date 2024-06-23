@@ -6,18 +6,18 @@ use App\Models\User;
 use App\Models\Recipe;
 use App\Models\Activity;
 // use Laravel\Prompts\alert;
-use App\Rules\UsernameValidationRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Rules\UsernameValidationRule;
 // use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 
 class UserController extends Controller
 {
-#################################### Authentication ################################################################
+    #################################### Authentication ################################################################
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -59,7 +59,7 @@ class UserController extends Controller
             }
             $account = User::create([
                 'name' => $r->name,
-                'username'=> $r->username,
+                'username' => $r->username,
                 'email' => $r->email,
                 'password' => bcrypt($r->password),
                 'location' => "Lebanon",
@@ -121,9 +121,9 @@ class UserController extends Controller
         $account->delete(); // Delete the account
         return response()->json(['success' => true, 'message' => 'Account deleted successfully']);
     }
-#################################### Authentication ################################################################ 
+    #################################### Authentication ################################################################ 
 
-#################################### User Profile ################################################################
+    #################################### User Profile ################################################################
     public function GetProfileInfo(Request $request)
     {
         if ($request->id === Auth::user()->id) {
@@ -136,7 +136,6 @@ class UserController extends Controller
             if (!$user) {
                 abort(404);
             }
-            
         }
 
         // Fetch posts based on the user
@@ -146,7 +145,7 @@ class UserController extends Controller
             ->get();
 
         // Fetch liked recipes by the user
-        $likedRecipes = $user->likedRecipes; 
+        $likedRecipes = $user->likedRecipes;
 
         // Fetch followers and following using relationships
         $followers = $user->followers;
@@ -222,7 +221,7 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Profile picture updated successfully'], 200);
     }
-#################################### User Profile ################################################################
+    #################################### User Profile ################################################################
 
     // public function checkIfFollowing(Request $request, $userId)
     // {
@@ -236,7 +235,7 @@ class UserController extends Controller
     //     return response()->json(['is_following' => $isFollowing]);
     // }
 
-#################################### User To User Events ################################################################
+    #################################### User To User Events ################################################################
     /**
      * Toggle follow/unfollow a user.
      *
@@ -246,18 +245,18 @@ class UserController extends Controller
     public function toggleFollow($userId)
     {
         $authUser = Auth::user();
-    
+
         // Validate that the user is not trying to follow/unfollow themselves
         if ($authUser->id == $userId) {
             abort(400, 'You cannot follow or unfollow yourself.');
         }
-    
+
         // Validate that the user to be followed/unfollowed exists
         $userToFollow = User::find($userId);
         if (!$userToFollow) {
             abort(404, 'User not found.');
         }
-    
+
         // Check if the authenticated user is already following the user
         if ($authUser->isFollowing($userId)) {
             // Unfollow the user
@@ -268,7 +267,7 @@ class UserController extends Controller
             $authUser->follow($userId);
             $message = 'User followed successfully.';
         }
-    
+
         // Optionally, you can redirect or render a view instead of returning JSON
         return redirect()->back()->with([
             'message' => $message,
@@ -332,5 +331,27 @@ class UserController extends Controller
         ]);
     }
 
-    
+    public function getSuggestedUsers()
+    {
+        $authUser = Auth::user();
+        $posts = Recipe::whereIn('user_id', $authUser->following()->pluck('followed_id'))->latest()->get();
+        $authUserid= $authUser->id;
+        // Get users who are not the authenticated user and not already followed
+        $suggestedUsers = User::where('users.id', '!=', $authUser->id)
+            ->whereNotIn('users.id', function ($query) use ($authUserid) {
+                $query->select('follows.followed_id')
+                    ->from('follows')
+                    ->where('follows.follower_id', $authUserid);
+            })->get();
+
+         return view('foryoupage',[
+             'suggestedUsers' => $suggestedUsers,
+          'posts'=> $posts,
+
+        ]);
+
+        // return response()->json([
+        //     'suggestedUsers' => $suggestedUsers,
+        // ]);
+    }
 }
