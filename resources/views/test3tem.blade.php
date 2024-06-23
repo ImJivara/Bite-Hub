@@ -46,7 +46,7 @@
         <a href="/" class="nav-item text-black text-xl">Home</a>
         <a href="/Recipes" class="nav-item text-black text-xl">Bite-Hub Blog</a>
         <a href="/recipes/create" class="nav-item text-black text-xl">Create Your Own Recipe</a>
-        <a href="/HealthTools" class="nav-item text-black text-xl">For You Page</a>
+        <a href="/Foryoupage" class="nav-item text-black text-xl">For You Page</a>
         <a href="/HealthTools" class="nav-item text-black text-xl">Our Health Tools</a>
     </div>
     

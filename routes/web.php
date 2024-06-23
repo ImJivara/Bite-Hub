@@ -5,9 +5,9 @@ use App\Models\Recipe;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ImageSearchEngine;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ImageSearchEngine;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\ActivityController;
@@ -15,9 +15,9 @@ use App\Http\Controllers\PasswordController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\NutritionController;
-use App\Http\Controllers\FetchTestImageSearchEngine;
-
 use App\Http\Controllers\Auth\RegisterController;
+
+use App\Http\Controllers\FetchTestImageSearchEngine;
 
 
 //  SPOONACULAR_API_KEY=a5e5afda0898426ab0bb39484bfdbde9 
@@ -125,7 +125,8 @@ Route::get('/profile/{id}', [UserController::class, 'GetProfileInfo'])->middlewa
 
     Route::get('/Like/{RecipeId}', [RecipeController::class, 'like']);
     Route::get('/Dislike/{RecipeId}', [RecipeController::class, 'dislike']);
-    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');   
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::get('/Foryoupage',[UserController::class,'getSuggestedUsers'])->name('foryoupage');   
 #################################### User ################################################################3
 #################################### User Health Section ################################################################
 //Health Section
