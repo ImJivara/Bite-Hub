@@ -133,7 +133,7 @@
             @error('Category')
                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
             @enderror
-        </div>
+        </div>w
 
         <div>
             <div class="flex items-center space-x-2 mb-2">

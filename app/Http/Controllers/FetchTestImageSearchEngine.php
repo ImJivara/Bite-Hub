@@ -92,20 +92,52 @@ class FetchTestImageSearchEngine extends Controller
             // Fetch image from SerpApiService based on RecipeName
             $images = $this->serpApiService->searchImages($recipe->RecipeName);
 
+            // if (!empty($images['images_results'])) {
+            //     $firstImage = $images['images_results'][0]['original'];
+
+            //     // Download the image and save to storage
+            //     $imageContents = file_get_contents($firstImage);
+            //     if ($imageContents !== false) {
+            //         $imageName = basename($firstImage);
+            //         $imagePath = 'public/storage/thumbnails/' . $imageName;
+            //         Storage::put($imagePath, $imageContents);
+
+            //         // Update recipe thumbnail to the downloaded image path
+            //         $recipe->thumbnail = 'storage/thumbnails/' . $imageName;
+            //         $recipe->save();
+            //     }
             if (!empty($images['images_results'])) {
                 $firstImage = $images['images_results'][0]['original'];
-
+            
                 // Download the image and save to storage
                 $imageContents = file_get_contents($firstImage);
                 if ($imageContents !== false) {
                     $imageName = basename($firstImage);
-                    $imagePath = 'public/storage/thumbnails/' . $imageName;
-                    Storage::put($imagePath, $imageContents);
-
+                    $imagePath = 'public/thumbnails/' . $imageName;
+            
+                    // Store the image in the public disk
+                    Storage::disk('public')->put($imagePath, $imageContents);
+            
                     // Update recipe thumbnail to the downloaded image path
-                    $recipe->thumbnail = 'storage/thumbnails/' . $imageName;
+                    $recipe->thumbnail =  $imagePath;
                     $recipe->save();
                 }
+                // if (!empty($images['images_results'])) {
+                //     $firstImage = $images['images_results'][0]['original'];
+                
+                //     // Download the image and save to storage
+                //     $imageContents = file_get_contents($firstImage);
+                //     if ($imageContents !== false) {
+                //         $imageName = basename($firstImage);
+                //         $imagePath = 'thumbnails/' . $imageName;
+                
+                //         // Save the image to the public/thumbnails folder using the Storage facade
+                //         Storage::disk('public_uploads')->put($imagePath, $imageContents);
+                
+                //         // Update recipe thumbnail to the downloaded image path
+                //         $recipe->thumbnail = $imagePath;
+                //         $recipe->save();
+                //     }
             }
 
             DB::commit();

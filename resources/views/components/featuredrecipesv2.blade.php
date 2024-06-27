@@ -62,7 +62,7 @@
                 <div class="swiper-slide">
                     <div class="recipe-card-wrapper max-h-80 rounded-lg overflow-hidden shadow-xl flex items-center">
                         <div class="w-1/3">
-                            <img class="h-auto object-cover transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg" src="{{$index->thumbnail}}" alt="Featured Recipe Image">
+                            <img class="h-auto object-cover transition-transform duration-300 hover:transform hover:scale-105 hover:shadow-lg" src="{{asset('storage/' . $index->thumbnail)}}" alt="Featured Recipe Image">
                         </div>
                         <div class="h-100 p-6 w-2/3">
                             <h1 class="text-4xl font-semibold text-gray-800 mb-4">{{ $index->RecipeName }} 

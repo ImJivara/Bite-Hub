@@ -181,7 +181,7 @@ class RecipeController extends Controller
             $thumbnailFileName = 'recipe_' . uniqid() . '.' . $thumbnailFile->getClientOriginalExtension();
             
             // Store the file in the public storage directory
-            $thumbnailPath = $thumbnailFile->storeAs('thumbnails', $thumbnailFileName, 'public');
+            $thumbnailPath = $thumbnailFile->storeAs('public\thumbnails', $thumbnailFileName, 'public');
         } else {
             $thumbnailPath = null;
         }
