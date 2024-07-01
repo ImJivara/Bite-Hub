@@ -42,6 +42,7 @@ class FetchTestImageSearchEngine extends Controller
             }
 
             $recipeData = $response->json()['recipes'][0]; // Assuming only one recipe is fetched
+             
             $nutritionalData = $this->fetchNutritionalData2($recipeData['id']);
             $ingredients = $this->extractIngredients2($recipeData);
 

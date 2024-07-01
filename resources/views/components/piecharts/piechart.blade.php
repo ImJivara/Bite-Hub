@@ -7,7 +7,7 @@
 
 <div class="bg-white w-full">
     <h2 class="text-2xl font-bold mb-4 text-center">Nutritional Facts</h2>
-    <div class="chart-container" style="position: relative; height:800px; width:100%;">
+    <div class="chart-container" style="position: relative; height:600px; width:100%;">
         <canvas id="nutritionPieChart" style="height:100%;" data-nutrients="{{ json_encode($nutrients) }}"></canvas>
     </div>
 </div>

@@ -20,7 +20,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FetchTestImageSearchEngine;
 
 
-//  SPOONACULAR_API_KEY=a5e5afda0898426ab0bb39484bfdbde9 
+// SPOONACULAR_API_KEY=a5e5afda0898426ab0bb39484bfdbde9 
 // YOUR_EDAMAM_APP_ID=7ba1f1e8 
 // YOUR_EDAMAM_APP_KEY=0bfaa9370bce866584f689af21404aa2
 // WORKOUT_API_KEY=55715de52a098e66a462f228656ba1c7b0a7ac0c
@@ -133,9 +133,10 @@ Route::get('/profile/{id}', [UserController::class, 'GetProfileInfo'])->middlewa
 Route::get('/HealthTools', function () {
     return view('Health Folder.Health2');
 });
-
-Route::post('/log-nutritional-data', [NutritionController::class, 'store'])->name('log-nutritional-data');
 Route::get('/nutrition-logs/data', [NutritionController::class, 'fetchNutritionData'])->name('nutrition.data');;
+Route::post('/log-nutritional-data', [NutritionController::class, 'store'])->name('log-nutritional-data');
+Route::post('/delete-nutrition-log/{id}', [NutritionController::class, 'deleteLog'])->name('nutrition.delete');
+Route::post('/update-nutrition-log/{id}', [NutritionController::class, 'updateLog'])->name('nutrition.update');
 Route::get('/user/monthly-nutritional-data', [NutritionController::class, 'fetchNutritionData']);
 
 //Workout Planner

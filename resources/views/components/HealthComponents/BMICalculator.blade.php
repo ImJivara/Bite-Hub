@@ -1,5 +1,5 @@
 
-    <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">>>>
+    <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
     
 </head>
 <div class="flex items-center justify-center ">

@@ -79,8 +79,7 @@
 
                 <!-- Post Image -->
                 <div class="relative">
-                    <a href="/Recipe/{{$post->id}}">
-                    <img src="{{ asset('imgs/' . $post->id . '.jpg') }}" alt="{{ $post->RecipeName }}" class="w-full h-64 object-cover">
+                    <img src="{{asset('storage/' . $post->thumbnail)}}" alt="{{ $post->RecipeName }}" class="w-full h-64 object-cover">
                     <!-- Hover effect -->
                     <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <div class="text-white text-center">
@@ -104,16 +103,16 @@
             <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg">
                 <!-- User Info -->
                 <div class="flex items-center p-2">
-                    <a href="/profile/{{$post->author->id}}"><img src="{{ asset('imgs/3.jpg') }}" alt="User profile" class="w-12 h-12 rounded-full mr-2"></a>
+                    <a href="/profile/{{$recipe->author->id}}"><img src="{{ asset('imgs/3.jpg') }}" alt="User profile" class="w-12 h-12 rounded-full mr-2"></a>
                     <div>
-                        <a href="/profile/{{$post->author->id}}"><p class="font-semibold">{{ Auth::user()->username }}</p></a>
+                        <a href="/profile/{{$recipe->author->id}}"><p class="font-semibold">{{ Auth::user()->username }}</p></a>
                         @if ($recipe->created_at)
                             <p class="text-gray-500 text-sm">{{ $recipe->created_at->format('M d') }}</p>
                         @endif
                     </div>
                 </div>
                 <!-- Post Image -->
-                <a href="/Recipe/{{$recipe->id}}"><img src="{{ asset('imgs/' . $recipe->id . '.jpg') }}" alt="{{ $recipe->RecipeName }}"
+                <a href="/Recipe/{{$recipe->id}}"><img src="{{asset('storage/' . $recipe->thumbnail)}}" alt="{{ $recipe->RecipeName }}"
                     class="w-full h-72 object-cover"></a>
                 <!-- Post Content -->
                 <div class="p-4">

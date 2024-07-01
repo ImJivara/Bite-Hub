@@ -6,6 +6,7 @@
     <title>Nutrition Tracker</title>
     <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
     <script src="{{asset('jquery-3.7.1.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
 </head>
@@ -70,20 +71,31 @@
                     </div>
                     <div>
                         <label for="calories2" class="block text-lg font-medium">Calories (optional):</label>
-                        <input type="number" id="calories2" class="w-full p-2 border rounded">
+                        <input type="number" id="calories2" class="w-full p-2 border rounded" min="0">
                     </div>
                     <div>
                         <label for="carbs" class="block text-lg font-medium">Carbs (optional):</label>
-                        <input type="number" id="carbs" class="w-full p-2 border rounded">
+                        <input type="number" id="carbs" class="w-full p-2 border rounded" min="0">
                     </div>
                     <div>
                         <label for="protein" class="block text-lg font-medium">Protein (optional):</label>
-                        <input type="number" id="protein" class="w-full p-2 border rounded">
+                        <input type="number" id="protein" class="w-full p-2 border rounded" min="0">
                     </div>
                     <div>
                         <label for="fat" class="block text-lg font-medium">Fat (optional):</label>
-                        <input type="number" id="fat" class="w-full p-2 border rounded">
+                        <input type="number" id="fat" class="w-full p-2 border rounded" min="0">
                     </div>
+                    <script>document.addEventListener('DOMContentLoaded', function() {
+                        const inputs = document.querySelectorAll('input[type="number"]');
+
+                        inputs.forEach(input => {
+                            input.addEventListener('input', function() {
+                                if (this.value < 0) {
+                                    this.value = 0;
+                                }
+                            });
+                        });
+                    });</script>
                     
                         <div class="text-center">
                             <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-600 transition duration-300 ease-in-out">Add Food</button>
@@ -124,47 +136,63 @@
 
     // Click event handler for saving total values button
     function validateBackEnd() {
-        if (totalCal===0 || totalCarbs===0 || totalProtein===0 || totalFat===0 ) {
+        if (totalCal===0 && totalCarbs===0 && totalProtein===0 && totalFat===0 ) {
             showToast('You need to add a food and its nutritional values to be able to log','red');   
         }
         else  {
          saveTotalValuesToBackend();
         }
     }
-
+    
     // Function to send total nutritional values to backend
     function saveTotalValuesToBackend() {
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
-            $.ajax({
-                type: 'POST',
-                url: '/log-nutritional-data', 
-                headers: {
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                contentType: 'application/json',
-                data: JSON.stringify({
-                    calories: totalCal,
-                    carbs: totalCarbs,
-                    protein: totalProtein,
-                    fat: totalFat
-                }),
-                success: function(response) {
-                    if (response.success==true) {
-                        console.log('Total values saved successfully:', response);  
-                    showToast('Total nutritional values saved successfully!','green');
-                    }
-                    else if(response.success=="RecordExists")
-                     showToast('It seems that you have already logged today, please try again the following day','red');
-                    else showToast('Failed to save total nutritional values. Please try again.','red');
-                    
-                },
-                error: function(error) {
-                    console.error('Error saving total values:', error);
-                    // Handle error, show appropriate message to user
-                    showToast('Failed to save total nutritional values. Please try again.','red');
-                }
-            });
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+    $.ajax({
+        type: 'POST',
+        url: '/log-nutritional-data', 
+        headers: {
+            'X-CSRF-TOKEN': csrfToken
+        },
+        contentType: 'application/json',
+        data: JSON.stringify({
+            calories: totalCal,
+            carbs: totalCarbs,
+            protein: totalProtein,
+            fat: totalFat
+        }),
+        success: function(response) {
+            if (response.success == true) {
+                console.log('Total values saved successfully:', response);  
+                showToast('Total nutritional values saved successfully!','green');
+                
+                // Delay for 500ms then show SweetAlert
+                setTimeout(function() {
+                    Swal.fire({
+                        title: 'View Daily Meal Log?',
+                        text: 'Do you want to refresh the page to see your daily meal log?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes',
+                        cancelButtonText: 'No'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                }, 500);
+            } else if (response.success == "RecordExists") {
+                showToast('It seems that you have already logged today, please try again the following day', 'red');
+            } else {
+                showToast('Failed to save total nutritional values. Please try again.', 'red');
+            }
+        },
+        error: function(error) {
+            console.error('Error saving total values:', error);
+            showToast('Failed to save total nutritional values. Please try again.', 'red');
         }
+    });
+}
+
     $(document).ready(function() {
         $('#nutrition-form').on('submit', function(event) {
             event.preventDefault();
@@ -316,10 +344,7 @@
                 const nutrient = nutrients.find(n => n.attr_id === attrId);
                 return nutrient ? nutrient.value : 0;
             }
-
-
 });
-
 </script>
 
 </body>

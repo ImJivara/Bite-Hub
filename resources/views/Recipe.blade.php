@@ -1,18 +1,32 @@
 @extends('test3tem')
 
 @section('content_body')
+<style>
+            .nutrient-bar {
+                height: 20px;
+                display: flex;
+                align-items: center;
+                color: white;
+                border-radius: 5px;
+                font-weight: bold;
+                margin-bottom: 4px;
+            }
 
+            .nutrient-label {
+                margin-bottom: 4px;
+                font-weight: bold;
+            }
+        </style>
+        </head>
 <!-- Recipe Details Section -->
 <section class="max-w-screen-xl mx-auto px-4 py-8">
-
-
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Recipe Image -->
         <div>
             <img class="w-full h-auto rounded-lg shadow-xl" src="{{asset('storage/' . $r->thumbnail)}}" alt="Recipe Image">
         </div>
         <!-- Recipe Information -->
-        <div class="flex flex-col justify-center">
+        <div class="flex flex-col justify-center ">
             <div class="flex items-center space-x-4">
                 <div class="relative w-16 h-16 rounded-full overflow-hidden bg-gray-200">
                     <img class="absolute inset-0 w-full h-full object-cover" src="{{ asset('profileimgs/'.$r->author->id.'.jpg') }}" alt="Profile Picture">
@@ -24,46 +38,62 @@
                     <p class="text-gray-600 text-lg">Username: {{ $r->author->username }}</p>
                 </div>
             </div>
-            <div>
-                <h1 class="text-4xl font-semibold mb-4">{{ $r->RecipeName }}</h1>
-                <p class="text-lg text-gray-700 mb-4">{{ $r->Description }}</p>
-                <div class="flex justify-between mb-4">
+
+                <div class="grid content-between mb-4">
                     <div>
-                        <span class="text-gray-600 mr-2">Number of Ingredients:</span>
-                        <p class="text-lg font-semibold">{{ $r->NbIngredients }}</p>
+                        <h1 class="text-4xl font-semibold mb-4">{{ $r->RecipeName }}</h1>
+                        <p class="text-xl text-gray-700 mb-4">{{ $r->Description }}</p>
                     </div>
-                    <div>
-                        <span class="text-gray-600 mr-2">Number of Steps:</span>
-                        <p class="text-lg font-semibold">{{ $r->Steps }}</p>
+                    <div class="flex justify-between mb-4">
+                        <div>
+                            <span class="text-gray-600 mr-2 text-xl"> Ingredients:</span>
+                            <p class="text-lg font-semibold">{{ $r->NbIngredients }}</p>
+                        </div>
+                        <div>
+                            <span class="text-gray-600 mr-2 text-xl"> Steps:</span>
+                            <p class="text-lg font-semibold">{{ $r->Steps }}</p>
+                        </div>
+                        <div>
+                            <span class="text-gray-600 mr-2 text-xl"> Likes:</span>
+                            <p class="text-lg font-semibold">{{ $r->NbLikes }}</p>
+                        </div>
+                        <div>
+                            @if (!is_null($r->difficulty_level))
+                            <span class="text-gray-600 mr-2 text-xl">Difficulty level:</span>
+                            <p class="text-lg font-semibold">{{ $r->difficulty_level }}</p>
+                            @endif
+                        </div>
+                        <div>
+                            @if (!is_null($r->cooking_time))
+                            <span class="text-gray-600 mr-2 text-xl">Cooking Time:</span>
+                            <p class="text-lg font-semibold">{{ $r->cooking_time }}</p>
+                            @endif
+                        </div>
+                        <div>
+                            @if (!is_null($r->preparation_time))
+                            <span class="text-gray-600 mr-2 text-xl">Preparation time:</span>
+                            <p class="text-lg font-semibold">{{ $r->preparation_time }}</p>
+                            @endif
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-gray-600 mr-2">Number of Likes:</span>
-                        <p class="text-lg font-semibold">{{ $r->NbLikes }}</p>
-                    </div>
-                    <div>
-                        @if (!is_null($r->difficulty_level))
-                        <span class="text-gray-600 mr-2">Difficulty level:</span>
-                        <p class="text-lg font-semibold">{{ $r->difficulty_level }}</p>
-                        @endif
-                    </div>
-                    <div>
-                        @if (!is_null($r->cooking_time))
-                        <span class="text-gray-600 mr-2">Cooking Time:</span>
-                        <p class="text-lg font-semibold">{{ $r->cooking_time }}</p>
-                        @endif
-                    </div>
-                    <div>
-                        @if (!is_null($r->preparation_time))
-                        <span class="text-gray-600 mr-2">Preparation time:</span>
-                        <p class="text-lg font-semibold">{{ $r->preparation_time }}</p>
-                        @endif
+                    
+            
+
+                    
+                    <div class="Likes-class flex justify-between">
+                            @php
+                                $likedRecipes = Auth::check() ? Auth::user()->likedRecipes->pluck('id')->toArray() : [];
+                            @endphp
+
+                            @if (in_array($r->id, $likedRecipes))
+                                <x-extracomponents.modernlikebutton :recipeId="$r->id" :IsLiked="true" data-likebtn />
+                            @else
+                                <x-extracomponents.modernlikebutton :recipeId="$r->id" :IsLiked="false" data-likebtn />
+                            @endif
                     </div>
                 </div>
-            </div>
-            <div>
-
-            </div>
         </div>
+    </div>
 </section>
 
 <!-- End of Recipe Details Section -->
@@ -102,25 +132,9 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Nutritional Information -->
 
-        <style>
-            .nutrient-bar {
-                height: 20px;
-                display: flex;
-                align-items: center;
-                color: white;
-                border-radius: 5px;
-                font-weight: bold;
-                margin-bottom: 4px;
-            }
+       
 
-            .nutrient-label {
-                margin-bottom: 4px;
-                font-weight: bold;
-            }
-        </style>
-        </head>
-
-        <body class="p-6">
+        
             <div class="bg-white rounded-lg shadow-xl p-6 overflow-hidden">
                 <div class="flex flex-col justify-between">
                     <div class="Nutritional Information">
@@ -152,25 +166,27 @@
                             </div>
                             @endforeach
                         </div>
+                        <div>    
+                            @if ($r->nutritionalData)
+                                @php
+                                $nutrients = collect($r->nutritionalData->nutrients)->map(function($nutrient) {
+                                    return [
+                                        'name' => $nutrient->name,
+                                        'amount' => str_replace(['g', 'mg', 'IU'], '', $nutrient->amount)
+                                    ];
+                                });
+                                @endphp
 
-                        <h3 class="text-xl font-semibold mb-4">Good Nutrients % Of Recommended Daily Needs</h3>
-                        <div id="good-nutrients">
-                            @foreach ($r->nutritionalData->good as $nutrient)
-                            <div class="mb-4">
-                                <span class="nutrient-label">{{ $nutrient->title }}: {{ $nutrient->amount }} {{ $nutrient->indented ? 'g' : '' }} {{ $nutrient->percentOfDailyNeeds }}%</span>
-                                <div class="relative w-full bg-gray-200 rounded">
-                                    <div class="nutrient-bar bg-blue-500" style="width: '{{ $nutrient->percentOfDailyNeeds }}%';">
-
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
+                                <!-- Placeholder for the pie chart -->
+                                <x-piecharts.piechart :nutrients="$nutrients" placeholder="pie-chart-placeholder" />
+                            @else
+                                <p>No nutritional data available</p>
+                            @endif
                         </div>
-                        @else
-                        <p>No nutritional data available</p>
-                        @endif
+                        
 
                     </div>
+                    
                     <div class="Comment-Form grid content-between ">
                         <!-- Comments Section -->
                         <div>
@@ -219,27 +235,27 @@
                     </div>
                 </div>
             </div>
+                <section>
+                    <div class="bg-white rounded-lg shadow-xl p-6  ">
+                        <h3 class="text-xl font-semibold mb-4">Good Nutrients % Of Recommended Daily Needs</h3>
+                            <div id="good-nutrients">
+                                @foreach ($r->nutritionalData->good as $nutrient)
+                                <div class="mb-4">
+                                    <span class="nutrient-label">{{ $nutrient->title }}: {{ $nutrient->amount }} {{ $nutrient->indented ? 'g' : '' }} {{ $nutrient->percentOfDailyNeeds }}%</span>
+                                    <div class="relative w-full bg-gray-200 rounded">
+                                        <div class="nutrient-bar bg-blue-500" style="width: '{{ $nutrient->percentOfDailyNeeds }}%';">
 
-            <!-- Image beside Nutritional Information -->
-            <div>
-                <!-- <img class="w-full h-auto rounded-lg shadow-xl" src="{{ asset('imgs/'.$r->id.'.jpg') }}" alt="Recipe Image"> -->
-                <!-- <img class="w-full h-auto rounded-lg shadow-xl" src="{{ asset('storage/' . $r->thumbnail) }}" alt="Recipe Image"> -->
-                @if ($r->nutritionalData)
-                @php
-                $nutrients = collect($r->nutritionalData->nutrients)->map(function($nutrient) {
-                return [
-                'name' => $nutrient->name,
-                'amount' => str_replace(['g', 'mg', 'IU'], '', $nutrient->amount)
-                ];
-                });
-                @endphp
-                <x-piecharts.piechart :nutrients="$nutrients" />
-                @else
-                <p>No nutritional data available</p>
-                @endif
-            </div>
-    </div>
-    </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @else
+                            <p>No nutritional data available</p>
+                            @endif
+                    </div>
+                </section>
+         </div>
 </section>
 
 @endsection

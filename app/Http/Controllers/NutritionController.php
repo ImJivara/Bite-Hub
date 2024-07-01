@@ -85,20 +85,60 @@ class NutritionController extends Controller
         ]);
     }
     public function getMonthlyNutritionalData(Request $request)
-{
-    $user = Auth::user();
-    $currentMonth = now()->month;
-    $currentYear = now()->year;
+    {
+        $user = Auth::user();
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
 
-    $logs = DB::table('nutritional_data_logs')
-        ->where('user_id', $user->id)
-        ->whereYear('log_date', $currentYear)
-        ->whereMonth('log_date', $currentMonth)
-        ->orderBy('log_date')
-        ->get(['log_date', 'calories', 'carbs', 'protein', 'fat']);
+        $logs = DB::table('nutritional_data_logs')
+            ->where('user_id', $user->id)
+            ->whereYear('log_date', $currentYear)
+            ->whereMonth('log_date', $currentMonth)
+            ->orderBy('log_date')
+            ->get(['log_date', 'calories', 'carbs', 'protein', 'fat']);
 
-    return response()->json($logs);
-}
+        return response()->json($logs);
+    }
+
+    public function deleteLog($id)
+    {
+        $log = NutritionalDataLog::find($id);
+        if ($log) {
+            $log->delete();
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Log not found'], 404);
+        }
+    }
+
+    // Function to update a nutrition log
+    public function updateLog(Request $request, $id)
+    {
+        $log = NutritionalDataLog::find($id);
+
+    if ($log) {
+        $validatedData = $request->validate([
+            'calories' => 'required|numeric|min:0',
+            'carbs' => 'required|numeric|min:0',
+            'protein' => 'required|numeric|min:0',
+            'fat' => 'required|numeric|min:0',
+        ]);
+
+        // Check if the log's current values are already the same as the validated data
+        if ($log->calories == $validatedData['calories'] &&
+            $log->carbs == $validatedData['carbs'] &&
+            $log->protein == $validatedData['protein'] &&
+            $log->fat == $validatedData['fat']) {
+            return response()->json(['success' => false, 'message' => 'No changes detected.']);
+        }
+
+        $log->update($validatedData);
+        return response()->json(['success' => true]);
+    } else {
+        return response()->json(['success' => false, 'message' => 'Log not found'], 404);
+    }
+
+    }
 
 
 }
