@@ -14,7 +14,9 @@
         <div class="container mx-auto"> 
             <div class="max-w-lg mx-auto bg-white shadow-xl rounded-lg overflow-hidden p-8 tool-card">
                 <center>
-                    <button id="showNutritionTracker" class="bg-black text-white px-4 py-2 rounded-lg mt-4">Show Nutritional Tracker's Pie Chart</button>
+                <button onclick=validateBackEnd() class="bg-purple-500 text-white px-4 py-2 rounded-lg mt-4 shadow-lg hover:bg-purple-600 transition duration-300 ease-in-out">Log Total Values</button>
+                  
+                <!-- <button id="showNutritionTracker" class="bg-black text-white px-4 py-2 rounded-lg mt-4">Show Nutritional Tracker's Pie Chart</button> -->
                 </center>
                 <h2 class="text-2xl font-bold mb-4 text-center">Log Your Food</h2>
                 <form id="nutrition-form" class="space-y-4">
@@ -27,7 +29,7 @@
                         <input type="number" id="quantity" class="w-full p-2 border rounded"  required>
                     </div>
                     <div>
-                        <label for="unit" class="block text-lg font-medium">Unit:</label>
+                        <label for="unit" class="block text-lg font-medium" required>Unit:</label>
                         <select id="unit" class="w-full p-2 border rounded">
                             <option value="g">grams (g)</option>
                             <option value="kg">kilograms (kg)</option>
@@ -82,10 +84,12 @@
                         <label for="fat" class="block text-lg font-medium">Fat (optional):</label>
                         <input type="number" id="fat" class="w-full p-2 border rounded">
                     </div>
-                    <div class="text-center">
-                        <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-600 transition duration-300 ease-in-out">Add Food</button></form>                     
-                        <button onclick=validateBackEnd() class="bg-purple-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-purple-600 transition duration-300 ease-in-out">Save Total Values</button>
-                    </div>
+                    
+                        <div class="text-center">
+                            <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg hover:bg-green-600 transition duration-300 ease-in-out">Add Food</button>
+                            </div>
+                        </form>                     
+             
                 <div id="nutrition-result" class="mt-4 text-center text-xl font-semibold text-green-700"></div>
                 <ul id="food-list2" class="mt-4 space-y-2"></ul>
             </div>
@@ -97,6 +101,8 @@
     var totalCarbs = 0;
     var totalProtein = 0;
     var totalFat = 0;
+
+  
 
     function updateNutritionalIntake(calories2, carbs, protein, fat) {
         totalCal += parseFloat(calories2);
@@ -118,10 +124,12 @@
 
     // Click event handler for saving total values button
     function validateBackEnd() {
-        if (totalCal==0 || totalCarbs==0 || totalProtein==0 || totalFat==0 ) {
+        if (totalCal===0 || totalCarbs===0 || totalProtein===0 || totalFat===0 ) {
             showToast('You need to add a food and its nutritional values to be able to log','red');   
         }
-        else  saveTotalValuesToBackend();
+        else  {
+         saveTotalValuesToBackend();
+        }
     }
 
     // Function to send total nutritional values to backend

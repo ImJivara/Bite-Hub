@@ -53,7 +53,7 @@ class RecipeController extends Controller
         }
         else{
             try {
-                $recipe = Recipe::findOrFail($request->id);
+                $recipe =Recipe::with('nutritionalData')->findOrFail($request->id);
             } catch (\Exception $e) {
                 dd("Such post doesn't exist."); 
             }

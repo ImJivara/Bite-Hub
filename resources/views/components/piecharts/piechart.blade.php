@@ -1,33 +1,39 @@
-@props(['Proteins', 'Carbs', 'Fats'])
+<!-- resources/views/components/piechart.blade.php -->
+@props(['nutrients'])
 
 <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
-<div class="bg-white  max-w-sm w-full">
-    <!-- p-14 rounded-lg shadow-lg -->
+<div class="bg-white w-full">
     <h2 class="text-2xl font-bold mb-4 text-center">Nutritional Facts</h2>
-    <canvas id="nutritionPieChart" width="400" height="400"></canvas>
+    <div class="chart-container" style="position: relative; height:800px; width:100%;">
+        <canvas id="nutritionPieChart" style="height:100%;" data-nutrients="{{ json_encode($nutrients) }}"></canvas>
+    </div>
 </div>
 
 <script>
-    // Step 3: JavaScript for Pie Chart
     document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('nutritionPieChart').getContext('2d');
-        const data = [{{ $Proteins }}, {{ $Carbs }} , {{ $Fats }}];
+        const canvas = document.getElementById('nutritionPieChart');
+        const ctx = canvas.getContext('2d');
 
-        // Calculate the total intake
+        const nutrientData = JSON.parse(canvas.getAttribute('data-nutrients'));
+        const labels = nutrientData.map(nutrient => nutrient.name);
+        const data = nutrientData.map(nutrient => parseFloat(nutrient.amount.replace(/[^\d.-]/g, '')));
+
         const totalIntake = data.reduce((acc, val) => acc + val, 0);
-
-        // Calculate the percentage of each nutrient
         const percentages = data.map(value => (value / totalIntake) * 100);
 
         const nutritionData = {
-            labels: ['Proteins', 'Carbs', 'Fats'],
+            labels: labels,
             datasets: [{
                 label: 'Nutritional Facts',
                 data: percentages,
-                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
+                backgroundColor: [
+                    '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+                    '#9966FF', '#FF9F40', '#FF6384', '#36A2EB', 
+                    '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+                ],
             }]
         };
 
@@ -36,18 +42,19 @@
             data: nutritionData,
             options: {
                 responsive: true,
+                maintainAspectRatio: true,
                 animation: {
                     animateScale: true,
                     animateRotate: true
                 },
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'bottom',
                         labels: {
                             font: {
                                 size: 14,
                             },
-                            color: '#4A5568', // Gray-700
+                            color: '#4A5568',
                         },
                     },
                     tooltip: {
@@ -66,7 +73,8 @@
                     datalabels: {
                         color: '#ffffff',
                         formatter: (value, context) => {
-                            return `${Math.round(value)}%`;
+                            return value > 2     ? `${Math.round(value)}%` : '';
+                            
                         }
                     }
                 }

@@ -27,4 +27,18 @@ class NutritionalData extends Model
     {
         return $this->belongsTo(Recipe::class);
     }
+    public function getBadAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function getGoodAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function getNutrientsAttribute($value)
+    {
+        return json_decode($value);
+    }
 }

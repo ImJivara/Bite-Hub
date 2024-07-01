@@ -22,8 +22,8 @@
                         <!-- Middle Section: Post Image -->
                         <div class="p-4">
                             <a href="/Recipe/{{ $post->id }}">
-                                <img src="{{ asset('imgs/' . $post->id . '.jpg') }}" alt="{{ $post->RecipeName }}"
-                                    class="w-full h-64 object-cover rounded-md">
+                                <img src="{{asset('storage/' . $post->thumbnail)}}" alt="{{ $post->RecipeName }}"
+                                    class="w-full h-80 object-cover rounded-md">
                             </a>
                         </div>
 
@@ -188,7 +188,7 @@
 
 // Remove animation class after animation ends
 $(document).on('animationend', '.animate-like', function() {
-    $(this).removeClass('animate-like');
+    $(this).addClass('animate-like');
 });
 </script>
 
@@ -208,6 +208,7 @@ $(document).on('animationend', '.animate-like', function() {
 
 .animate-like {
     animation: like-animation 0.3s ease-in-out;
+    color: red;
 }
 </style></script>
     @endsection

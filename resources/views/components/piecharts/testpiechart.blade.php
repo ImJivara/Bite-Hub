@@ -92,7 +92,7 @@ function initializeNutritionalTracker(data,totalCalories)
 }
 
 
-document.getElementById('showNutritionTracker').addEventListener('click', function () {
+// document.getElementById('showNutritionTracker').addEventListener('click', function () {
     const nutritionTrackerContent = document.getElementById('nutritionTrackerContent');
     if (nutritionTrackerContent.style.display === 'none') {
         nutritionTrackerContent.style.display = 'block'; // Show the nutritional tracker content
@@ -110,7 +110,7 @@ document.getElementById('showNutritionTracker').addEventListener('click', functi
         });
         document.dispatchEvent(event);
     }
-});
+// });
     
 
 </script>

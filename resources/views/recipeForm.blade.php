@@ -3,6 +3,8 @@
 
 @section('content_body')
 <link rel="stylesheet" href="{{ asset('css/tailwindstyles.css') }}">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
 <div class="max-w-4xl mx-auto py-8 mt-">
     <h2 class="text-3xl font-bold mb-4">Add New Recipe</h2>
 
@@ -133,7 +135,7 @@
             @error('Category')
                 <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
             @enderror
-        </div>w
+        </div>
 
         <div>
             <div class="flex items-center space-x-2 mb-2">

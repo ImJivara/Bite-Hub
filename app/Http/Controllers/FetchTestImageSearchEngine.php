@@ -142,7 +142,7 @@ class FetchTestImageSearchEngine extends Controller
 
             DB::commit();
 
-            return response()->json(['message' => 'Recipe and nutritional data saved successfully', 'Recipe' => $recipe, 'Ingredients' => $ingredients], 200);
+            return response()->json(['message' => 'Recipe and nutritional data saved successfully', 'Recipe' => $recipe, 'NutritionalData'=>$nutritional], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Failed to fetch or save recipe: ' . $e->getMessage());
