@@ -1,6 +1,6 @@
 <div class=" flex items-center justify-center ">
     <aside class="bg-black text-white p-6 rounded-lg w-full max-w-lg font-mono">
-    <p class="text-white font-bold">Command Prompt</p>
+    <!-- <p class="text-white font-bold">Command Prompt</p> -->
         <div class="flex justify-between items-center">
             <div class="flex space-x-2 text-red-500">
                 <div class="w-3 h-3 rounded-full bg-red-500"></div>

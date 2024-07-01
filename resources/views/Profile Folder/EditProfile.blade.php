@@ -114,7 +114,7 @@
     </style>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-8 py-8">
+    <div class=" mx-auto px-8 py-8">
         <!-- Edit Profile Form -->
         <div class="bg-white shadow-md rounded-lg p-8">
             <h1 class="text-2xl font-semibold mb-4">Edit Profile</h1>

@@ -23,15 +23,45 @@
     <!-- Profile Header -->
     <div class="profile-header flex flex-col items-center">
         <div class="flex items-center justify-center w-full mb-8">
+        <form id="profilePictureForm" method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data">
+            @csrf
             <div class="w-40 h-40 relative">
-                <img id="profileImage" class="w-full h-full rounded-full object-cover" src="{{ asset('imgs/3.jpg') }}"
-                    alt="Profile Picture">
-                <input type="file" id="uploadProfilePicture" class="hidden" accept="image/*">
-                <button id="editProfilePicture"
-                    class="absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1.5 rounded-full">
+                <img id="profileImage" class="w-full h-full rounded-full object-cover" src="{{ asset('imgs/3.jpg') }}" alt="Profile Picture">
+                <input type="file" name="profile_picture" id="uploadProfilePicture" class="hidden" accept="image/*">
+                <button id="editProfilePicture" type="button" class="absolute bottom-0 right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-1.5 rounded-full">
                     ✏️
                 </button>
             </div>
+        </form>
+        <script>
+                document.addEventListener('DOMContentLoaded', function () {
+            const profileImage = document.getElementById('profileImage');
+            const uploadProfilePicture = document.getElementById('uploadProfilePicture');
+            const editProfilePicture = document.getElementById('editProfilePicture');
+            const profilePictureForm = document.getElementById('profilePictureForm');
+
+            // Trigger the file input click when the edit button is clicked
+            editProfilePicture.addEventListener('click', function () {
+                uploadProfilePicture.click();
+            });
+
+            // Update the image preview when a new image is selected and submit the form
+            uploadProfilePicture.addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        profileImage.src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+
+                    // Submit the form to upload the profile picture
+                    profilePictureForm.submit();
+                }
+            });
+        });
+        </script>
+
             <div class="ml-8">
                 <h1 class="text-3xl font-semibold">@ {{ Auth::user()->username }}</h1>
 

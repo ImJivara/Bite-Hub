@@ -88,6 +88,7 @@
 }
 </style>
 <div class="cards">
+
     <div class="card blue" onclick="window.location.href='/Recipes'">
         <p class="tip">Explore Recipes</p>
         <p class="second-text">Visit Bite-Hub</p>

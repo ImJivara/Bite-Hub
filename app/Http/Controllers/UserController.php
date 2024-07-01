@@ -196,30 +196,21 @@ class UserController extends Controller
     public function updatePicture(Request $request)
     {
         $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
+            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        $user = Auth::user();
-
-        // Delete the old profile picture file if exists
-        if (file_exists(public_path($user->profile_picture))) {
-            unlink(public_path($user->profile_picture));
+    
+        $user = auth()->user();
+        if ($request->hasFile('profile_picture')) {
+            $file = $request->file('profile_picture');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('imgs'), $filename);
+    
+            // Update user's profile picture path
+            $user->profile_picture = $filename;
+            $user->save();
         }
-
-        // Get the file from the request
-        $file = $request->file('profile_picture');
-
-        // Generate a unique file name
-        $fileName = 'profile_' . $user->id . '.' . $file->getClientOriginalExtension();
-
-        // Move the uploaded file to public directory
-        $file->move(public_path('imgs/profile_pictures'), $fileName);
-
-        // Update user's profile picture path in the database
-        $user->profile_picture = 'imgs/profile_pictures/' . $fileName;
-        $user->save();
-
-        return response()->json(['message' => 'Profile picture updated successfully'], 200);
+    
+        return redirect()->back()->with('success', 'Profile picture updated successfully.');
     }
     #################################### User Profile ################################################################
 
