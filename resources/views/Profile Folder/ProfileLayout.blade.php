@@ -57,7 +57,7 @@
         
         <!-- Profile Image -->
         <div class="p-4">
-            <a href="/profile/{{Auth::user()->id}}"><img class="w-24 h-24 rounded-full mx-auto" src="{{ asset('imgs/3.jpg') }}" alt="Profile Picture">
+            <img id="profileImage" class=" w-24 h-24 rounded-full mx-auto object-cover border-2  border-black" src="{{ asset('profileimgs/' . auth()->user()->profile_picture) }}" alt="Profile Picture">   
             <p class="text-center text-gray-800 mt-2" id="name_sidebar" >{{Auth::user()->name}}</p></a>
         </div>
         <!-- Sidebar Items -->

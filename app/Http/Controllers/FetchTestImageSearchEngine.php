@@ -42,7 +42,6 @@ class FetchTestImageSearchEngine extends Controller
             }
 
             $recipeData = $response->json()['recipes'][0]; // Assuming only one recipe is fetched
-             
             $nutritionalData = $this->fetchNutritionalData2($recipeData['id']);
             $ingredients = $this->extractIngredients2($recipeData);
 
@@ -59,6 +58,20 @@ class FetchTestImageSearchEngine extends Controller
                 }
             }
 
+            $imageContents = file_get_contents($recipeData['image']);
+
+            if ($imageContents !== false) {
+                // Extract the image name from the URL
+                $imageName = basename($recipeData['image']);
+
+                // Define the path where you want to store the image
+                $imagePath = 'public/thumbnails/' . $imageName;
+
+                // Store the image in the public disk using Laravel's Storage
+                Storage::disk('public')->put($imagePath, $imageContents);
+            }
+
+
             // Insert recipe data
             $recipe = Recipe::create([
                 'user_id' => 1, // Assuming the authenticated user ID
@@ -71,12 +84,16 @@ class FetchTestImageSearchEngine extends Controller
                 'NbLikes' => $recipeData['aggregateLikes'],
                 'IsApproved' => 0,
                 'difficulty_level' => 'Medium',
-                'thumbnail' => $recipeData['image'], // Use Spoonacular's provided image initially
+                'thumbnail' => $imagePath, // Use Spoonacular's provided image initially
                 'cooking_time' => $recipeData['cookingMinutes'],
                 'preparation_time' => $recipeData['preparationMinutes'],
                 'Category' => isset($recipeData['dishTypes'][0]) ? $recipeData['dishTypes'][0] : 'Uncategorized',
                 'Health_Score' => $recipeData['healthScore'],
             ]);
+
+            $filteredNutrients = collect($nutritionalData['nutrients'])->filter(function($nutrient) {
+                return stripos($nutrient['name'], 'Calories') === false; // Filter out calories regardless of case
+            })->values();
 
             // Insert nutritional data
             $nutritional = NutritionalData::create([
@@ -87,26 +104,12 @@ class FetchTestImageSearchEngine extends Controller
                 'protein' => $nutritionalData['protein'],
                 'bad' => json_encode($nutritionalData['bad']),
                 'good' => json_encode($nutritionalData['good']),
-                'nutrients' => json_encode($nutritionalData['nutrients']),
+                'nutrients' => json_encode($filteredNutrients),
             ]);
 
             // Fetch image from SerpApiService based on RecipeName
             $images = $this->serpApiService->searchImages($recipe->RecipeName);
 
-            // if (!empty($images['images_results'])) {
-            //     $firstImage = $images['images_results'][0]['original'];
-
-            //     // Download the image and save to storage
-            //     $imageContents = file_get_contents($firstImage);
-            //     if ($imageContents !== false) {
-            //         $imageName = basename($firstImage);
-            //         $imagePath = 'public/storage/thumbnails/' . $imageName;
-            //         Storage::put($imagePath, $imageContents);
-
-            //         // Update recipe thumbnail to the downloaded image path
-            //         $recipe->thumbnail = 'storage/thumbnails/' . $imageName;
-            //         $recipe->save();
-            //     }
             if (!empty($images['images_results'])) {
                 $firstImage = $images['images_results'][0]['original'];
             
@@ -123,22 +126,6 @@ class FetchTestImageSearchEngine extends Controller
                     $recipe->thumbnail =  $imagePath;
                     $recipe->save();
                 }
-                // if (!empty($images['images_results'])) {
-                //     $firstImage = $images['images_results'][0]['original'];
-                
-                //     // Download the image and save to storage
-                //     $imageContents = file_get_contents($firstImage);
-                //     if ($imageContents !== false) {
-                //         $imageName = basename($firstImage);
-                //         $imagePath = 'thumbnails/' . $imageName;
-                
-                //         // Save the image to the public/thumbnails folder using the Storage facade
-                //         Storage::disk('public_uploads')->put($imagePath, $imageContents);
-                
-                //         // Update recipe thumbnail to the downloaded image path
-                //         $recipe->thumbnail = $imagePath;
-                //         $recipe->save();
-                //     }
             }
 
             DB::commit();

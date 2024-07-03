@@ -12,7 +12,7 @@
             <div class="grid grid-cols-1 gap-4">
                 @forelse ($following as $follow)
                     <div class="flex items-center space-x-4">
-                        <img src="{{ asset('imgs/user.jpg') }}" alt="Profile Picture" class="w-12 h-12 rounded-full border">
+                        <img src="{{ asset('profileimgs/'.$follow->profile_picture) }}" alt="Profile Picture" class="w-12 h-12 rounded-full border object-cover">
                         <div class="flex-grow">
                             <h3 class="text-sm font-semibold">{{ $follow->name }}</h3>
                             <p class="text-gray-500 text-xs">{{ $follow->location }}</p>

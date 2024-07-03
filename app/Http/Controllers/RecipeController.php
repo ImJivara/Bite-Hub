@@ -225,6 +225,92 @@ class RecipeController extends Controller
         // Redirect to a success page or somewhere else
         return redirect()->route('recipes.Form')->with('success', 'Recipe added successfully!');
     }
+    public function edit($id)
+    {
+        $recipe = Recipe::findOrFail($id);
+
+
+        return view('recipeFormEdit', compact('recipe'));
+    }
+
+    public function update(Request $request,$id)
+    {
+        $recipe = Recipe::findOrFail($id);
+        try {
+            // Validate incoming request data
+            $validatedData = $request->validate([
+                'RecipeName' => 'required|string|max:255',
+                'Description' => 'required|string',
+                'Health_Score' => 'required|numeric|min:0|max:100',
+                'cooking_time' => 'nullable|integer|min:0',
+                'preparation_time' => 'nullable|integer|min:0',
+                'difficulty_level' => 'required|in:Easy,Medium,Hard',
+                'Category' => 'required|string|max:255',
+                'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
+                'calories' => 'required|string|min:0',
+                'carbs' => 'required|string|min:0',
+                'fat' => 'required|string|min:0',
+                'protein' => 'required|string|min:0',
+                'steps' => 'required|array|min:1',
+                'steps.*' => 'required|string|max:255',
+                'ingredients' => 'required|array|min:1',
+                'ingredients.*.name' => 'required|string|max:255',
+                'ingredients.*.amount' => 'required|string|max:255',
+                'ingredients.*.unit' => 'required|string|max:255',
+            ]);
+    
+            // Assign user_id
+            $recipe->user_id = Auth::user()->id;
+    
+            // Update only the fields that are present in the validated data
+            $recipe->fill($validatedData);
+    
+            // Handle thumbnail upload
+            if ($request->hasFile('thumbnail')) {
+                // Delete old thumbnail if exists
+                if ($recipe->thumbnail) {
+                    Storage::delete('storage/' . $recipe->thumbnail);
+                }
+    
+                $thumbnailPath = $request->file('thumbnail')->store('images');
+                $recipe->thumbnail = basename($thumbnailPath);
+            }
+    
+            // Update or create steps details
+            $steps = $request->input('steps');
+            $recipe->Steps = count($steps); 
+            $recipe->steps_details = json_encode($steps);
+    
+            // Update or create ingredients details
+            $ingredients = $request->input('ingredients');
+            $recipe->NbIngredients = count($ingredients);
+            $recipe->ingredients_details = json_encode($ingredients);
+    
+            // Save the recipe model
+            $recipe->update();
+    
+            // Update or create nutritional data
+            $nutritionalData = $recipe->nutritionalData ?: new NutritionalData();
+            $nutritionalData->recipe_id = $recipe->id;
+            $nutritionalData->calories = $request->input('calories');
+            $nutritionalData->carbs = $request->input('carbs');
+            $nutritionalData->fat = $request->input('fat');
+            $nutritionalData->protein = $request->input('protein');
+            $nutritionalData->update();
+    
+            return redirect()->route('recipes.show', ['id' => $recipe->id])
+                ->with('success', 'Recipe updated successfully.');
+    
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+    
+
+
+
+
+
 #################################### Post Recipe ################################################################
 
 #################################### Recipe Search ################################################################  

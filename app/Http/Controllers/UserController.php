@@ -169,29 +169,7 @@ class UserController extends Controller
             'recentActivities' => $recentActivities,
         ]);
     }
-    public function uploadPicture(Request $request)
-    {
-        $request->validate([
-            'profile_picture' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // max 2MB
-        ]);
 
-        $user = Auth::user();
-
-        // Get the file from the request
-        $file = $request->file('profile_picture');
-
-        // Generate a unique file name
-        $fileName = 'profile_' . $user->id . '.' . $file->getClientOriginalExtension();
-
-        // Move the uploaded file to public directory
-        $file->move(public_path('imgs/profile_pictures'), $fileName);
-
-        // Update user's profile picture path in the database
-        $user->profile_picture = 'imgs/profile_pictures/' . $fileName;
-        $user->save();
-
-        return response()->json(['message' => 'Profile picture uploaded successfully'], 200);
-    }
 
     public function updatePicture(Request $request)
     {
@@ -203,7 +181,12 @@ class UserController extends Controller
         if ($request->hasFile('profile_picture')) {
             $file = $request->file('profile_picture');
             $filename = time() . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('imgs'), $filename);
+            $file->move(public_path('profileimgs'), $filename);
+    
+            // Delete the old profile picture if it exists
+            if ($user->profile_picture && file_exists(public_path('profileimgs/' . $user->profile_picture))) {
+                unlink(public_path('profileimgs/' . $user->profile_picture));
+            }
     
             // Update user's profile picture path
             $user->profile_picture = $filename;
@@ -212,6 +195,7 @@ class UserController extends Controller
     
         return redirect()->back()->with('success', 'Profile picture updated successfully.');
     }
+    
     #################################### User Profile ################################################################
 
     // public function checkIfFollowing(Request $request, $userId)

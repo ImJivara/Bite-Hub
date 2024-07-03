@@ -6,8 +6,8 @@
         /* Profile element styles */
         .profile-container {
             position: relative;
-            width: 45px;
-            height: 45px;
+            width: 55px;
+            height: 55px;
             border-radius: 50%;
             overflow: hidden;
         }
@@ -52,7 +52,7 @@
         <!-- Profile overlay (clickable) -->
        @auth()
        <a href="/profile/{{Auth::user()->id}}" class="profile-overlay">
-        <img class="profile-image" src="{{ asset('profileimgs/3.jpg') }}" alt="Profile Picture"> </a>
+        <img class="profile-image" src="{{ asset('profileimgs/' . auth()->user()->profile_picture) }}" alt="Profile Picture"> </a>
        @else 
        <a href="" class="profile-overlay">
         <img class="profile-image" src="" alt="Profile Picture"></a>

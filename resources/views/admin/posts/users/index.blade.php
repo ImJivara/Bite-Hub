@@ -12,10 +12,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                <img class="h-10 w-10 rounded-full" src="{{ asset('profileimgs/'.$user->id.'.jpg') }}" alt="{{ $user->name }}">
+                                                <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('profileimgs/'.$user->profile_picture) }}" alt="{{ $user->name }}">
                                             </div>
                                             <div class="ml-4 text-sm font-medium text-gray-900">
-                                                <a href="#">
+                                                <a href="/profile/{{$user->id}}">
                                                     {{ $user->name }}
                                                 </a>
                                                 <p class="text-red-500">Email: {{ $user->email }}</p>

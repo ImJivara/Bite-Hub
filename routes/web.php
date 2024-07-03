@@ -117,7 +117,7 @@ Route::get('/profile/{id}', [UserController::class, 'GetProfileInfo'])->middlewa
     Route::post('/profile/update/{id}', [UserController::class, 'updateProfile'])->middleware("auth");
     Route::post('/account/delete/{id}', [UserController::class, 'deleteAccount'])->middleware("auth");
     Route::post('/profile/upload-picture', [UserController::class, 'uploadPicture'])->name('profile.upload');
-    Route::post('/profile/update-picture', [UserController::class, 'updatePicture'])->name('profile.update'); 
+    Route::post('/profile/update-picture', [UserController::class, 'updatePicture'])->name('pfp.update'); 
 
     //User to User Event
     Route::get('/follow/{user}', [UserController::class, 'toggleFollow'])->name('follow');
@@ -151,7 +151,7 @@ Route::get('/Recipes', [RecipeController::class, 'getRecipes'])->name('recipes.s
     Route::get('/categories', [RecipeController::class, 'getCategories']);
 
 //Recipe card functions//
-Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
+Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes'])->name('recipes.show');
     Route::get('/Step/{id}', [RecipeController::class, 'getStep']);
     Route::get('/Ing/{id}', [RecipeController::class, 'getIng']);
     
@@ -159,6 +159,9 @@ Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes']);
 //Recipe Form
 Route::get('/recipes/create', [RecipeController::class,'getForm'])->name('recipes.Form');
 Route::post('/recipes/create', [RecipeController::class,'store'])->name('recipes.create');
+Route::get('/recipes/{id}/edit', [RecipeController::class, 'edit'])->name('recipes.edit');
+Route::post('/recipes/{id}/update', [RecipeController::class, 'update'])->name('recipes.update');
+
 // Search 
 Route::get('/recipes/search img', [RecipeController::class, 'searchrecipesbar'])->name('recipes.searchbar');
 #################################### Recipes ################################################################3

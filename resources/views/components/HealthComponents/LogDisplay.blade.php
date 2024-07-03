@@ -42,19 +42,19 @@
             <input type="hidden" id="edit-log-id">
             <div>
                 <label for="edit-calories" class="block text-lg font-medium">Calories:</label>
-                <input type="number" id="edit-calories" class="w-full p-2 border rounded" min="0">
+                <input type="text" id="edit-calories" class="w-full p-2 border rounded" min="0">
             </div>
             <div>
                 <label for="edit-carbs" class="block text-lg font-medium">Carbs:</label>
-                <input type="number" id="edit-carbs" class="w-full p-2 border rounded" min="0">
+                <input type="text" id="edit-carbs" class="w-full p-2 border rounded" min="0">
             </div>
             <div>
                 <label for="edit-protein" class="block text-lg font-medium">Protein:</label>
-                <input type="number" id="edit-protein" class="w-full p-2 border rounded" min="0">
+                <input type="text" id="edit-protein" class="w-full p-2 border rounded" min="0">
             </div>
             <div>
                 <label for="edit-fat" class="block text-lg font-medium">Fat:</label>
-                <input type="number" id="edit-fat" class="w-full p-2 border rounded" min="0">
+                <input type="text" id="edit-fat" class="w-full p-2 border rounded" min="0">
             </div>
             <div class="mt-4 flex justify-around">
                 <button type="submit" class="bg-blue-500 text-white py-1 px-4 rounded">Save</button>
@@ -81,9 +81,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td class="py-2 px-4">${log.carbs}</td>
                     <td class="py-2 px-4">${log.protein}</td>
                     <td class="py-2 px-4">${log.fat}</td>
-                    <td >
+                    <td>
                         <button class="edit-btn bg-blue-500 text-white py-1 px-3 rounded" data-id="${log.id}" data-log='${JSON.stringify(log)}'>Edit</button>
-                        <button class="delete-btn bg-red-500 text-white py-1  rounded" data-id="${log.id}">Delete</button>
+                        <button class="delete-btn bg-red-500 text-white py-1 px-1  rounded" data-id="${log.id}">Delete</button>
                     </td>
                 `;
                 logsTable.appendChild(row);
@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         text: 'Your log has been deleted.',
                                         icon: 'success',
                                         showConfirmButton: false,
-                                        timer: 2000  // Timer in milliseconds
+                                        timer: 3000  // Timer in milliseconds
                                     }).then(() => {
                                         location.reload();
                                     });
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             text: 'Your log has been updated. The page will automatically be refreshed',
                             icon: 'success',
                             showConfirmButton: false,
-                            timer: 2000  // Timer in milliseconds
+                            timer: 100000  // Timer in milliseconds
                         }).then(() => {
                                 location.reload();
                         });  

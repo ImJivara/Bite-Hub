@@ -11,8 +11,10 @@
                     <div class="relative bg-white rounded-md border border-gray-300 shadow-lg overflow-hidden mb-6">
                         <!-- Top Section: User Info -->
                         <div class="flex items-center p-4 border-b border-gray-200">
-                            <img src="{{ asset('storage/' . $post->author->profile_picture) }}" alt="Profile Picture"
-                                class="w-10 h-10 rounded-full mr-3">
+                            <div class="w-14 h-14 mr-4">
+                                <img class="w-full h-full rounded-full object-cover " src="{{ asset('profileimgs/' . $post->author->profile_picture) }}"
+                                    alt="Profile Picture">
+                            </div>
                             <div>
                                 <p class="font-semibold text-gray-900">{{ $post->author->username }}</p>
                                 <p class="text-gray-500 text-sm">{{ $post->created_at->diffForHumans() }}</p>
@@ -33,7 +35,7 @@
                                 <div class="flex space-x-4">
                                     <!-- Like Button with AJAX -->
                                     <button
-                                        class="flex items-center space-x-1 transition-colors like-button {{ $post->likedByUsers()->where('user_id', Auth::id())->exists() ? 'text-red-500' : 'hover:text-red-500' }}"
+                                        class="flex items-center space-x-1 transition-colors like-button {{ $post->likedByUsers()->where('user_id', Auth::id())->exists() ? 'text-red-500 liked' : 'hover:text-red-500' }}"
                                         data-post-id="{{ $post->id }}">
                                         <i class="fas fa-heart"></i>
                                         <span class="like-count">{{ $post->NbLikes }}</span>
@@ -45,11 +47,12 @@
                                         <span>{{ $post->comments->count() }}</span>
                                     </a>
                                     @if ($post->comments->count() > 3)
-                                        <a href="/Recipe/{{ $post->id }}" class="text-blue-500 hover:underline">View all
-                                            comments</a>
+                                        <a href="/Recipe/{{ $post->id }}" class="text-blue-500 hover:underline">View all comments</a>
                                     @endif
                                 </div>
                             </div>
+
+
 
                             <!-- Display Comments (up to 3) using x-comment Component -->
                             <div class="space-y-2">
@@ -79,7 +82,7 @@
                                 const charCount = document.getElementById('charCount');
                                 commentInput.addEventListener('input', function() {
                                     const length = commentInput.value.length;
-                                    charCount.textContent = length + ' / 300 characters';
+                                    charCount.textContent = length + ' / 100 characters';
                                 });
                             </script>
                         </div>
@@ -150,33 +153,38 @@
 
 
         </script>
-<script>// Click handler for like buttons
+<script>
     $(document).on('click', '.like-button', function(event) {
         event.preventDefault(); // Prevent default button behavior
 
         var button = $(this);
         var postId = button.data('post-id');
+        var isLiked = button.hasClass('liked');
+
+        // Determine the URL for like or dislike
+        var url = isLiked ? '/Dislike/' + postId : '/Like/' + postId;
 
         // Send AJAX request to like/unlike the post
         $.ajax({
-            url: '/Like/' + postId,
+            url: url,
             type: 'get',
             data: {
                 _token: '{{ csrf_token() }}'
             },
             success: function(response) {
-                if (!response.RecipeAlreadyLiked) {
-                     // Update like count
+                // Update like count
                 var likeCount = button.find('.like-count');
                 likeCount.text(response.NbLikes);
 
+                // Toggle liked state
+                if (isLiked) {
+                    button.removeClass('text-red-500 liked');
+                } else {
+                    button.addClass('text-red-500 liked');
+                }
+
                 // Add animation class for visual feedback
                 button.find('i').addClass('animate-like');
-                }
-                else
-                likeCount.text(response.NbLikes);
-            button.removeClass('text-red-500');
-
             },
             error: function(xhr) {
                 console.error('AJAX Error:', xhr.responseText);
@@ -185,30 +193,28 @@
         });
     });
 
-
-// Remove animation class after animation ends
-$(document).on('animationend', '.animate-like', function() {
-    $(this).addClass('animate-like');
-});
+    // Remove animation class after animation ends
+    $(document).on('animationend', '.animate-like', function() {
+        $(this).removeClass('animate-like');
+    });
 </script>
-
-<!-- CSS for like button animation -->
 <style>
-@keyframes like-animation {
-    0% {
-        transform: scale(1);
+    @keyframes like-animation {
+        0% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.3);
+        }
+        100% {
+            transform: scale(1);
+        }
     }
-    50% {
-        transform: scale(1.3);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
 
-.animate-like {
-    animation: like-animation 0.3s ease-in-out;
-    color: red;
-}
-</style></script>
-    @endsection
+    .animate-like {
+        animation: like-animation 0.3s ease-in-out;
+        color: red;
+    }
+</style>
+
+@endsection

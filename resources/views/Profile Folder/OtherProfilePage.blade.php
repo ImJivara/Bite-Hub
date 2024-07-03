@@ -30,7 +30,7 @@
     <div class="profile-header flex flex-col items-center">
         <div class="flex items-center justify-center w-full mb-8">
             <div class="w-40 h-40 relative">
-                <img class="w-full h-full rounded-full object-cover" src="{{ asset('imgs/3.jpg') }}"
+                <img class="w-full h-full rounded-full object-cover" src="{{ asset('profileimgs/' . $user->profile_picture) }}"
                     alt="Profile Picture">
             </div>
             <div class="ml-8">

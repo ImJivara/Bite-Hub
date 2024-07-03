@@ -14,8 +14,8 @@
             <div class="grid grid-cols-1 gap-4">
                 @forelse($followers as $follower)
                     <div class="flex items-center space-x-4">
-                        <img src="{{ asset('imgs/user.jpg') }}" alt="Profile Picture"
-                            class="w-12 h-12 rounded-full border">
+                        <img src="{{ asset('profileimgs/'.$follower->profile_picture) }}" alt="Profile Picture"
+                            class="w-12 h-12 rounded-full border object-cover">
                         <div class="flex-grow">
                             <h3 class="text-sm font-semibold">{{ $follower->name }}</h3>
                             <p class="text-gray-500 text-xs">{{ $follower->location }}</p>
