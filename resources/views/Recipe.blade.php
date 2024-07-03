@@ -22,11 +22,17 @@
 <section class="max-w-screen-xl mx-auto px-4 py-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Recipe Image -->
+         
         <div>
             <img class="w-full h-auto rounded-lg shadow-xl" src="{{asset('storage/' . $r->thumbnail)}}" alt="Recipe Image">
         </div>
         <!-- Recipe Information -->
         <div class="flex flex-col justify-center ">
+            <div class="w-18 mb-4">   
+            <x-extracomponents.Backbtn To="" Url="{{url()->previous()}}"/>
+
+            </div>
+
             @if (Auth::user()->id==$r->author->id)
                 <div class="relative inline-block text-left">
                     <div>
