@@ -43,13 +43,12 @@
         </div>
     </div>
     <div class="navbar-container flex space-x-4">
-        <a href="/" class="nav-item text-black text-xl">Home</a>
-        <a href="/Recipes" class="nav-item text-black text-xl">Bite-Hub Blog</a>
-        <a href="/recipes/create" class="nav-item text-black text-xl">Create Your Own Recipe</a>
-        <a href="/Foryoupage" class="nav-item text-black text-xl">For You Page</a>
-        <a href="/HealthTools" class="nav-item text-black text-xl">Our Health Tools</a>
+        <a href="/" class="nav-item text-black text-xl {{ request()->is('/') ? 'active' : '' }}">Home</a>
+        <a href="/Recipes" class="nav-item text-black text-xl {{ request()->is('Recipes') ? 'active' : '' }}">Bite-Hub Blog</a>
+        <a href="/recipes/create" class="nav-item text-black text-xl {{ request()->is('recipes/create') ? 'active' : '' }}">Create Your Own Recipe</a>
+        <a href="/Foryoupage" class="nav-item text-black text-xl {{ request()->is('Foryoupage') ? 'active' : '' }}">For You Page</a>
+        <a href="/HealthTools" class="nav-item text-black text-xl {{ request()->is('HealthTools') ? 'active' : '' }}">Our Health Tools</a>
     </div>
-    
     <div class="login-signup flex items-center space-x-4">
         @if(Auth::user())
         <p class="mr-4 text-xl font-bold text-black">Hello, <span class="capitalize">{{ Auth::user()->name }}</span> <a href="/Logout" style="color:#DD0525; font-weight: bolder;">Logout</a></p>

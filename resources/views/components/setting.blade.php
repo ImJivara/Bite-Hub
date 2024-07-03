@@ -2,7 +2,7 @@
 
 <section class="py-8 max-w-4xl mx-auto">
     <h1 class="text-lg font-bold mb-8 pb-2 border-b">
-    <x-extracomponents.Backbtn> </x-extracomponents.Backbtn>
+    <x-extracomponents.Backbtn To="to Blog" Url="/Recipes"/> 
         {{ $heading }} 
     </h1>
     

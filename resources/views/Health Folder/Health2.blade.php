@@ -21,27 +21,34 @@
         }
 
         .nav-item {
-            position: relative;
-            overflow: hidden;
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            transition: background-color 0.5s ease-in-out;
-        }
+    position: relative;
+    overflow: hidden;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    transition: background-color 0.2s ease-in-out;
+}
 
-        .nav-item:hover {
-            background-color: black;
-            color: white;
-        }
+.nav-item:hover,
+.nav-item.active {
+    background-color: black;
+    color: white;
+}
 
-        .navbar-container {
-            border: 2px solid black;
-            border-radius: 9999px;
-            padding: 0.5rem 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-        }
+.navbar-container {
+    border: 2px solid black;
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.hidden {
+    display: none;
+}
+
+
     </style>
 </head>
 
@@ -128,6 +135,9 @@
                     toolSections.forEach(section => {
                         section.classList.add('hidden');
                     });
+                    toolLinks.forEach(link => {
+                        link.classList.remove('active');
+                    });
 
                     
                     // Destroy the chart if it exists
@@ -139,6 +149,7 @@
                     // Show the target tool section
                     if (targetSection) {
                         targetSection.classList.remove('hidden');
+                        this.classList.add('active');
 
                         // Check if the target section is the Nutrition Tracker
                         if (targetId === 'nutrition-tracker') {
@@ -148,6 +159,9 @@
                             }, 800); // Delay initialization to ensure section is visible
                         }
                     }
+                    
+
+           
                 });
             });
         });

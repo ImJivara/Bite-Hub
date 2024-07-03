@@ -221,6 +221,13 @@ class RecipeController extends Controller
         
         // Save the nutritional data to the database
         $nutritionalData->save();
+        Activity::create([
+            'user_id' => Auth::user()->id,
+            'type' => 'post_recipe',
+            'subject_type' => 'App\Models\Recipe',
+            'subject_id' => $recipe->id,
+            'description' => 'User ' . Auth::user()->name . ' posted the recipe ' . $recipe->RecipeName,
+        ]);
 
         // Redirect to a success page or somewhere else
         return redirect()->route('recipes.Form')->with('success', 'Recipe added successfully!');

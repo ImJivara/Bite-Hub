@@ -17,7 +17,7 @@
 <script src="{{ asset('jquery-3.7.1.js') }}"></script>
 
 <div class="mx-auto max-w-7xl p-4 Montserrat">
-
+<x-extracomponents.Backbtn To="" Url="{{ url()->previous() }}"/> 
     <!-- Profile Header -->
     <div class="profile-header flex flex-col items-center">
         <div class="flex items-center justify-center w-full mb-8">

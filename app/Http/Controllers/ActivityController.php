@@ -30,6 +30,9 @@ class ActivityController extends Controller
                     case 'post_comment':
                         $query->where('type', 'post_comment')->where('subject_type', 'App\Models\Comment')->where('user_id',Auth::id());
                         break;
+                    case 'All' :
+                        $query->where('user_id', Auth::id());
+                        break;
                     default:
                         break;
                 }

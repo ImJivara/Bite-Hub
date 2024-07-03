@@ -20,11 +20,8 @@
 
 <div class="mx-auto max-w-7xl p-4 Montserrat">
     <div class="flex items-center mb-6">
-        <button onclick="goBack()"
-            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md flex items-center gap-1">
-            <i class="fas fa-arrow-left"></i>
-            <span>Back</span>
-        </button>
+    <x-extracomponents.Backbtn To="to Blog" Url="{{url()->previous()}}"/>
+
     </div>
     <!-- Profile Header -->
     <div class="profile-header flex flex-col items-center">

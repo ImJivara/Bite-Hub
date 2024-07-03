@@ -53,12 +53,12 @@
 <body class="bg-gray-100">
     <!-- Sidebar -->
     <div class="sidebar">
-         
+    <x-extracomponents.Backbtn To="to Blog" Url="/Recipes"/>
         
         <!-- Profile Image -->
         <div class="p-4">
-            <img id="profileImage" class=" w-24 h-24 rounded-full mx-auto object-cover border-2  border-black" src="{{ asset('profileimgs/' . auth()->user()->profile_picture) }}" alt="Profile Picture">   
-            <p class="text-center text-gray-800 mt-2" id="name_sidebar" >{{Auth::user()->name}}</p></a>
+          <a href="/profile/{{Auth::user()->id}}"><img id="profileImage" class=" w-24 h-24 rounded-full mx-auto object-cover border-2  border-black" src="{{ asset('profileimgs/' . auth()->user()->profile_picture) }}" alt="Profile Picture">
+            <p class="text-center text-gray-800 mt-2 font-bold text-red-500 capitalize" id="name_sidebar" >{{Auth::user()->name}}</p></a>
         </div>
         <!-- Sidebar Items -->
         <div class="mt-4">
