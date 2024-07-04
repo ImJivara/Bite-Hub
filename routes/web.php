@@ -160,6 +160,7 @@ Route::get('/Recipe/{id}', [RecipeController::class, 'getRecipes'])->name('recip
 Route::get('/recipes/create', [RecipeController::class,'getForm'])->name('recipes.Form');
 Route::post('/recipes/create', [RecipeController::class,'store'])->name('recipes.create');
 Route::get('/recipes/{id}/edit', [RecipeController::class, 'edit'])->name('recipes.edit');
+Route::get('/recipes/{id}/delete', [RecipeController::class, 'delete'])->name('recipes.delete');
 Route::post('/recipes/{id}/update', [RecipeController::class, 'update'])->name('recipes.update');
 
 // Search 

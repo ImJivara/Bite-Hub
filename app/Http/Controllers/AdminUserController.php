@@ -61,6 +61,7 @@ class AdminUserController extends Controller
 
         return request()->validate([
             'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
             'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user)],
             'location' => 'nullable|string|max:255',
             'password' => $user->exists ? ['nullable', 'string', 'min:8'] : ['required', 'string', 'min:8'],

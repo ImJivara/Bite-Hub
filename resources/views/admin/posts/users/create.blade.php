@@ -5,6 +5,7 @@
         @csrf
 
         <x-form.input name="name" label="Name" required />
+        <x-form.input name="username" label="Username" required />
         <x-form.input name="email" label="Email" type="email" required />
         <x-form.input name="location" label="Location" />
         <x-form.input name="password" label="Password" type="password" required />

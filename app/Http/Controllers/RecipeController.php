@@ -161,7 +161,7 @@ class RecipeController extends Controller
             'Health_Score' => 'required|integer|min:1',
             'steps.*' => 'required|string',
             'ingredients.*.name' => 'required|string',
-            'ingredients.*.amount' => 'required|numeric',
+            'ingredients.*.amount' => 'required|numeric|min:0',
             'ingredients.*.unit' => 'required|string',
         ]);
 
@@ -239,6 +239,17 @@ class RecipeController extends Controller
 
         return view('recipeFormEdit', compact('recipe'));
     }
+    public function delete($id)
+    {
+        try {
+            $recipe = Recipe::findOrFail($id);
+            $recipe->delete();
+            return response()->json(['success' => true, 'message' => 'Recipe deleted successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Failed to delete recipe.']);
+        }
+    }
+
 
     public function update(Request $request,$id)
     {

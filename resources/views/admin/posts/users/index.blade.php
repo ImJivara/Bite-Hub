@@ -12,10 +12,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             <div class="flex-shrink-0 h-10 w-10">
-                                                <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('profileimgs/'.$user->profile_picture) }}" alt="{{ $user->name }}">
+                                                <img class="h-10 w-10 rounded-full" src="{{ asset('profileimgs/'.$user->id.'.jpg') }}" alt="{{ $user->name }}">
                                             </div>
                                             <div class="ml-4 text-sm font-medium text-gray-900">
-                                                <a href="/profile/{{$user->id}}">
+                                                <a href="#">
                                                     {{ $user->name }}
                                                 </a>
                                                 <p class="text-red-500">Email: {{ $user->email }}</p>
@@ -29,6 +29,9 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="/admin/users/{{ $user->id }}/edit" class="text-blue-500 hover:text-blue-600">Edit</a>
                                     </td>
+                                    @if ($user->UserIsAdmin)
+                                        
+                                    @else
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <form method="POST" action="/admin/users/{{ $user->id }}" class="m-0">
                                             @csrf
@@ -36,6 +39,7 @@
                                             <button class="text-xs text-gray-400">Delete</button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

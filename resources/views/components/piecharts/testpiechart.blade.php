@@ -36,7 +36,7 @@ function initializeNutritionalTracker(data,totalCalories)
     }
 
     const nutritionData = {
-        labels: ['Proteins', 'Carbs', 'Fats'],
+        labels: ['Carbs', 'Proteins', 'Fats'],
         datasets: [{
             label: 'Nutritional Facts',
             data: percentages, // Use percentages instead of absolute values

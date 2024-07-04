@@ -20,7 +20,7 @@
     <div class="relative dropdown">
         <a href="#" class="nav-item p-3 bg-black rounded-lg">Categories</a>
         <div class="meal-options absolute bg-white shadow-lg rounded-lg hidden">
-        <a href="/Recipes" class="category-link">Uncategorized</a>
+        <a href="/Recipes" class="category-link">All</a>
             @foreach($categories as $category)
                 <a href="{{ route('recipes.sorted', ['category' => $category]) }}" class="category-link" data-category="{{ $category }}">{{ $category }}</a>
             @endforeach

@@ -37,14 +37,14 @@
                                     <button
                                         class="flex items-center space-x-1 transition-colors like-button {{ $post->likedByUsers()->where('user_id', Auth::id())->exists() ? 'text-red-500 liked' : 'hover:text-red-500' }}"
                                         data-post-id="{{ $post->id }}">
-                                        <i class="fas fa-heart"></i>
-                                        <span class="like-count">{{ $post->NbLikes }}</span>
+                                        <i class="fas fa-heart font-semibold">Like</i>
+                                        <span class="like-count">{{ $post->NbLikes }} </span>
                                     </button>
                                     <!-- Comment Button -->
                                     <a href="/Recipe/{{ $post->id }}"
-                                        class="flex items-center space-x-1 hover:text-blue-500 transition-colors">
-                                        <i class="fas fa-comment"></i>
-                                        <span>{{ $post->comments->count() }}</span>
+                                        class="flex items-center space-x-1 text-blue-500 transition-colors">
+                                        <i class="fas fa-comment font-semibold">Comment</i>
+                                        <span>{{ $post->comments->count() }} </span>
                                     </a>
                                     @if ($post->comments->count() > 3)
                                         <a href="/Recipe/{{ $post->id }}" class="text-blue-500 hover:underline">View all comments</a>
@@ -101,8 +101,8 @@
                 <div class="space-y-3">
                     @forelse ($suggestedUsers as $user)
                         <div class="flex items-center space-x-3">
-                            <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture"
-                                class="w-10 h-10 rounded-full">
+                            <img src="{{ asset('profileimgs/' . $user->profile_picture) }}" alt="pfp"
+                                class="w-10 h-10 rounded-full object-cover">
                             <div class="flex-1">
                                 <p class="font-semibold text-gray-800 text-sm">{{ $user->username }}</p>
                                 <p class="text-gray-500 text-xs">Suggested for you</p>

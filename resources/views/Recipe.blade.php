@@ -33,7 +33,7 @@
 
             </div>
 
-            @if (Auth::user()->id==$r->author->id)
+            @if (Auth::user() && Auth::user()->id==$r->author->id)
                 <div class="relative inline-block text-left">
                     <div>
                         <button id="options-menu" aria-haspopup="true" aria-expanded="true" 
@@ -45,7 +45,10 @@
                     </div>
                     <div id="dropdown-menu" class="origin-top-right absolute right-0 mt-10 w-60 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden">
                         <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                            <a href="{{ route('recipes.edit', $r->id) }}" class="block px-4 py-2 text-md text-gray-700 hover:bg-gray-100" role="menuitem">Edit Post</a>
+                            <a href="{{ route('recipes.edit', $r->id) }}" class="block px-4 py-2 text-md text-blue-500 hover:bg-gray-100 " role="menuitem">Edit Post</a>
+                        </div>
+                        <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                            <button onclick="deleteRecipe('{{$r->id}}')" class="block px-4 py-2 text-md text-gray-700 text-red-500 hover:bg-gray-100 w-full text-left" role="menuitem">Delete Post</buttom>
                         </div>
                     </div>
                 </div>
@@ -285,4 +288,44 @@
         }
     });
 </script>
+
+    
+<script>
+function deleteRecipe(id) {
+    $.ajax({
+        url: '/recipes/' + id+ '/delete',  // Make sure this URL matches your delete route
+        type: 'GET',
+        data: {
+            _token: '{{ csrf_token() }}'  // Include CSRF token for Laravel
+        },
+        success: function(response) {
+            if (response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Deleted!',
+                    text: response.message,
+                    showConfirmButton: false,
+                    timer: 1500
+                }).then(() => {
+                    window.location.href = '{{ route("recipes.sorted") }}';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: response.message,
+                });
+            }
+        },
+        error: function(xhr) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An error occurred while trying to delete the recipe.',
+            });
+        }
+    });
+}
+</script>
+
 @endsection

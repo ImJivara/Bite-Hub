@@ -76,12 +76,13 @@
         <div class="relative bg-white rounded-md border border-gray-300 shadow-lg overflow-hidden hover:shadow-lg group">
             <!-- Post Image -->
             <div class="relative">
+            <a href="/Recipe/{{ $post->id }}">
                 <img src="{{asset('storage/' . $post->thumbnail)}}" alt="{{ $post->RecipeName }}" class="w-full h-64 object-cover">
                 <!-- Hover effect -->
                 <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                     <div class="text-white text-center">
-                        <p class="text-lg"><i class="fas fa-heart"></i> {{$post->NbLikes}}</p>
-                        <p class="text-lg"><i class="fas fa-comment"></i> {{$post->comments->count()}}</p>
+                        <p class="text-lg"><i class="fas fa-heart"></i> {{$post->NbLikes}} Likes</p>
+                        <p class="text-lg"><i class="fas fa-comment"></i> {{$post->comments->count()}} Comments</p>
                     </div>
                 </div></a>
             </div>

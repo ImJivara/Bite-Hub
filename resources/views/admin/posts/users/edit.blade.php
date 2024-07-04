@@ -11,16 +11,16 @@
                 e.preventDefault();
                 var email = $('#email').val();
                 var name = $('#name').val();
+                var username = $('#username').val();
                 var location = $('#location').val();
-                var password = $('#password').val();
                 $.ajax({
                     type: 'POST',
                     url: '/profile/update/{{ $user->id }}',
                     data: {
                         '_token': '{{ csrf_token() }}',
                         'email': email,
-                        'password': password,
                         'name': name,
+                        'username':username,
                         'location': location
                     },
                     success: function(response) {
@@ -28,12 +28,13 @@
                             showToast('Profile updated successfully', 'green');
                             // Update profile information displayed on the page
                             $("#name").text(name);
+                            $("#username").text(username);
                             $("#email").text(email);
                             $("#location").text(location);
-                            $("#password").text(password);
 
                             $("#Name").text(response.name);
-                            $("#Email").text(reponse.email);
+                            $("#Username").text(response.username);
+                            $("#Email").text(response.email);
                             $("#Location").text(response.location);
                             
                             
@@ -52,7 +53,7 @@
         });
     
         function deleteAccount() {
-            if (confirm('Are you sure you want to delete your account?'))
+            if (confirm('Are you sure you want to delete this account?'))
              {
                 $.ajax({
                     type: 'POST',
@@ -83,9 +84,10 @@
         <div class="bg-white shadow-md rounded-lg p-8 mb-8">
             <h1 class="text-2xl font-semibold mb-4">Profile Information</h1>
             <div>
-                <p class="text-gray-700"><span class="font-semibold">Name:</span><span id="Name"> {{ $user->name }}</span></p>
+                <p class="text-gray-700"><span class="font-semibold">Name:</span> <span id="Name"> {{ $user->name }}</span></p>
+                <p class="text-gray-700"><span class="font-semibold">User Name:</span> <span id="Username"> {{ $user->username }}</span></p>
                 <p class="text-gray-700"><span class="font-semibold">Email:</span> <span id="Email"> {{ $user->email }}</span></p>
-                <p class="text-gray-700"><span class="font-semibold">Location:</span><span id="Location"> {{ $user->location }}</span></p>
+                <p class="text-gray-700"><span class="font-semibold">Location:</span> <span id="Location"> {{ $user->location }}</span></p>
             </div>
         </div>
         <!-- Edit Profile Form -->
@@ -100,12 +102,12 @@
                     <input type="text" id="name" name="name"  value="{{$user->name}}" class="border border-gray-300 rounded-md p-2 w-full">
                 </div>
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
-                    <input type="email" id="email" name="email" value="{{$user->email}}" class="border border-gray-300 rounded-md p-2 w-full">
+                    <label for="username" class="block text-gray-700 font-semibold mb-2">User Name</label>
+                    <input type="text" id="username" name="username"  value="{{$user->username}}" class="border border-gray-300 rounded-md p-2 w-full">
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                    <input type="text" id="password" name="password" value="{{$user->password}}" class="border border-gray-300 rounded-md p-2 w-full">
+                    <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                    <input type="email" id="email" name="email" value="{{$user->email}}" class="border border-gray-300 rounded-md p-2 w-full">
                 </div>
                 <div class="mb-4">
                     <label for="location" class="block text-gray-700 font-semibold mb-2">Location</label>

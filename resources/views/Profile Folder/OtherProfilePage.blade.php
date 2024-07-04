@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     integrity="sha512-Fo3rlrZj/kTcsm6FQ4RSAP9z9b8fqjeanU/6lmV4DJEFuOWzTpBdaJ98loG8mGbB6iTP6y7H5NU6tuGt+OMj8w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    
 <style>
     .montserrat {
         font-family: "Montserrat", sans-serif;
@@ -17,6 +17,7 @@
 </style>
 <script src="{{ asset('jquery-3.7.1.js') }}"></script>
 <!-- <link href="{{ asset('css/tailwindstyles.css') }}" rel="stylesheet"> -->
+ <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
 <div class="mx-auto max-w-7xl p-4 Montserrat">
     <div class="flex items-center mb-6">
@@ -31,7 +32,7 @@
                     alt="Profile Picture">
             </div>
             <div class="ml-8">
-                <h1 class="text-3xl font-semibold">@ {{ $user->username }}</h1>
+                <h1 class="text-3xl font-semibold capitalize">@ {{ $user->username }}</h1>
 
                 <p class="text-gray-600">{{ $user->location }}</p>
                 <div class="flex mt-4 space-x-4">
@@ -84,8 +85,8 @@
                         <!-- Hover effect -->
                         <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                             <div class="text-white text-center">
-                                <p class="text-lg"><i class="fas fa-heart"></i> {{ $post->NbLikes }}</p>
-                                <p class="text-lg"><i class="fas fa-comment"></i> {{ $post->comments->count() }}</p>
+                                <p class="text-lg"><i class="fa fa-heart"></i> {{ $post->NbLikes }} Likes</p>
+                                <p class="text-lg"><i class="fa fa-comment"></i> {{ $post->comments->count() }} Comments</p>
                             </div>
                         </div>
                     </a>

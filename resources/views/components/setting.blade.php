@@ -20,11 +20,12 @@
                     <a href="/admin/users" class="{{ request()->is('admin/users') ? 'text-blue-500' : '' }}">All Users</a>
                 </li>
 
-                <li>
-                    <a href="/admin/posts/create" class="{{ request()->is('admin/posts/create') ? 'text-blue-500' : '' }}">New Post</a>
-                </li>
+                
                 <li>
                     <a href="/admin/users/create" class="{{ request()->is('admin/users/create') ? 'text-blue-500' : '' }}">New User</a>
+                </li>
+                <li>
+                    <a href="/fetch" class=" text-red-500 font-bold">Automatic Fetch</a>
                 </li>
             </ul>
         </aside>

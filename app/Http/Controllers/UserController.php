@@ -141,7 +141,6 @@ class UserController extends Controller
         // Fetch posts based on the user
         $posts = Recipe::where('user_id', $user->id)
             ->latest()
-            ->take(10)
             ->get();
 
         // Fetch liked recipes by the user

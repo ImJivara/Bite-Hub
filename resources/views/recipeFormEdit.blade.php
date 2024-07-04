@@ -69,7 +69,7 @@
     <label class="block font-medium text-gray-700 text-xl">Steps</label>
     <div id="stepsList">
         @foreach(old('steps', $recipe->steps_details ? json_decode($recipe->steps_details, true) : []) as $indexx => $step)
-        <script> stepCount++</script>
+        
             <div class="flex items-center space-x-2 mb-2">
                 <input type="text" name="steps[]" value="{{ $step }}" placeholder="Step {{ $indexx + 1  }}" 
                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -86,26 +86,26 @@
 
 <hr>
 
-<div id="ingredientsContainer">
-    <label class="block font-medium text-gray-700 text-xl">Ingredients</label>
-    <div id="ingredientsList">
-    @foreach(old('ingredients', $recipe->ingredients_details ? json_decode($recipe->ingredients_details, true) : []) as $index => $ingredient)
-        <div class="flex items-center space-x-2 mb-2">
-            <input type="text" name="ingredients[{{ $index }}][name]" value="{{ $ingredient['name'] ?? ''}}" placeholder="Ingredient Name" 
-                   class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <input type="number" step="any" name="ingredients[{{ $index }}][amount]" value="{{ $ingredient['amount'] ?? '' }}" placeholder="Amount" 
-                   class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <input type="text" name="ingredients[{{ $index }}][unit]" value="{{ $ingredient['unit'] ?? '' }}" placeholder="Unit" 
-                   class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            @if ($index === 0)
-                <button type="button" id="addIngredientBtn" class="btn-add-ingredient bg-indigo-500 text-white px-3 py-2 rounded-md focus:outline-none">+</button>
-            @else
-                <button type="button" class="btn-remove-ingredient bg-red-500 text-white px-3 py-2 rounded-md focus:outline-none">-</button>
-            @endif
-        </div>
-    @endforeach
-   
-</div>
+    <div id="ingredientsContainer">
+        <label class="block font-medium text-gray-700 text-xl">Ingredients</label>
+        <div id="ingredientsList">
+        @foreach(old('ingredients', $recipe->ingredients_details ? json_decode($recipe->ingredients_details, true) : []) as $index => $ingredient)
+            <div class="flex items-center space-x-2 mb-2">
+                <input type="text" name="ingredients[{{ $index }}][name]" value="{{ $ingredient['name'] ?? ''}}" placeholder="Ingredient Name" 
+                    class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <input type="number" step="any" name="ingredients[{{ $index }}][amount]" value="{{ $ingredient['amount'] ?? '' }}" placeholder="Amount" 
+                    class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <input type="text" name="ingredients[{{ $index }}][unit]" value="{{ $ingredient['unit'] ?? '' }}" placeholder="Unit" 
+                    class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @if ($index === 0)
+                    <button type="button" id="addIngredientBtn" class="btn-add-ingredient bg-indigo-500 text-white px-3 py-2 rounded-md focus:outline-none">+</button>
+                @else
+                    <button type="button" class="btn-remove-ingredient bg-red-500 text-white px-3 py-2 rounded-md focus:outline-none">-</button>
+                @endif
+            </div>
+        @endforeach
+    
+    </div>
 
 </div>
 
@@ -192,27 +192,38 @@
         }
     });
 
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var ingredientsList = document.getElementById('ingredientsList');
+    var nextIndex = ingredientsList.childElementCount; // Start index based on existing ingredients count
+
     document.getElementById('addIngredientBtn').addEventListener('click', function () {
-        
-        var ingredientsList = document.getElementById('ingredientsList');
+        addNewIngredient(nextIndex++);
+    });
+
+    ingredientsList.addEventListener('click', function (e) {
+        if (e.target && e.target.classList.contains('btn-remove-ingredient')) {
+            e.target.parentElement.remove();
+        }
+    });
+
+    function addNewIngredient(index) {
         var newIngredient = document.createElement('div');
         newIngredient.classList.add('flex', 'items-center', 'space-x-2', 'mb-2');
         newIngredient.innerHTML = `
-            <input type="text" name="ingredients[0][name]" placeholder="Ingredient Name" 
+            <input type="text" name="ingredients[${index}][name]" placeholder="Ingredient Name" 
                    class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <input type="text" name="ingredients[0][amount]" placeholder="Ingredient Amount" 
+            <input type="number" step="any" name="ingredients[${index}][amount]" placeholder="Amount" 
                    class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-            <input type="text" name="ingredients[0][unit]" placeholder="Ingredient Unit" 
+            <input type="text" name="ingredients[${index}][unit]" placeholder="Unit" 
                    class="w-1/3 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
             <button type="button" class="btn-remove-ingredient bg-red-500 text-white px-3 py-2 rounded-md focus:outline-none">-</button>
         `;
         ingredientsList.appendChild(newIngredient);
-    });
+    }
+});
 
-    document.getElementById('ingredientsList').addEventListener('click', function (e) {
-        if (e.target.classList.contains('btn-remove-ingredient')) {
-            e.target.parentElement.remove();
-        }
-    });
 </script>
 @endsection

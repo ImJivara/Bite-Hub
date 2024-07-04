@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             text: 'Your log has been updated. The page will automatically be refreshed',
                             icon: 'success',
                             showConfirmButton: false,
-                            timer: 100000  // Timer in milliseconds
+                            timer: 3000  // Timer in milliseconds
                         }).then(() => {
                                 location.reload();
                         });  
